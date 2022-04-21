@@ -2,7 +2,7 @@
 
 import PALEOboxes as PB
 import PALEOmodel
-import PALEOcopse
+# import PALEOcopse
 
 function CPU_expts(expts)
 

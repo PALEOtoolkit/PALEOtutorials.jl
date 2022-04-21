@@ -10,7 +10,7 @@ import Infiltrator # Julia debugger
 """
     ReactionModelCPU
 
-Minimal Carbon, Phosphorus, Uranium single-box model from [Clarkson2018](@cite), [Zhang2020](@cite)
+Minimal Carbon, Phosphorus, Uranium single-box model from [Clarkson2018](@cite), and [Zhang2020](@cite)
 """
 Base.@kwdef mutable struct ReactionModelCPU{P} <: PB.AbstractReaction
     base::PB.ReactionBase
