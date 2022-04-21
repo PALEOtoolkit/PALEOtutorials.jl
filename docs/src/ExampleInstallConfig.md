@@ -16,55 +16,39 @@ This will download <https://github.com/sjdaines/PALEOdev.jl> into a new folder `
 
 ## Configure PALEO environment, build documentation, run tests
 
-Launch VScode from the `PALEOjulia` folder, or use Menu->File->Open folder from inside VSCode to change to this folder.
+Launch VScode from the `PALEOtutorials` folder, or use Menu->File->Open folder from inside VSCode to change to this folder.
 
 Start Julia REPL: VScode menu View -> Command Palette, search for Julia, select `Julia: Start REPL` 
 
-Run the `PALEO_setup.jl` setup script to add package dependencies between the PALEO packages (this is a one-time configuration, 
-necessary as the PALEO packages are not yet registered with the Julia ecosystem), build documentation, and run tests
-(this takes ~45min on my newish laptop from a new Julia install):
-    
-    julia> pwd()    # check we are in the top-level PALEO.jl folder
-    "E:\\software\\julia\\PALEOjulia"   
-
-    julia> include("PALEO_setup.jl")
-
 ## View documentation
 
-Documentation is available as local web pages at `PALEOjulia\docs\build\index.html` (this is a temporary solution until
-the PALEO repository is made public, at which point these will become publically viewable web pages hosted by github).
+Documentation is available at <TODO>
 
-This html documentation is built from files in `PALEOjulia\docs\src` by the script `PALEOjulia\docs\make.jl` (included in `PALEO_setup.jl`)
+This html documentation is built from files in `PALEOtutorials\docs\src` by the script `PALEOtutorials\docs\make.jl` (included in `PALEO_setup.jl`)
 
 ## Packages, projects and environments
 The majority of high-level Julia functionality (numerical solvers, plotting, etc) is provided by `Packages`. Julia uses `environments` defined to a `Project.toml` file to control the loading of `Packages`, which implement `Modules` loaded by `import` or `using` (eg `import DifferentialEquations` to use the DifferentialEquations package). `Packages` can be registered with the Julia repository to make them generally available for download.
 
-The recommended environment for using PALEO.jl is defined by `PALEOjulia\PALEOexamples\Project.toml`.
+The recommended environment for using PALEOtutorials.jl is defined by `PALEOtutorials\examples\Project.toml`.
 
-This environment adds the `PALEOboxes`, `PALEOreactions` and `PALEOmodel` packages (using `develop`, as these are local packages not yet registered with the Julia ecosystem).
+This environment adds the `PALEOboxes`, `PALEOmodel` and `PALEOcopse` packages.
 
 In `VS code`, right click on the file browser to change directory and `activate` environments (`activate parent environment`).
 
 From the Julia REPL (command line), `activate` an environment using the package manager (called `Pkg`, <https://julialang.github.io/Pkg.jl/v1.1/getting-started/>):
 
-    julia> cd("PALEOexamples")
+    julia> cd("examples")
     julia> ]              # magic character to switch to the package manager
     (@1.5>) pkg>         # prompt changes to show we are using the default Julia 1.5 environment
     (@1.5>) pkg> activate .   # activate the PALEOexamples environment defined by Project.toml
-    (PALEOexamples) pkg>  # prompt changes to show we are using this environment
+    (examples) pkg>  # prompt changes to show we are using this environment
     julia>                # hit <BACKSPACE> to return to the command prompt
 
 
 ## Updating Julia packages
 
 Julia `Packages` are frequently (every few days) updated independently of the Julia language itself. The Julia package manager `update` command updates all packages in the currently active Julia `environment`.
-The `PALEO_updatepkg.jl` script provides a convenience wrapper to update each of the PALEO environments
-(`PALEOboxes, PALEOreactions, PALEOmodel, PALEOexamples, docs, cfortranapi`):
 
-    julia> pwd()    # check we are in the top-level PALEO.jl folder
-    "E:\\software\\julia\\PALEOjulia"   
-
-    julia> include("PALEO_updatepkg.jl") # update all 6 PALEO environments
 
 ## Optional additional configuration: Jupyter notebooks
 
