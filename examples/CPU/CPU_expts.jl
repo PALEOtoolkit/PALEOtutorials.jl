@@ -61,7 +61,7 @@ function plot_CPU(output; pager=PALEOmodel.DefaultPlotPager())
         plot(output, "global.".*["E", "W", "V", "D"],   title="Forcings", ylabel="normalized forcing"),
         plot(output, "global.F_LIP",                    title="LIP injection", ylabel="LIP injection (mol C yr-1)"),
         plot(output, "global.A",                        title="Carbon"),        
-        plot(output, "atm.pCO2PAL",                     title="pCO2", ylabel="pCO2 (PAL)"),
+        plot(output, "global.pCO2PAL",                  title="pCO2", ylabel="pCO2 (PAL)"),
         plot(output, "global.DeltaT",                   title="Delta T", ylabel="Temperature anomaly (K)"),
         plot(output, "global.f_anoxic",                 title="f_anoxic", ylabel="anoxic fraction (f_anoxic)"),
         plot(output, "global.P_norm",                   title="Phosphorus", ylabel="P/P_0 (normalized)"),

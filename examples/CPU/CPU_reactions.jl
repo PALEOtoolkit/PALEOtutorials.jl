@@ -1,6 +1,3 @@
-"""
-    CPU minimal C, P, U model [Clarkson2018](@cite), [Zhang2020](@cite)
-"""
 module ModelCPU
 
 import PALEOboxes as PB
@@ -77,7 +74,7 @@ function PB.register_methods!(rj::ReactionModelCPU)
         PB.VarDepScalar("W",        "",             "normalized W forcing"),
         PB.VarDepScalar("V",        "",             "normalized V forcing"),
         PB.VarDepScalar("D",        "",             "normalized D forcing"),     
-        PB.VarDepScalar("atm.pO2PAL","PAL",         "atmospheric oxygen"),
+        PB.VarDepScalar("pO2PAL","PAL",             "atmospheric oxygen"),
 
         # State variables
         PB.VarDepScalar("A",        "mol C",        "atm-ocean inorganic carbon",
@@ -93,7 +90,7 @@ function PB.register_methods!(rj::ReactionModelCPU)
         # additional quantities derived from state variables
         PB.VarDepScalar("A_norm",   "",             "normalized atm-ocean inorganic carbon"),
         PB.VarDepScalar("A_delta",  "per mil",      "atmosphere-ocean inorganic carbon fractionation"),
-        PB.VarDepScalar("atm.pCO2PAL",  "",         "atmospheric pCO2 normalized to present day"),
+        PB.VarDepScalar("pCO2PAL",  "",             "atmospheric pCO2 normalized to present day"),
         PB.VarDepScalar("P_norm",   "",             "normalized atm-ocean phosphorus"),
         PB.VarDepScalar("U_norm",   "",             "normalized ocean uranium"),
         PB.VarDepScalar("U_delta",  "per mil",      "ocean uranium fractionation"),
@@ -218,7 +215,7 @@ function do_CPU(m::PB.ReactionMethod, (vars, ), cellrange::PB.AbstractCellRange,
     return nothing
 end
 
-"Install create_reactionXXX factories when module imported"
+# Install create_reactionXXX factories when module imported
 function __init__()
     PB.add_reaction_factory(ReactionModelCPU)
     return nothing

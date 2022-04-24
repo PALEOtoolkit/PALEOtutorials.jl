@@ -1,0 +1,39 @@
+############################################
+# Example 3 
+# First order decay of a scalar variable
+# with transfer of flux to a second variable
+###########################################
+
+example3:
+    domains:
+        global:
+            # scalar domain
+            
+            reactions:
+                reservoir_A:
+                    class: ReactionReservoirScalar
+                   
+                    variable_links:
+                        R*: A*
+                    variable_attributes:
+                        R:initial_value:  10.0
+                        R:norm_value:     10.0
+
+                reservoir_B:
+                    class: ReactionReservoirScalar
+                   
+                    variable_links:
+                        R*: B*
+                    variable_attributes:
+                        R:initial_value:  0.0
+                        R:norm_value:     10.0
+
+                Adecay:
+                    class: ReactionExample3
+                    parameters:
+                        kappa:            0.5
+                    variable_links:
+                        input_particle*:    A*
+                        output_flux:        B_sms
+                    
+

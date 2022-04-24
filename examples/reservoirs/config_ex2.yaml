@@ -1,0 +1,26 @@
+############################################
+# Example 2 
+# First order decay of a scalar variable
+###########################################
+
+example2:
+    domains:
+        global:
+            # scalar domain
+            
+            reactions:
+                reservoir_A:
+                    class: ReactionReservoirScalar
+                   
+                    variable_links:
+                        R*: A*
+                    variable_attributes:
+                        R:initial_value:  10.0
+                        R:norm_value:     10.0
+
+                Adecay:
+                    class: ReactionExample2
+                    parameters:
+                        kappa:            0.5
+                    
+
