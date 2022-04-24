@@ -4,7 +4,7 @@
 - Julia manual <https://docs.julialang.org/en/v1>
 - Think Julia book (an introduction to programming) <https://benlauwens.github.io/ThinkJulia.jl/latest/book.html>
 - Julia cheatsheet: <https://juliadocs.github.io/Julia-Cheat-Sheet>
-- Matlab-Python-Julia cheatsheet: <https://cheatsheets.quantecon.org> (NB: the first example on Arrays is misleading!)
+- Matlab-Python-Julia cheatsheet: <https://cheatsheets.quantecon.org> (NB: the first example on Creating Vectors is misleading - use 1d Arrays in Julia!)
 
 ## Always use Revise.jl
 This tracks changes and automatically updates code run from a REPL session.

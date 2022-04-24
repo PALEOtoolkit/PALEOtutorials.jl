@@ -6,16 +6,6 @@ However configuration of Python and Julia inevitably introduces dependencies.  T
 1. allow Julia to install and maintain a private Python installion (the default)
 2. configure Julia and Python for a shared Python installation
 
-NB: these steps are needed for:
-
-    PALEOboxes  (none)
-    PALEOreactions (IJulia)
-    PALEOmodel (PyCall)
-    PALEOexamples (PyCall, PyPlot, IJulia)
-
-TODO not clear if the settings are remembered across different Julia environments ?
-
-
 ## 1. Private Python installation for Julia
 This is simplest for cases where you just want to use a few python packages from Julia (eg IJulia for Jupyter notebooks).
 

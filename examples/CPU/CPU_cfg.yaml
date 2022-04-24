@@ -46,6 +46,14 @@ CPU_Zhang2020:
                     variable_links:
                         F: D                 
 
+                force_pO2PAL:
+                    class: ReactionForceInterp
+                    parameters:
+                        force_times: [-1e30, 1e30]
+                        force_values: [1.0, 1.0]
+                    variable_links:
+                        F: pO2PAL
+
                 # set a constant time for (implicit) solar forcing in temp_global
                 tforce_solar:
                     class: ReactionScalarConst
@@ -62,7 +70,7 @@ CPU_Zhang2020:
                         k_c:                    4.0   # k_CO2 in Zhang (2020)
                         k_l:                    7.4   # k_SL in Zhang (2020)
                     variable_links:
-                        pCO2PAL:       atm.pCO2PAL   
+                        pCO2PAL:       pCO2PAL   
                         tforce: tforce_solar  # assume solar forcing at tforce_solar constant time
 
                 F_LIP:                    
@@ -151,11 +159,5 @@ CPU_Zhang2020:
         atm:
             reactions:
 
-                force_pO2PAL:
-                    class: ReactionForceInterp
-                    parameters:
-                        force_times: [-1e30, 1e30]
-                        force_values: [1.0, 1.0]
-                    variable_links:
-                        F: pO2PAL               
+                    
      

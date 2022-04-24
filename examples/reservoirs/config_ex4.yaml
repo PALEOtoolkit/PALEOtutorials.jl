@@ -1,0 +1,67 @@
+############################################
+# Example 4
+# First order decay of a scalar variable
+# with transfer of flux to a second variable
+# Transfer between two Domains
+###########################################
+
+example4:
+    domains:
+        fluxBoxes:
+            reactions:
+                flux:
+                    class: ReactionFluxTarget
+                    parameters:
+                        fluxprefix: flux_
+                        fluxlist: ["B"]
+
+        global:
+            reactions:
+                sum_E:
+                    class: ReactionSum
+                    parameters:
+                        vars_to_add: ["Box1.A", "Box2.B"]
+                    variable_links:
+                        sum: E_total
+
+        Box1:
+            # scalar domain
+            
+            reactions:
+                reservoir_A:
+                    class: ReactionReservoirScalar
+                   
+                    variable_links:
+                        R*: A*
+                    variable_attributes:
+                        R:initial_value:  10.0
+                        R:norm_value:     10.0            
+
+                Adecay:
+                    class: ReactionExample3
+                    parameters:
+                        kappa:            0.5
+                    variable_links:
+                        input_particle*:    A*
+                        output_flux:        fluxBoxes.flux_B
+                    
+
+        Box2:
+            # scalar domain
+        
+            reactions:
+
+                reservoir_B:
+                    class: ReactionReservoirScalar
+                    
+                    variable_links:
+                        R*: B*
+                    variable_attributes:
+                        R:initial_value:  0.0
+                        R:norm_value:     10.0
+
+                transfer_fluxBoxes:
+                    class: ReactionFluxTransfer
+                    parameters:
+                        input_fluxes: fluxBoxes.flux_$fluxname$
+                        output_fluxes: $fluxname$_sms
