@@ -22,10 +22,13 @@ Base.@kwdef mutable struct ReactionExample1{P} <: PB.AbstractReaction
 end
 
 function PB.register_methods!(rj::ReactionExample1)
+    # Variables are labelled as state Variables and derivatives by setting the 
+    # :vfunction attribute to VF_StateExplicit and VF_Deriv.
     A = PB.VarDepScalar("A",            "mol",      "reservoir for species A",
                     attributes=(:vfunction=>PB.VF_StateExplicit,))
     A_sms = PB.VarContribScalar("A_sms",    "mol yr-1", "reservoir A source - sink",
                     attributes=(:vfunction=>PB.VF_Deriv,))
+    # Provide a Property decay_flux as diagnostic output
     decay_flux = PB.VarPropScalar("decay_flux",  "mol yr-1", "decay flux from reservoir A")
 
     PB.add_method_setup!(rj, setup_example1, (PB.VarList_namedtuple([A]),) )
@@ -38,11 +41,14 @@ function PB.register_methods!(rj::ReactionExample1)
 end
 
 # setup method, called at model startup
-function setup_example1(m::PB.ReactionMethod, (varsdata, ), cellrange::PB.AbstractCellRange, attribute_value)
+# NB: this is called twice, with attribute_name indicating the value that should be set:
+#   :norm_value - Variable normalisation, usually read from the :norm_value Variable attribute
+#   :initial_value - Variable initial value, usually read from the :initial_value attribute
+function setup_example1(m::PB.ReactionMethod, (varsdata, ), cellrange::PB.AbstractCellRange, attribute_name)
 
     var_A = PB.get_variable(m, "A")  # get the Variable as supplied to add_method_setup! 
-    value = PB.get_attribute(var_A, attribute_value) # read attribute 
-    @info "setting A[] to $value read from from attribute $attribute_value"
+    value = PB.get_attribute(var_A, attribute_name) # read attribute 
+    @info "setup_example1: setting A[] to $value read from from attribute $attribute_name"
     varsdata.A[] = value
 
     return nothing

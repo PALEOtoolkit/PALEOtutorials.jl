@@ -23,8 +23,8 @@ initial_state, modeldata = PALEOmodel.initialize!(run)
 #######################################################################
 initial_deriv = similar(initial_state)
 PALEOmodel.ODE.ModelODE(modeldata)(initial_deriv, initial_state , nothing, 0.0)
-println("initial_state", initial_state)
-println("initial_deriv", initial_deriv)
+println("initial_state: ", initial_state)
+println("initial_deriv: ", initial_deriv)
 
 #################################################################
 # Integrate vs time
@@ -43,5 +43,5 @@ println("integrate, ODE")
 # Plot output
 ########################################
 
-display(plot(run.output, ["global.A", "global.B"]))
+display(plot(run.output, ["global.A", "global.B"]; ylabel="reservoir (mol)"))
 display(plot(run.output, "global.decay_flux"))

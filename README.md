@@ -2,7 +2,7 @@
 
 [![](https://img.shields.io/badge/docs-dev-blue.svg)](https://PALEOtoolkit.github.io/PALEOtutorials.jl/dev)
 
-Introduction and tutorials for the PALEO framework.  This repository includes minimal examples that demonstrate Julia workflows and how to use the framework to construct and use models. See eg the [PALEOcopse](https://github.com/PALEOtoolkit/PALEOcopse.jl) repository for full scientific model configurations.
+Introduction and tutorials for the PALEO framework.  This repository includes minimal examples and small models that demonstrate Julia workflows and how to use the framework to construct and use models. See eg the [PALEOcopse](https://github.com/PALEOtoolkit/PALEOcopse.jl) repository for larger model configurations.
 
 ## Installation
 
