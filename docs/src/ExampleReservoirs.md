@@ -1,7 +1,18 @@
 # Reservoirs and fluxes
 
 These examples illustrate how to code a PALEO Reaction and configure a model, working through a minimal example of
-first order decay of a scalar biogeochemical reservoir.
+first order decay or transformation of a scalar biogeochemical reservoir ``A`` into a second reservoir ``B`` via a flux ``F``,
+with equations:
+
+```math
+F = \kappa A
+```
+```math
+\frac{dA}{dt} = - F \\
+```
+```math
+\frac{dB}{dt} =   F \\
+```
 
 ## Example 1 A minimal self-contained PALEO reaction
 
@@ -130,7 +141,7 @@ Markdown.parse(str)
 and produces output showing the transfer between two Reservoirs:
 ```@example ex3
 include("../../examples/reservoirs/run_ex3.jl") # hide
-plot(run.output, ["global.A", "global.B"]) # hide
+plot(run.output, ["global.A", "global.B"]; ylabel="reservoir (mol)") # hide
 savefig("ex3_plot1.svg")  # hide
 plot(run.output, "global.decay_flux")  # hide
 savefig("ex3_plot2.svg"); nothing # hide
@@ -166,9 +177,9 @@ Markdown.parse(str)
 and produces output showing the transfer between two Reservoirs in different Domains via the fluxBoxes flux coupler:
 ```@example ex4
 include("../../examples/reservoirs/run_ex4.jl") # hide
-plot(run.output,  ["Box1.A", "Box2.B", "global.E_total"]) # hide
+plot(run.output,  ["Box1.A", "Box2.B", "global.E_total"]; ylabel="reservoir (mol)") # hide
 savefig("ex4_plot1.svg")  # hide
-plot(run.output, ["Box1.decay_flux", "fluxBoxes.flux_B"])  # hide
+plot(run.output, ["Box1.decay_flux", "fluxBoxes.flux_B"]; ylabel="flux (mol yr-1)")  # hide
 savefig("ex4_plot2.svg"); nothing # hide
 ```
 ![](ex4_plot1.svg)
@@ -215,9 +226,9 @@ Markdown.parse(str)
 and produces output showing Rayleigh fractionation:
 ```@example ex5
 include("../../examples/reservoirs/run_ex5.jl") # hide
-plot(run.output,  ["Box1.A", "Box2.B", "global.E_total"]) # hide
+plot(run.output,  ["Box1.A", "Box2.B", "global.E_total"]; ylabel="reservoir (mol)") # hide
 savefig("ex5_plot1.svg")  # hide
-plot(run.output, ["Box1.decay_flux", "fluxBoxes.flux_B"])  # hide
+plot(run.output, ["Box1.decay_flux", "fluxBoxes.flux_B"]; ylabel="flux (mol yr-1)")  # hide
 savefig("ex5_plot2.svg"); nothing # hide
 plot(run.output, ["Box1.A_delta", "Box1.decay_flux.v_delta", "Box2.B_delta", "global.E_total.v_delta", ]; ylabel="delta (per mil)") # hide
 savefig("ex5_plot3.svg"); nothing # hide

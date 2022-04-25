@@ -23,8 +23,8 @@ initial_state, modeldata = PALEOmodel.initialize!(run)
 #######################################################################
 initial_deriv = similar(initial_state)
 PALEOmodel.ODE.ModelODE(modeldata)(initial_deriv, initial_state , nothing, 0.0)
-println("initial_state", initial_state)
-println("initial_deriv", initial_deriv)
+println("initial_state: ", initial_state)
+println("initial_deriv: ", initial_deriv)
 
 #################################################################
 # Integrate vs time
@@ -35,7 +35,7 @@ println("integrate, ODE")
     run, initial_state, modeldata, (0.0, 10.0), 
     solvekwargs=(
         reltol=1e-5,
-        # saveat=0.1, # save output every 1e6 yr see https://diffeq.sciml.ai/dev/basics/common_solver_opts/
+        # saveat=0.1, # save output every 0.1 yr see https://diffeq.sciml.ai/dev/basics/common_solver_opts/
     )
 );
    
