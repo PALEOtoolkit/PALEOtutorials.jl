@@ -156,8 +156,5 @@ CPU_Zhang2020:
                         # Delta_anoxic: 0.6         # Anoxic sink fractionation
                         # Delta_other:  0.005       # Other sinks fractionation
 
-        atm:
-            reactions:
-
                     
      

@@ -74,11 +74,5 @@ function do_example1(m::PB.ReactionMethod, (varsdata, ), cellrange::PB.AbstractC
     return nothing
 end
 
-# Install create_reactionXXX factories when module imported
-function __init__()
-    PB.add_reaction_factory(ReactionExample1)
-    return nothing
-end
-
 
 end # module
