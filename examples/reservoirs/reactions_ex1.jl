@@ -24,10 +24,11 @@ end
 function PB.register_methods!(rj::ReactionExample1)
     # Variables are labelled as state Variables and derivatives by setting the 
     # :vfunction attribute to VF_StateExplicit and VF_Deriv.
+    # also need to set :field_data
     A = PB.VarDepScalar("A",            "mol",      "reservoir for species A",
-                    attributes=(:vfunction=>PB.VF_StateExplicit,))
+                    attributes=(:vfunction=>PB.VF_StateExplicit, :field_data=>PB.ScalarData))
     A_sms = PB.VarContribScalar("A_sms",    "mol yr-1", "reservoir A source - sink",
-                    attributes=(:vfunction=>PB.VF_Deriv,))
+                    attributes=(:vfunction=>PB.VF_Deriv, :field_data=>PB.ScalarData))
     # Provide a Property decay_flux as diagnostic output
     decay_flux = PB.VarPropScalar("decay_flux",  "mol yr-1", "decay flux from reservoir A")
 
