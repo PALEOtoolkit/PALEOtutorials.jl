@@ -20,6 +20,7 @@ makedocs(bib, sitename="PALEOtutorials Documentation",
             "ExampleInstallConfig.md",
             "ExampleReservoirs.md",
             "ExampleCPU.md",
+            "ExampleErrors.md",
         ],
         # no Design docs yet
         "HOWTOS" => [

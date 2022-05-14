@@ -1,0 +1,80 @@
+##################################################################
+# ../reservoirs/config_ex5.yaml with common configuration errors
+#################################################################
+
+example5_reservoir_A_duplicate:
+    parameters:
+        EIsotope: IsotopeLinear    # hypothetical element E
+    domains:
+        fluxBoxes:
+            reactions:
+                flux:
+                    class: ReactionFluxTarget
+                    parameters:
+                        fluxprefix: flux_
+                        fluxlist: ["B::EIsotope"]
+
+        global:
+            reactions:
+                sum_E:
+                    class: ReactionSum
+                    parameters:
+                        vars_to_add: ["Box1.A", "Box2.B"]
+                    variable_links:
+                        sum: E_total
+
+        Box1:
+            # scalar domain
+            
+            reactions:
+                reservoir_A:
+                    class: ReactionReservoirScalar
+                    parameters:
+                        field_data:         external%EIsotope
+                    variable_links:
+                        R*: A*
+                    variable_attributes:
+                        R:initial_value:    10.0
+                        R:norm_value:       10.0
+
+                # configuration error: duplicate reservoir_A
+                reservoir_Adup:
+                    class: ReactionReservoirScalar
+                    parameters:
+                        field_data:         external%EIsotope
+                    variable_links:
+                        R*: A*
+                    variable_attributes:
+                        R:initial_value:    10.0
+                        R:norm_value:       10.0     
+
+                Adecay:
+                    class: ReactionExample5
+                    parameters:
+                        field_data:         external%EIsotope
+                        kappa:              0.5
+                    variable_links:
+                        input_particle*:    A*
+                        output_flux:        fluxBoxes.flux_B
+                    
+
+        Box2:
+            # scalar domain
+        
+            reactions:
+
+                reservoir_B:
+                    class: ReactionReservoirScalar
+                    parameters:
+                        field_data: external%EIsotope
+                    variable_links:
+                        R*: B*
+                    variable_attributes:
+                        R:initial_value:  0.0
+                        R:norm_value:     10.0
+
+                transfer_fluxBoxes:
+                    class: ReactionFluxTransfer
+                    parameters:
+                        input_fluxes: fluxBoxes.flux_$fluxname$
+                        output_fluxes: $fluxname$_sms
