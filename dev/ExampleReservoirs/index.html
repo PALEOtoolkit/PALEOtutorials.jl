@@ -188,7 +188,7 @@ integrate, ODE
 [ Info: ================================================================================
 [ Info: solve:  using BLAS with 1 threads
 [ Info: ================================================================================
-  0.868513 seconds (1.78 M allocations: 118.793 MiB, 5.43% gc time, 40.29% compilation time)
+  1.202665 seconds (1.86 M allocations: 121.692 MiB, 3.99% gc time, 35.22% compilation time)
 [ Info: ================================================================================
 [ Info: print_sol_stats:
 [ Info:   retcode=Success
@@ -210,7 +210,7 @@ integrate, ODE
 [ Info: ================================================================================
 [ Info: ODE.calc_output_sol: 75 records
 [ Info: ODE.calc_output_sol: done
-  9.196347 seconds (19.56 M allocations: 1.188 GiB, 5.75% gc time, 54.94% compilation time)</code></pre><p><img src="../ex1_plot1.svg" alt/> <img src="../ex1_plot2.svg" alt/></p><h2 id="Example-2-Using-a-PALEO-Reservoir"><a class="docs-heading-anchor" href="#Example-2-Using-a-PALEO-Reservoir">Example 2 Using a PALEO Reservoir</a><a id="Example-2-Using-a-PALEO-Reservoir-1"></a><a class="docs-heading-anchor-permalink" href="#Example-2-Using-a-PALEO-Reservoir" title="Permalink"></a></h2><p>The standard way to configure PALEO models is to use a combination of ReactionReservoirs (from the <a href="https://paleotoolkit.github.io/PALEOboxes.jl/stable/ReactionCatalog/#Reservoirs"><code>Reaction catalog</code></a> provided by the <code>PALEOboxes</code> package) to define model state Variables and provide setup and initialisation, and then link to these Variables from other Reactions.</p><p>In this example, the Reaction code now only needs to implement a &#39;do&#39; method (file <code>examples/reservoirs/reactions_ex2.jl</code>):</p><pre><code class="language-julia hljs">module Example2
+ 13.055989 seconds (21.00 M allocations: 1.272 GiB, 4.25% gc time, 58.41% compilation time)</code></pre><p><img src="../ex1_plot1.svg" alt/> <img src="../ex1_plot2.svg" alt/></p><h2 id="Example-2-Using-a-PALEO-Reservoir"><a class="docs-heading-anchor" href="#Example-2-Using-a-PALEO-Reservoir">Example 2 Using a PALEO Reservoir</a><a id="Example-2-Using-a-PALEO-Reservoir-1"></a><a class="docs-heading-anchor-permalink" href="#Example-2-Using-a-PALEO-Reservoir" title="Permalink"></a></h2><p>The standard way to configure PALEO models is to use a combination of ReactionReservoirs (from the <a href="https://paleotoolkit.github.io/PALEOboxes.jl/stable/ReactionCatalog/#Reservoirs"><code>Reaction catalog</code></a> provided by the <code>PALEOboxes</code> package) to define model state Variables and provide setup and initialisation, and then link to these Variables from other Reactions.</p><p>In this example, the Reaction code now only needs to implement a &#39;do&#39; method (file <code>examples/reservoirs/reactions_ex2.jl</code>):</p><pre><code class="language-julia hljs">module Example2
 
 import PALEOboxes as PB
 
@@ -380,7 +380,7 @@ integrate, ODE
 [ Info: ================================================================================
 [ Info: solve:  using BLAS with 1 threads
 [ Info: ================================================================================
-  0.290112 seconds (544.05 k allocations: 35.069 MiB, 99.64% compilation time)
+  0.388972 seconds (569.10 k allocations: 35.308 MiB, 99.69% compilation time)
 [ Info: ================================================================================
 [ Info: print_sol_stats:
 [ Info:   retcode=Success
@@ -402,7 +402,7 @@ integrate, ODE
 [ Info: ================================================================================
 [ Info: ODE.calc_output_sol: 75 records
 [ Info: ODE.calc_output_sol: done
-  1.118562 seconds (2.23 M allocations: 139.595 MiB, 5.88% gc time, 78.20% compilation time)</code></pre><p><img src="../ex2_plot1.svg" alt/> <img src="../ex2_plot2.svg" alt/></p><h2 id="Example-3-Transfer-between-two-Reservoirs"><a class="docs-heading-anchor" href="#Example-3-Transfer-between-two-Reservoirs">Example 3 Transfer between two Reservoirs</a><a id="Example-3-Transfer-between-two-Reservoirs-1"></a><a class="docs-heading-anchor-permalink" href="#Example-3-Transfer-between-two-Reservoirs" title="Permalink"></a></h2><p>Generalizing the Reaction to transfer between two reservoirs.</p><p>The Reaction code (file <code>examples/reservoirs/reactions_ex3.jl</code>) now produces an <code>output_flux</code>, and has been generalized to operate on a generic <code>input_particle</code> Reservoir:</p><pre><code class="language-julia hljs">module Example3
+  1.448903 seconds (2.30 M allocations: 141.155 MiB, 3.33% gc time, 80.97% compilation time)</code></pre><p><img src="../ex2_plot1.svg" alt/> <img src="../ex2_plot2.svg" alt/></p><h2 id="Example-3-Transfer-between-two-Reservoirs"><a class="docs-heading-anchor" href="#Example-3-Transfer-between-two-Reservoirs">Example 3 Transfer between two Reservoirs</a><a id="Example-3-Transfer-between-two-Reservoirs-1"></a><a class="docs-heading-anchor-permalink" href="#Example-3-Transfer-between-two-Reservoirs" title="Permalink"></a></h2><p>Generalizing the Reaction to transfer between two reservoirs.</p><p>The Reaction code (file <code>examples/reservoirs/reactions_ex3.jl</code>) now produces an <code>output_flux</code>, and has been generalized to operate on a generic <code>input_particle</code> Reservoir:</p><pre><code class="language-julia hljs">module Example3
 
 import PALEOboxes as PB
 
@@ -605,7 +605,7 @@ integrate, ODE
 [ Info: ================================================================================
 [ Info: solve:  using BLAS with 1 threads
 [ Info: ================================================================================
-  0.285957 seconds (543.77 k allocations: 35.054 MiB, 99.69% compilation time)
+  0.382790 seconds (568.82 k allocations: 35.296 MiB, 99.67% compilation time)
 [ Info: ================================================================================
 [ Info: print_sol_stats:
 [ Info:   retcode=Success
@@ -627,7 +627,7 @@ integrate, ODE
 [ Info: ================================================================================
 [ Info: ODE.calc_output_sol: 55 records
 [ Info: ODE.calc_output_sol: done
-  1.124180 seconds (2.25 M allocations: 140.989 MiB, 2.93% gc time, 79.83% compilation time)</code></pre><p><img src="../ex3_plot1.svg" alt/> <img src="../ex3_plot2.svg" alt/></p><h2 id="Example-4-Transfer-between-Domains"><a class="docs-heading-anchor" href="#Example-4-Transfer-between-Domains">Example 4 Transfer between Domains</a><a id="Example-4-Transfer-between-Domains-1"></a><a class="docs-heading-anchor-permalink" href="#Example-4-Transfer-between-Domains" title="Permalink"></a></h2><p>The <code>ReactionExample3</code> from the previous example can be reused in a different model configuration that includes flux transfer between Reservoirs in two Domains. </p><p>The model configuration (file <code>examples/reservoirs/config_ex4.yaml</code>) contains two Domains <code>Box1</code> and <code>Box2</code>, and a flux coupler Domain <code>fluxBoxes</code>.  The <code>ReactionSum</code> in the <code>global</code> Domain tracks conservation:</p><pre><code class="language-julia hljs">############################################
+  1.507698 seconds (2.32 M allocations: 142.554 MiB, 3.16% gc time, 79.96% compilation time)</code></pre><p><img src="../ex3_plot1.svg" alt/> <img src="../ex3_plot2.svg" alt/></p><h2 id="Example-4-Transfer-between-Domains"><a class="docs-heading-anchor" href="#Example-4-Transfer-between-Domains">Example 4 Transfer between Domains</a><a id="Example-4-Transfer-between-Domains-1"></a><a class="docs-heading-anchor-permalink" href="#Example-4-Transfer-between-Domains" title="Permalink"></a></h2><p>The <code>ReactionExample3</code> from the previous example can be reused in a different model configuration that includes flux transfer between Reservoirs in two Domains. </p><p>The model configuration (file <code>examples/reservoirs/config_ex4.yaml</code>) contains two Domains <code>Box1</code> and <code>Box2</code>, and a flux coupler Domain <code>fluxBoxes</code>.  The <code>ReactionSum</code> in the <code>global</code> Domain tracks conservation:</p><pre><code class="language-julia hljs">############################################
 # Example 4
 # First order decay of a scalar variable
 # with transfer of flux to a second variable
@@ -641,7 +641,7 @@ example4:
                 flux:
                     class: ReactionFluxTarget
                     parameters:
-                        fluxprefix: flux_
+                        target_prefix: flux_
                         fluxlist: [&quot;B&quot;]
 
         global:
@@ -763,7 +763,7 @@ display(plot(run.output, [&quot;Box1.decay_flux&quot;, &quot;fluxBoxes.flux_B&qu
 [ Info: creating domain &#39;fluxBoxes&#39; ID=2
 [ Info:   creating reaction fluxBoxes.reactions.flux classname ReactionFluxTarget
 [ Info:     set parameters: [config.yaml]  fluxlist            =[&quot;B&quot;]
-[ Info:     set parameters: [Default]      target_prefix       =flux_
+[ Info:     set parameters: [config.yaml]  target_prefix       =flux_
 [ Info:     set parameters: [Default]      flux_totals         =false
 [ Info:     set parameters: [Default]      const_stub          =false
 [ Info: creating domain &#39;Box2&#39; ID=3
@@ -857,7 +857,7 @@ integrate, ODE
 [ Info: ================================================================================
 [ Info: solve:  using BLAS with 1 threads
 [ Info: ================================================================================
-  0.318682 seconds (543.78 k allocations: 35.062 MiB, 10.62% gc time, 99.72% compilation time)
+  0.436591 seconds (568.83 k allocations: 35.293 MiB, 11.08% gc time, 99.73% compilation time)
 [ Info: ================================================================================
 [ Info: print_sol_stats:
 [ Info:   retcode=Success
@@ -879,7 +879,7 @@ integrate, ODE
 [ Info: ================================================================================
 [ Info: ODE.calc_output_sol: 55 records
 [ Info: ODE.calc_output_sol: done
-  1.139349 seconds (2.23 M allocations: 139.851 MiB, 5.99% gc time, 81.45% compilation time)</code></pre><p><img src="../ex4_plot1.svg" alt/> <img src="../ex4_plot2.svg" alt/></p><h2 id="Example-5-Isotopes-and-Rayleigh-fractionation"><a class="docs-heading-anchor" href="#Example-5-Isotopes-and-Rayleigh-fractionation">Example 5 Isotopes and Rayleigh fractionation</a><a id="Example-5-Isotopes-and-Rayleigh-fractionation-1"></a><a class="docs-heading-anchor-permalink" href="#Example-5-Isotopes-and-Rayleigh-fractionation" title="Permalink"></a></h2><p>PALEO Variables can represent isotopes by setting the <code>:field_data</code> Attribute. Currently <code>IsotopeLinear</code> is supported, which represents a linearized approximation to a single isotope using two components <code>total</code> and <code>total x delta</code>.  Standard arithmetic (additon/subtraction, multiplication by a scalar) is supported.</p><p>The Reaction code (file <code>examples/reservoirs/reactions_ex5.jl</code>) now requires additional Parameters <code>field_data</code> to set the data type, and <code>Delta</code> to set the fractionation assumed to occur during the decay/transfer. </p><pre><code class="language-julia hljs">module Example5
+  1.478199 seconds (2.30 M allocations: 141.410 MiB, 3.27% gc time, 81.10% compilation time)</code></pre><p><img src="../ex4_plot1.svg" alt/> <img src="../ex4_plot2.svg" alt/></p><h2 id="Example-5-Isotopes-and-Rayleigh-fractionation"><a class="docs-heading-anchor" href="#Example-5-Isotopes-and-Rayleigh-fractionation">Example 5 Isotopes and Rayleigh fractionation</a><a id="Example-5-Isotopes-and-Rayleigh-fractionation-1"></a><a class="docs-heading-anchor-permalink" href="#Example-5-Isotopes-and-Rayleigh-fractionation" title="Permalink"></a></h2><p>PALEO Variables can represent isotopes by setting the <code>:field_data</code> Attribute. Currently <code>IsotopeLinear</code> is supported, which represents a linearized approximation to a single isotope using two components <code>total</code> and <code>total x delta</code>.  Standard arithmetic (additon/subtraction, multiplication by a scalar) is supported.</p><p>The Reaction code (file <code>examples/reservoirs/reactions_ex5.jl</code>) now requires additional Parameters <code>field_data</code> to set the data type, and <code>Delta</code> to set the fractionation assumed to occur during the decay/transfer. </p><pre><code class="language-julia hljs">module Example5
 
 import PALEOboxes as PB
 
@@ -958,7 +958,7 @@ example5:
                 flux:
                     class: ReactionFluxTarget
                     parameters:
-                        fluxprefix: flux_
+                        target_prefix: flux_
                         fluxlist: [&quot;B::EIsotope&quot;]
 
         global:
@@ -1083,7 +1083,7 @@ display(plot(run.output, [&quot;Box1.A_delta&quot;, &quot;Box1.decay_flux.v_delt
 [ Info: creating domain &#39;fluxBoxes&#39; ID=2
 [ Info:   creating reaction fluxBoxes.reactions.flux classname ReactionFluxTarget
 [ Info:     set parameters: [config.yaml]  fluxlist            =[&quot;B::EIsotope&quot;]
-[ Info:     set parameters: [Default]      target_prefix       =flux_
+[ Info:     set parameters: [config.yaml]  target_prefix       =flux_
 [ Info:     set parameters: [Default]      flux_totals         =false
 [ Info:     set parameters: [Default]      const_stub          =false
 [ Info: creating domain &#39;Box2&#39; ID=3
@@ -1188,7 +1188,7 @@ integrate, ODE
 [ Info: ================================================================================
 [ Info: solve:  using BLAS with 1 threads
 [ Info: ================================================================================
-  0.285008 seconds (543.95 k allocations: 35.069 MiB, 99.68% compilation time)
+  0.383687 seconds (569.00 k allocations: 35.307 MiB, 99.64% compilation time)
 [ Info: ================================================================================
 [ Info: print_sol_stats:
 [ Info:   retcode=Success
@@ -1210,4 +1210,4 @@ integrate, ODE
 [ Info: ================================================================================
 [ Info: ODE.calc_output_sol: 67 records
 [ Info: ODE.calc_output_sol: done
-  1.282851 seconds (2.38 M allocations: 149.200 MiB, 5.18% gc time, 73.14% compilation time)</code></pre><p><img src="../ex5_plot1.svg" alt/> <img src="../ex5_plot2.svg" alt/> <img src="../ex5_plot3.svg" alt/></p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../ExampleInstallConfig/">« Installation and initial configuration</a><a class="docs-footer-nextpage" href="../ExampleCPU/">CPU (Carbon, Phosphorus, Uranium) model »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.17 on <span class="colophon-date" title="Saturday 14 May 2022 13:00">Saturday 14 May 2022</span>. Using Julia version 1.6.6.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+  1.659250 seconds (2.45 M allocations: 150.776 MiB, 3.03% gc time, 75.46% compilation time)</code></pre><p><img src="../ex5_plot1.svg" alt/> <img src="../ex5_plot2.svg" alt/> <img src="../ex5_plot3.svg" alt/></p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../ExampleInstallConfig/">« Installation and initial configuration</a><a class="docs-footer-nextpage" href="../ExampleCPU/">CPU (Carbon, Phosphorus, Uranium) model »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.18 on <span class="colophon-date" title="Friday 27 May 2022 17:03">Friday 27 May 2022</span>. Using Julia version 1.6.6.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
