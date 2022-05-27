@@ -12,7 +12,7 @@ example4:
                 flux:
                     class: ReactionFluxTarget
                     parameters:
-                        fluxprefix: flux_
+                        target_prefix: flux_
                         fluxlist: ["B"]
 
         global:
