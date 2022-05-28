@@ -42,9 +42,9 @@ There are (since ~mid 2021) now two steps needed:
   NB: not all git tools are updated to reflect this, and will prompt for 'password' where what they need is 'PAT'.
 
 ## Clone github repository
-To download <https://github.com/sjdaines/PALEOdev.jl> into a new folder `PALEOjulia`:
+To download <https://github.com/PALEOtoolkit/PALEOdev.jl> into a new folder `PALEOjulia`:
 
-    git clone https://github.com/sjdaines/PALEOdev.jl PALEOjulia
+    git clone https://github.com/PALEOtoolkit/PALEOdev.jl PALEOjulia
 
 See above for PAT, not password. 
 
@@ -99,7 +99,7 @@ To push changes in the current branch to github:
 
     git push
 
-if you then go to <https://github.com/sjdaines/PALEOdev.jl>
+if you then go to <https://github.com/PALEOtoolkit/PALEOdev.jl>
 you should see that your branch is there.
 
 ## Fetch and merge changes made by a collaborator
