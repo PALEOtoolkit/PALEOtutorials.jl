@@ -11,7 +11,7 @@ example5_flux_noisotope:
                 flux:
                     class: ReactionFluxTarget
                     parameters:
-                        fluxprefix: flux_
+                        target_prefix: flux_
                         # configuration error: fluxlist not set to IsotopeLinear
                         # (defaults to ScalarData)
                         # fluxlist: ["B::EIsotope"]
