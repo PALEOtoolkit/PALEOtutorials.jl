@@ -1,0 +1,1213 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Reservoirs and fluxes · PALEOtutorials Documentation</title><script data-outdated-warner src="../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.044/juliamono.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.11/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../assets/documenter.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../">PALEOtutorials Documentation</a></span></div><form class="docs-search" action="../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../">PALEOtutorials.jl documentation</a></li><li><span class="tocitem">Examples and Tutorials</span><ul><li><a class="tocitem" href="../ExampleInstallConfig/">Installation and initial configuration</a></li><li class="is-active"><a class="tocitem" href>Reservoirs and fluxes</a><ul class="internal"><li><a class="tocitem" href="#Example-1-A-minimal-self-contained-PALEO-reaction"><span>Example 1 A minimal self-contained PALEO reaction</span></a></li><li><a class="tocitem" href="#Example-2-Using-a-PALEO-Reservoir"><span>Example 2 Using a PALEO Reservoir</span></a></li><li><a class="tocitem" href="#Example-3-Transfer-between-two-Reservoirs"><span>Example 3 Transfer between two Reservoirs</span></a></li><li><a class="tocitem" href="#Example-4-Transfer-between-Domains"><span>Example 4 Transfer between Domains</span></a></li><li><a class="tocitem" href="#Example-5-Isotopes-and-Rayleigh-fractionation"><span>Example 5 Isotopes and Rayleigh fractionation</span></a></li></ul></li><li><a class="tocitem" href="../ExampleCPU/">CPU (Carbon, Phosphorus, Uranium) model</a></li><li><a class="tocitem" href="../ExampleErrors/">Configuration Errors</a></li></ul></li><li><span class="tocitem">HOWTOS</span><ul><li><a class="tocitem" href="../HOWTOJuliaUsage/">Julia usage</a></li><li><a class="tocitem" href="../HOWTOadditionalconfig/">Optional additional configuration</a></li><li><a class="tocitem" href="../HOWTOminimalGit/">Minimal git workflow for scientific collaboration and reproducibility</a></li><li><a class="tocitem" href="../HOWTOPython/">Configuring for Julia - python interoperability</a></li></ul></li><li><a class="tocitem" href="../References/">References</a></li><li><a class="tocitem" href="../indexpage/">Index</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Examples and Tutorials</a></li><li class="is-active"><a href>Reservoirs and fluxes</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Reservoirs and fluxes</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/PALEOtoolkit/PALEOtutorials.jl/blob/main/docs/src/ExampleReservoirs.md" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="Reservoirs-and-fluxes"><a class="docs-heading-anchor" href="#Reservoirs-and-fluxes">Reservoirs and fluxes</a><a id="Reservoirs-and-fluxes-1"></a><a class="docs-heading-anchor-permalink" href="#Reservoirs-and-fluxes" title="Permalink"></a></h1><p>These examples illustrate how to code a PALEO Reaction and configure a model, working through a minimal example of first order decay or transformation of a scalar biogeochemical reservoir <span>$A$</span> into a second reservoir <span>$B$</span> via a flux <span>$F$</span>, with equations:</p><p class="math-container">\[F = \kappa A\]</p><p class="math-container">\[\frac{dA}{dt} = - F \\\]</p><p class="math-container">\[\frac{dB}{dt} =   F \\\]</p><h2 id="Example-1-A-minimal-self-contained-PALEO-reaction"><a class="docs-heading-anchor" href="#Example-1-A-minimal-self-contained-PALEO-reaction">Example 1 A minimal self-contained PALEO reaction</a><a id="Example-1-A-minimal-self-contained-PALEO-reaction-1"></a><a class="docs-heading-anchor-permalink" href="#Example-1-A-minimal-self-contained-PALEO-reaction" title="Permalink"></a></h2><p>This is verbose as we have to (re)implement Variable setup and initialisation as well as the biogeochemical reaction of interest, but illustrates the structure of a PALEO model.</p><p>The code to implement a self-contained PALEO reaction is in file <code>examples/reservoirs/reactions_ex1.jl</code>, and needs to provide three methods for Variable setup, initialization at the start of the main loop, as well as the actual main loop do method. Variables are labelled as state Variables and derivatives by setting the <code>:vfunction</code> attribute to <code>VF_StateExplicit</code> and <code>VF_Deriv</code>.</p><pre><code class="language-julia hljs">module Example1
+
+import PALEOboxes as PB
+
+&quot;&quot;&quot;
+    ReactionExample1
+
+Minimal but verbose example with a single state variable, first order decay.
+
+This uses only low-level operations in order to provide a standalone example
+that demonstrates all the steps needed for a functioning PALEO model.
+
+See Example 2 for how to implement this functionality with much less boilerplate code.
+&quot;&quot;&quot;
+Base.@kwdef mutable struct ReactionExample1{P} &lt;: PB.AbstractReaction
+    base::PB.ReactionBase
+
+    pars::P = PB.ParametersTuple(
+        PB.ParDouble(&quot;kappa&quot;,   1.0, units=&quot;yr-1&quot;, description=&quot;first order decay constant&quot;),
+    )
+
+end
+
+function PB.register_methods!(rj::ReactionExample1)
+    # Variables are labelled as state Variables and derivatives by setting the 
+    # :vfunction attribute to VF_StateExplicit and VF_Deriv.
+    # also need to set :field_data
+    A = PB.VarDepScalar(&quot;A&quot;,            &quot;mol&quot;,      &quot;reservoir for species A&quot;,
+                    attributes=(:vfunction=&gt;PB.VF_StateExplicit, :field_data=&gt;PB.ScalarData))
+    A_sms = PB.VarContribScalar(&quot;A_sms&quot;,    &quot;mol yr-1&quot;, &quot;reservoir A source - sink&quot;,
+                    attributes=(:vfunction=&gt;PB.VF_Deriv, :field_data=&gt;PB.ScalarData))
+    # Provide a Property decay_flux as diagnostic output
+    decay_flux = PB.VarPropScalar(&quot;decay_flux&quot;,  &quot;mol yr-1&quot;, &quot;decay flux from reservoir A&quot;)
+
+    PB.add_method_setup!(rj, setup_example1, (PB.VarList_namedtuple([A]),) )
+
+    PB.add_method_initialize!(rj, initialize_example1, (PB.VarList_namedtuple([A_sms]),) )
+
+    PB.add_method_do!(rj, do_example1,  (PB.VarList_namedtuple([A, A_sms, decay_flux]), ) )
+
+    return nothing
+end
+
+# setup method, called at model startup
+# NB: this is called twice, with attribute_name indicating the value that should be set:
+#   :norm_value - Variable normalisation, usually read from the :norm_value Variable attribute
+#   :initial_value - Variable initial value, usually read from the :initial_value attribute
+function setup_example1(m::PB.ReactionMethod, (varsdata, ), cellrange::PB.AbstractCellRange, attribute_name)
+
+    var_A = PB.get_variable(m, &quot;A&quot;)  # get the Variable as supplied to add_method_setup! 
+    value = PB.get_attribute(var_A, attribute_name) # read attribute 
+    @info &quot;setup_example1: setting A[] to $value read from from attribute $attribute_name&quot;
+    varsdata.A[] = value
+
+    return nothing
+end
+
+# initialize method, called at start of each main loop timestep
+function initialize_example1(m::PB.ReactionMethod, (varsdata, ), cellrange::PB.AbstractCellRange, _)
+
+    varsdata.A_sms[] = 0.0
+
+    return nothing
+end
+
+# do method, called each main loop timestep
+function do_example1(m::PB.ReactionMethod, (varsdata, ), cellrange::PB.AbstractCellRange, deltat)
+    rj = m.reaction
+
+    # mol yr-1                   yr-1           mol
+    varsdata.decay_flux[] = rj.pars.kappa.v * varsdata.A[]
+
+    varsdata.A_sms[] -= varsdata.decay_flux[]
+
+    return nothing
+end
+
+
+end # module</code></pre><p>The model configuration (file <code>examples/reservoirs/config_ex1.yaml</code>) contains just a single Reaction:</p><pre><code class="language-julia hljs">############################################
+# Example 1 
+# First order decay of a scalar variable
+###########################################
+
+example1:
+    domains:
+        global:
+            # scalar domain
+            
+            reactions:
+                Adecay:
+                    class: ReactionExample1
+                    parameters:
+                        kappa:            0.5
+                    variable_attributes:
+                        A:initial_value:  10.0
+                        A:norm_value:     10.0
+
+</code></pre><p>The script to run the model (file <code>examples/reservoirs/run_ex1.yaml</code>) contains:</p><pre><code class="language-julia hljs">import PALEOboxes as PB
+import PALEOmodel
+using Plots
+
+include(joinpath(@__DIR__, &quot;reactions_ex1.jl&quot;))
+
+#####################################################
+# Create model
+#######################################################
+
+model = PB.create_model_from_config(joinpath(@__DIR__, &quot;config_ex1.yaml&quot;), &quot;example1&quot;)
+
+run = PALEOmodel.Run(model=model, output = PALEOmodel.OutputWriters.OutputMemory())
+
+#########################################################
+# Initialize
+##########################################################
+
+initial_state, modeldata = PALEOmodel.initialize!(run)
+
+#####################################################################
+# Optional: call ODE function to check derivative
+#######################################################################
+initial_deriv = similar(initial_state)
+PALEOmodel.ODE.ModelODE(modeldata)(initial_deriv, initial_state , nothing, 0.0)
+println(&quot;initial_state: &quot;, initial_state)
+println(&quot;initial_deriv: &quot;, initial_deriv)
+
+#################################################################
+# Integrate vs time
+##################################################################
+println(&quot;integrate, ODE&quot;)
+# first run is slow as it includes JIT time
+@time PALEOmodel.ODE.integrate(
+    run, initial_state, modeldata, (0.0, 10.0), 
+    solvekwargs=(
+        reltol=1e-5,
+        # saveat=0.1, # save output every 0.1 yr see https://diffeq.sciml.ai/dev/basics/common_solver_opts/
+    )
+);
+   
+########################################
+# Plot output
+########################################
+
+display(plot(run.output, &quot;global.A&quot;))
+display(plot(run.output, &quot;global.decay_flux&quot;))</code></pre><p>And produces output:</p><pre class="documenter-example-output"><code class="nohighlight hljs ansi">[ Info: ================================================================================
+[ Info: create_model_from_config file(s) [&quot;/home/runner/work/PALEOtutorials.jl/PALEOtutorials.jl/examples/reservoirs/config_ex1.yaml&quot;] configmodel example1
+[ Info: ================================================================================
+[ Info: generated Reaction catalog with 27 Reactions
+[ Info: creating domain &#39;global&#39; ID=1
+[ Info:   creating reaction global.reactions.Adecay classname ReactionExample1
+[ Info:     set parameters: [config.yaml]  kappa               =0.5
+[ Info: link_variables first pass
+[ Info: link_variables initialize dynamic variables
+[ Info:     set attribute: A                    :initial_value        = 10.0
+[ Info:     set attribute: A                    :norm_value           = 10.0
+[ Info: link_variables second pass:
+[ Info: link_variables unlinked variables:
+[ Info: ================================================================================
+[ Info: allocate_variables!
+[ Info: ================================================================================
+[ Info: Domain global               data dimensions PALEOboxes.NamedDimension[] allocating 3    variables (hostdep=nothing)
+[ Info: create_solver_view:
+[ Info:   Domain global operatorID 0
+[ Info:     Any[(PALEOboxes.VF_StateExplicit, 1), (PALEOboxes.VF_Total, 0), (PALEOboxes.VF_Constraint, 0), (PALEOboxes.VF_State, 0), (PALEOboxes.VF_Undefined, 0)]
+[ Info:   n_state_vars 1  (stateexplicit 1 + state 0)
+[ Info:   n_equations 1  (stateexplicit 1 + total 0 + constraint 0)
+[ Info:   including all host-dependent non-state Variables
+[ Info:   host-dependent non-state Variables (:vfunction VF_Undefined): Any[]
+[ Info: ================================================================================
+[ Info: initialize_reactiondata!
+[ Info: ================================================================================
+[ Info: ================================================================================
+[ Info: dispatch_setup :norm_value
+[ Info: ================================================================================
+[ Info:     global.Adecay.setup_example1
+[ Info: setup_example1: setting A[] to 10.0 read from from attribute norm_value
+[ Info: ================================================================================
+[ Info: dispatch_setup :initial_value
+[ Info: ================================================================================
+[ Info:     global.Adecay.setup_example1
+[ Info: setup_example1: setting A[] to 10.0 read from from attribute initial_value
+initial_state: [10.0]
+initial_deriv: [-5.0]
+integrate, ODE
+[ Info: ODEfunction: using Jacobian NoJacobian
+[ Info: jac_config_ode: jac_ad=NoJacobian
+[ Info: integrate:  ODEProblem using algorithm: Sundials.CVODE_BDF{:Newton, :Dense, Nothing, Nothing}(0, 0, 0, false, 10, 5, 7, 3, 10, nothing, nothing, 0) Jacobian NoJacobian
+[ Info: ================================================================================
+[ Info: solve:  using BLAS with 1 threads
+[ Info: ================================================================================
+  1.023867 seconds (1.80 M allocations: 117.536 MiB, 7.24% gc time, 34.61% compilation time)
+[ Info: ================================================================================
+[ Info: print_sol_stats:
+[ Info:   retcode=Success
+[ Info:   nsteps 75
+[ Info:   alg=Sundials.CVODE_BDF{:Newton, :Dense, Nothing, Nothing}(0, 0, 0, false, 10, 5, 7, 3, 10, nothing, nothing, 0)
+┌ Info:   DiffEqBase.DEStats
+│ Number of function 1 evaluations:                  92
+│ Number of function 2 evaluations:                  0
+│ Number of W matrix evaluations:                    11
+│ Number of linear solves:                           0
+│ Number of Jacobians created:                       2
+│ Number of nonlinear solver iterations:             89
+│ Number of nonlinear solver convergence failures:   0
+│ Number of rootfind condition calls:                0
+│ Number of accepted steps:                          72
+└ Number of rejected steps:                          2
+[ Info:   length(sol.t) 75
+[ Info:   size(sol) (1, 75)
+[ Info: ================================================================================
+[ Info: ODE.calc_output_sol: 75 records
+[ Info: ODE.calc_output_sol: done
+ 10.380902 seconds (20.17 M allocations: 1.217 GiB, 5.96% gc time, 57.70% compilation time)</code></pre><p><img src="../ex1_plot1.svg" alt/> <img src="../ex1_plot2.svg" alt/></p><h2 id="Example-2-Using-a-PALEO-Reservoir"><a class="docs-heading-anchor" href="#Example-2-Using-a-PALEO-Reservoir">Example 2 Using a PALEO Reservoir</a><a id="Example-2-Using-a-PALEO-Reservoir-1"></a><a class="docs-heading-anchor-permalink" href="#Example-2-Using-a-PALEO-Reservoir" title="Permalink"></a></h2><p>The standard way to configure PALEO models is to use a combination of ReactionReservoirs (from the <a href="https://paleotoolkit.github.io/PALEOboxes.jl/stable/ReactionCatalog/#Reservoirs"><code>Reaction catalog</code></a> provided by the <code>PALEOboxes</code> package) to define model state Variables and provide setup and initialisation, and then link to these Variables from other Reactions.</p><p>In this example, the Reaction code now only needs to implement a &#39;do&#39; method (file <code>examples/reservoirs/reactions_ex2.jl</code>):</p><pre><code class="language-julia hljs">module Example2
+
+import PALEOboxes as PB
+
+&quot;&quot;&quot;
+    ReactionExample2
+
+Minimal example, first order decay of a variable.
+
+Use in conjunction with a ReservoirScalar for quantity A.
+&quot;&quot;&quot;
+Base.@kwdef mutable struct ReactionExample2{P} &lt;: PB.AbstractReaction
+    base::PB.ReactionBase
+
+    pars::P = PB.ParametersTuple(
+        PB.ParDouble(&quot;kappa&quot;,   1.0, units=&quot;yr-1&quot;, description=&quot;first order decay constant&quot;),
+    )
+
+end
+
+function PB.register_methods!(rj::ReactionExample2)
+    vars = [
+        PB.VarDepScalar(&quot;A&quot;,            &quot;mol&quot;,      &quot;reservoir for species A&quot;),
+        PB.VarContribScalar(&quot;A_sms&quot;,    &quot;mol yr-1&quot;, &quot;reservoir A source - sink&quot;),
+        PB.VarPropScalar(&quot;decay_flux&quot;,  &quot;mol yr-1&quot;, &quot;decay flux from reservoir A&quot;),
+    ]
+
+    PB.add_method_do!(rj, do_example2,  (PB.VarList_namedtuple(vars), ) )
+
+    return nothing
+end
+
+# do method, called each main loop timestep
+function do_example2(m::PB.ReactionMethod, (varsdata, ), cellrange::PB.AbstractCellRange, deltat)
+    rj = m.reaction
+
+    # mol yr-1                   yr-1           mol
+    varsdata.decay_flux[] = rj.pars.kappa.v * varsdata.A[]
+
+    varsdata.A_sms[] -= varsdata.decay_flux[]
+
+    return nothing
+end
+
+end # module</code></pre><p>The model configuration (file <code>examples/reservoirs/config_ex2.yaml</code>) contains a <code>ReactionReservoirScalar</code> from the generic <a href="https://paleotoolkit.github.io/PALEOboxes.jl/stable/ReactionCatalog/#Reservoirs"><code>Reaction catalog</code></a> provided by the <code>PALEOboxes</code> package:</p><pre><code class="language-julia hljs">############################################
+# Example 2 
+# First order decay of a scalar variable
+###########################################
+
+example2:
+    domains:
+        global:
+            # scalar domain
+            
+            reactions:
+                reservoir_A:
+                    class: ReactionReservoirScalar
+                   
+                    variable_links:
+                        R*: A*
+                    variable_attributes:
+                        R:initial_value:  10.0
+                        R:norm_value:     10.0
+
+                Adecay:
+                    class: ReactionExample2
+                    parameters:
+                        kappa:            0.5
+                    
+
+</code></pre><p>The script to run the model (file <code>examples/reservoirs/run_ex2.jl</code>) contains:</p><pre><code class="language-julia hljs">import PALEOboxes as PB
+import PALEOmodel
+using Plots
+
+include(joinpath(@__DIR__, &quot;reactions_ex2.jl&quot;))
+
+#####################################################
+# Create model
+#######################################################
+
+model = PB.create_model_from_config(joinpath(@__DIR__, &quot;config_ex2.yaml&quot;), &quot;example2&quot;)
+
+run = PALEOmodel.Run(model=model, output = PALEOmodel.OutputWriters.OutputMemory())
+
+#########################################################
+# Initialize
+##########################################################
+
+initial_state, modeldata = PALEOmodel.initialize!(run)
+
+#####################################################################
+# Optional: call ODE function to check derivative
+#######################################################################
+initial_deriv = similar(initial_state)
+PALEOmodel.ODE.ModelODE(modeldata)(initial_deriv, initial_state , nothing, 0.0)
+println(&quot;initial_state: &quot;, initial_state)
+println(&quot;initial_deriv: &quot;, initial_deriv)
+
+#################################################################
+# Integrate vs time
+##################################################################
+println(&quot;integrate, ODE&quot;)
+# first run is slow as it includes JIT time
+@time PALEOmodel.ODE.integrate(
+    run, initial_state, modeldata, (0.0, 10.0), 
+    solvekwargs=(
+        reltol=1e-5,
+        # saveat=0.1, # save output every 0.1 yr see https://diffeq.sciml.ai/dev/basics/common_solver_opts/
+    )
+);
+   
+########################################
+# Plot output
+########################################
+
+display(plot(run.output, &quot;global.A&quot;))
+display(plot(run.output, &quot;global.decay_flux&quot;))
+</code></pre><p>and produces output:</p><pre class="documenter-example-output"><code class="nohighlight hljs ansi">[ Info: ================================================================================
+[ Info: create_model_from_config file(s) [&quot;/home/runner/work/PALEOtutorials.jl/PALEOtutorials.jl/examples/reservoirs/config_ex2.yaml&quot;] configmodel example2
+[ Info: ================================================================================
+[ Info: generated Reaction catalog with 27 Reactions
+[ Info: creating domain &#39;global&#39; ID=1
+[ Info:   creating reaction global.reactions.Adecay classname ReactionExample2
+[ Info:     set parameters: [config.yaml]  kappa               =0.5
+[ Info:   creating reaction global.reactions.reservoir_A classname ReactionReservoirScalar
+[ Info:     set parameters: [Default]      field_data          =PALEOboxes.ScalarData
+[ Info:     set parameters: [Default]      const               =false
+[ Info: link_variables first pass
+[ Info: link_variables initialize dynamic variables
+[ Info: _configure_variables: ReactionReservoirScalar global.reservoir_A
+[ Info:     set variable_links: R                    -&gt; A
+[ Info:     set variable_links: R_sms                -&gt; A_sms
+[ Info:     set variable_links: R_norm               -&gt; A_norm
+[ Info:     set attribute: R                    :norm_value           = 10.0
+[ Info:     set attribute: R                    :initial_value        = 10.0
+[ Info: link_variables second pass:
+[ Info: link_variables unlinked variables:
+[ Info: ================================================================================
+[ Info: allocate_variables!
+[ Info: ================================================================================
+[ Info: Domain global               data dimensions PALEOboxes.NamedDimension[] allocating 4    variables (hostdep=nothing)
+[ Info: create_solver_view:
+[ Info:   Domain global operatorID 0
+[ Info:     Any[(PALEOboxes.VF_StateExplicit, 1), (PALEOboxes.VF_Total, 0), (PALEOboxes.VF_Constraint, 0), (PALEOboxes.VF_State, 0), (PALEOboxes.VF_Undefined, 0)]
+[ Info:   n_state_vars 1  (stateexplicit 1 + state 0)
+[ Info:   n_equations 1  (stateexplicit 1 + total 0 + constraint 0)
+[ Info:   including all host-dependent non-state Variables
+[ Info:   host-dependent non-state Variables (:vfunction VF_Undefined): Any[]
+[ Info: ================================================================================
+[ Info: initialize_reactiondata!
+[ Info: ================================================================================
+[ Info: ================================================================================
+[ Info: dispatch_setup :norm_value
+[ Info: ================================================================================
+[ Info:     global.reservoir_A.setup_initialvalue_vars_default
+[ Info: init_values!     :norm_value           global.A                       = 10.0
+[ Info: ================================================================================
+[ Info: dispatch_setup :initial_value
+[ Info: ================================================================================
+[ Info:     global.reservoir_A.setup_initialvalue_vars_default
+[ Info: init_values!     :initial_value        global.A                       = 10.0
+initial_state: [10.0]
+initial_deriv: [-5.0]
+integrate, ODE
+[ Info: ODEfunction: using Jacobian NoJacobian
+[ Info: jac_config_ode: jac_ad=NoJacobian
+[ Info: integrate:  ODEProblem using algorithm: Sundials.CVODE_BDF{:Newton, :Dense, Nothing, Nothing}(0, 0, 0, false, 10, 5, 7, 3, 10, nothing, nothing, 0) Jacobian NoJacobian
+[ Info: ================================================================================
+[ Info: solve:  using BLAS with 1 threads
+[ Info: ================================================================================
+  0.394019 seconds (561.34 k allocations: 34.577 MiB, 20.19% gc time, 99.64% compilation time)
+[ Info: ================================================================================
+[ Info: print_sol_stats:
+[ Info:   retcode=Success
+[ Info:   nsteps 75
+[ Info:   alg=Sundials.CVODE_BDF{:Newton, :Dense, Nothing, Nothing}(0, 0, 0, false, 10, 5, 7, 3, 10, nothing, nothing, 0)
+┌ Info:   DiffEqBase.DEStats
+│ Number of function 1 evaluations:                  92
+│ Number of function 2 evaluations:                  0
+│ Number of W matrix evaluations:                    11
+│ Number of linear solves:                           0
+│ Number of Jacobians created:                       2
+│ Number of nonlinear solver iterations:             89
+│ Number of nonlinear solver convergence failures:   0
+│ Number of rootfind condition calls:                0
+│ Number of accepted steps:                          72
+└ Number of rejected steps:                          2
+[ Info:   length(sol.t) 75
+[ Info:   size(sol) (1, 75)
+[ Info: ================================================================================
+[ Info: ODE.calc_output_sol: 75 records
+[ Info: ODE.calc_output_sol: done
+  1.205154 seconds (2.26 M allocations: 138.054 MiB, 6.60% gc time, 82.01% compilation time)</code></pre><p><img src="../ex2_plot1.svg" alt/> <img src="../ex2_plot2.svg" alt/></p><h2 id="Example-3-Transfer-between-two-Reservoirs"><a class="docs-heading-anchor" href="#Example-3-Transfer-between-two-Reservoirs">Example 3 Transfer between two Reservoirs</a><a id="Example-3-Transfer-between-two-Reservoirs-1"></a><a class="docs-heading-anchor-permalink" href="#Example-3-Transfer-between-two-Reservoirs" title="Permalink"></a></h2><p>Generalizing the Reaction to transfer between two reservoirs.</p><p>The Reaction code (file <code>examples/reservoirs/reactions_ex3.jl</code>) now produces an <code>output_flux</code>, and has been generalized to operate on a generic <code>input_particle</code> Reservoir:</p><pre><code class="language-julia hljs">module Example3
+
+import PALEOboxes as PB
+
+&quot;&quot;&quot;
+    ReactionExample3
+
+Minimal example, first order decay of a variable and transfer of decay flux.
+
+Use config file `variable_links:` to rename `input_particle*` and `output_flux`.
+&quot;&quot;&quot;
+Base.@kwdef mutable struct ReactionExample3{P} &lt;: PB.AbstractReaction
+    base::PB.ReactionBase
+
+    pars::P = PB.ParametersTuple(
+        PB.ParDouble(&quot;kappa&quot;,   1.0, units=&quot;yr-1&quot;, description=&quot;first order decay constant&quot;),
+    )
+
+end
+
+function PB.register_methods!(rj::ReactionExample3)
+    vars = [
+        PB.VarDepScalar(&quot;input_particle&quot;,           &quot;mol&quot;,      &quot;reservoir for input&quot;),
+        PB.VarContribScalar(&quot;input_particle_sms&quot;,   &quot;mol yr-1&quot;, &quot;reservoir input source - sink&quot;),
+        PB.VarPropScalar(&quot;decay_flux&quot;,              &quot;mol yr-1&quot;, &quot;decay flux&quot;),
+        PB.VarContribScalar(&quot;output_flux&quot;,          &quot;mol yr-1&quot;, &quot;output flux&quot;),
+    ]
+
+    PB.add_method_do!(rj, do_example3,  (PB.VarList_namedtuple(vars), ) )
+
+    return nothing
+end
+
+# do method, called each main loop timestep
+function do_example3(m::PB.ReactionMethod, (varsdata, ), cellrange::PB.AbstractCellRange, deltat)
+    rj = m.reaction
+
+    # mol yr-1                   yr-1           mol
+    varsdata.decay_flux[] = rj.pars.kappa.v * varsdata.input_particle[]
+
+    varsdata.input_particle_sms[] -= varsdata.decay_flux[]
+
+    varsdata.output_flux[] += varsdata.decay_flux[]
+
+    return nothing
+end
+
+
+end # module</code></pre><p>The model configuration (file <code>examples/reservoirs/config_ex3.yaml</code>) contains two Reservoirs <code>A</code> and <code>B</code>, and additional configuration for <code>ReactionExample3</code> to rename the generic <code>input_particle</code> to link to Reservoir <code>A</code> and <code>output_flux</code> to link to Reservoir <code>B</code>:</p><pre><code class="language-julia hljs">############################################
+# Example 3 
+# First order decay of a scalar variable
+# with transfer of flux to a second variable
+###########################################
+
+example3:
+    domains:
+        global:
+            # scalar domain
+            
+            reactions:
+                reservoir_A:
+                    class: ReactionReservoirScalar
+                   
+                    variable_links:
+                        R*: A*
+                    variable_attributes:
+                        R:initial_value:  10.0
+                        R:norm_value:     10.0
+
+                reservoir_B:
+                    class: ReactionReservoirScalar
+                   
+                    variable_links:
+                        R*: B*
+                    variable_attributes:
+                        R:initial_value:  0.0
+                        R:norm_value:     10.0
+
+                Adecay:
+                    class: ReactionExample3
+                    parameters:
+                        kappa:            0.5
+                    variable_links:
+                        input_particle*:    A*
+                        output_flux:        B_sms
+                    
+
+</code></pre><p>The script to run the model (file <code>examples/reservoirs/run_ex3.jl</code>) contains:</p><pre><code class="language-julia hljs">import PALEOboxes as PB
+import PALEOmodel
+using Plots
+
+include(joinpath(@__DIR__, &quot;reactions_ex3.jl&quot;))
+
+#####################################################
+# Create model
+#######################################################
+
+model = PB.create_model_from_config(joinpath(@__DIR__, &quot;config_ex3.yaml&quot;), &quot;example3&quot;)
+
+run = PALEOmodel.Run(model=model, output = PALEOmodel.OutputWriters.OutputMemory())
+
+#########################################################
+# Initialize
+##########################################################
+
+initial_state, modeldata = PALEOmodel.initialize!(run)
+
+#####################################################################
+# Optional: call ODE function to check derivative
+#######################################################################
+initial_deriv = similar(initial_state)
+PALEOmodel.ODE.ModelODE(modeldata)(initial_deriv, initial_state , nothing, 0.0)
+println(&quot;initial_state: &quot;, initial_state)
+println(&quot;initial_deriv: &quot;, initial_deriv)
+
+#################################################################
+# Integrate vs time
+##################################################################
+println(&quot;integrate, ODE&quot;)
+# first run is slow as it includes JIT time
+@time PALEOmodel.ODE.integrate(
+    run, initial_state, modeldata, (0.0, 10.0), 
+    solvekwargs=(
+        reltol=1e-5,
+        # saveat=0.1, # save output every 0.1 yr see https://diffeq.sciml.ai/dev/basics/common_solver_opts/
+    )
+);
+   
+########################################
+# Plot output
+########################################
+
+display(plot(run.output, [&quot;global.A&quot;, &quot;global.B&quot;]; ylabel=&quot;reservoir (mol)&quot;))
+display(plot(run.output, &quot;global.decay_flux&quot;))</code></pre><p>and produces output showing the transfer between two Reservoirs:</p><pre class="documenter-example-output"><code class="nohighlight hljs ansi">[ Info: ================================================================================
+[ Info: create_model_from_config file(s) [&quot;/home/runner/work/PALEOtutorials.jl/PALEOtutorials.jl/examples/reservoirs/config_ex3.yaml&quot;] configmodel example3
+[ Info: ================================================================================
+[ Info: generated Reaction catalog with 27 Reactions
+[ Info: creating domain &#39;global&#39; ID=1
+[ Info:   creating reaction global.reactions.Adecay classname ReactionExample3
+[ Info:     set parameters: [config.yaml]  kappa               =0.5
+[ Info:   creating reaction global.reactions.reservoir_B classname ReactionReservoirScalar
+[ Info:     set parameters: [Default]      field_data          =PALEOboxes.ScalarData
+[ Info:     set parameters: [Default]      const               =false
+[ Info:   creating reaction global.reactions.reservoir_A classname ReactionReservoirScalar
+[ Info:     set parameters: [Default]      field_data          =PALEOboxes.ScalarData
+[ Info:     set parameters: [Default]      const               =false
+[ Info: link_variables first pass
+[ Info: link_variables initialize dynamic variables
+[ Info: _configure_variables: ReactionExample3 global.Adecay
+[ Info:     set variable_links: input_particle       -&gt; A
+[ Info:     set variable_links: input_particle_sms   -&gt; A_sms
+[ Info:     set variable_links: output_flux          -&gt; B_sms
+[ Info: _configure_variables: ReactionReservoirScalar global.reservoir_B
+[ Info:     set variable_links: R                    -&gt; B
+[ Info:     set variable_links: R_sms                -&gt; B_sms
+[ Info:     set variable_links: R_norm               -&gt; B_norm
+[ Info:     set attribute: R                    :norm_value           = 10.0
+[ Info:     set attribute: R                    :initial_value        = 0.0
+[ Info: _configure_variables: ReactionReservoirScalar global.reservoir_A
+[ Info:     set variable_links: R                    -&gt; A
+[ Info:     set variable_links: R_sms                -&gt; A_sms
+[ Info:     set variable_links: R_norm               -&gt; A_norm
+[ Info:     set attribute: R                    :norm_value           = 10.0
+[ Info:     set attribute: R                    :initial_value        = 10.0
+[ Info: link_variables second pass:
+[ Info: link_variables unlinked variables:
+[ Info: ================================================================================
+[ Info: allocate_variables!
+[ Info: ================================================================================
+[ Info: Domain global               data dimensions PALEOboxes.NamedDimension[] allocating 7    variables (hostdep=nothing)
+[ Info: create_solver_view:
+[ Info:   Domain global operatorID 0
+[ Info:     Any[(PALEOboxes.VF_StateExplicit, 2), (PALEOboxes.VF_Total, 0), (PALEOboxes.VF_Constraint, 0), (PALEOboxes.VF_State, 0), (PALEOboxes.VF_Undefined, 0)]
+[ Info:   n_state_vars 2  (stateexplicit 2 + state 0)
+[ Info:   n_equations 2  (stateexplicit 2 + total 0 + constraint 0)
+[ Info:   including all host-dependent non-state Variables
+[ Info:   host-dependent non-state Variables (:vfunction VF_Undefined): Any[]
+[ Info: ================================================================================
+[ Info: initialize_reactiondata!
+[ Info: ================================================================================
+[ Info: ================================================================================
+[ Info: dispatch_setup :norm_value
+[ Info: ================================================================================
+[ Info:     global.reservoir_B.setup_initialvalue_vars_default
+[ Info: init_values!     :norm_value           global.B                       = 10.0
+[ Info:     global.reservoir_A.setup_initialvalue_vars_default
+[ Info: init_values!     :norm_value           global.A                       = 10.0
+[ Info: ================================================================================
+[ Info: dispatch_setup :initial_value
+[ Info: ================================================================================
+[ Info:     global.reservoir_B.setup_initialvalue_vars_default
+[ Info: init_values!     :initial_value        global.B                       = 0.0
+[ Info:     global.reservoir_A.setup_initialvalue_vars_default
+[ Info: init_values!     :initial_value        global.A                       = 10.0
+initial_state: [0.0, 10.0]
+initial_deriv: [5.0, -5.0]
+integrate, ODE
+[ Info: ODEfunction: using Jacobian NoJacobian
+[ Info: jac_config_ode: jac_ad=NoJacobian
+[ Info: integrate:  ODEProblem using algorithm: Sundials.CVODE_BDF{:Newton, :Dense, Nothing, Nothing}(0, 0, 0, false, 10, 5, 7, 3, 10, nothing, nothing, 0) Jacobian NoJacobian
+[ Info: ================================================================================
+[ Info: solve:  using BLAS with 1 threads
+[ Info: ================================================================================
+  0.350316 seconds (561.06 k allocations: 34.563 MiB, 14.10% gc time, 99.69% compilation time)
+[ Info: ================================================================================
+[ Info: print_sol_stats:
+[ Info:   retcode=Success
+[ Info:   nsteps 55
+[ Info:   alg=Sundials.CVODE_BDF{:Newton, :Dense, Nothing, Nothing}(0, 0, 0, false, 10, 5, 7, 3, 10, nothing, nothing, 0)
+┌ Info:   DiffEqBase.DEStats
+│ Number of function 1 evaluations:                  64
+│ Number of function 2 evaluations:                  0
+│ Number of W matrix evaluations:                    16
+│ Number of linear solves:                           0
+│ Number of Jacobians created:                       2
+│ Number of nonlinear solver iterations:             61
+│ Number of nonlinear solver convergence failures:   0
+│ Number of rootfind condition calls:                0
+│ Number of accepted steps:                          53
+└ Number of rejected steps:                          1
+[ Info:   length(sol.t) 55
+[ Info:   size(sol) (2, 55)
+[ Info: ================================================================================
+[ Info: ODE.calc_output_sol: 55 records
+[ Info: ODE.calc_output_sol: done
+  1.181686 seconds (2.28 M allocations: 139.449 MiB, 4.18% gc time, 80.69% compilation time)</code></pre><p><img src="../ex3_plot1.svg" alt/> <img src="../ex3_plot2.svg" alt/></p><h2 id="Example-4-Transfer-between-Domains"><a class="docs-heading-anchor" href="#Example-4-Transfer-between-Domains">Example 4 Transfer between Domains</a><a id="Example-4-Transfer-between-Domains-1"></a><a class="docs-heading-anchor-permalink" href="#Example-4-Transfer-between-Domains" title="Permalink"></a></h2><p>The <code>ReactionExample3</code> from the previous example can be reused in a different model configuration that includes flux transfer between Reservoirs in two Domains. </p><p>The model configuration (file <code>examples/reservoirs/config_ex4.yaml</code>) contains two Domains <code>Box1</code> and <code>Box2</code>, and a flux coupler Domain <code>fluxBoxes</code>.  The <code>ReactionSum</code> in the <code>global</code> Domain tracks conservation:</p><pre><code class="language-julia hljs">############################################
+# Example 4
+# First order decay of a scalar variable
+# with transfer of flux to a second variable
+# Transfer between two Domains
+###########################################
+
+example4:
+    domains:
+        fluxBoxes:
+            reactions:
+                flux:
+                    class: ReactionFluxTarget
+                    parameters:
+                        target_prefix: flux_
+                        fluxlist: [&quot;B&quot;]
+
+        global:
+            reactions:
+                sum_E:
+                    class: ReactionSum
+                    parameters:
+                        vars_to_add: [&quot;Box1.A&quot;, &quot;Box2.B&quot;]
+                    variable_links:
+                        sum: E_total
+
+        Box1:
+            # scalar domain
+            
+            reactions:
+                reservoir_A:
+                    class: ReactionReservoirScalar
+                   
+                    variable_links:
+                        R*: A*
+                    variable_attributes:
+                        R:initial_value:  10.0
+                        R:norm_value:     10.0            
+
+                Adecay:
+                    class: ReactionExample3
+                    parameters:
+                        kappa:            0.5
+                    variable_links:
+                        input_particle*:    A*
+                        output_flux:        fluxBoxes.flux_B
+                    
+
+        Box2:
+            # scalar domain
+        
+            reactions:
+
+                reservoir_B:
+                    class: ReactionReservoirScalar
+                    
+                    variable_links:
+                        R*: B*
+                    variable_attributes:
+                        R:initial_value:  0.0
+                        R:norm_value:     10.0
+
+                transfer_fluxBoxes:
+                    class: ReactionFluxTransfer
+                    parameters:
+                        input_fluxes: fluxBoxes.flux_$fluxname$
+                        output_fluxes: $fluxname$_sms</code></pre><p>The script to run the model (file <code>examples/reservoirs/run_ex4.jl</code>) contains:</p><pre><code class="language-julia hljs">import PALEOboxes as PB
+import PALEOmodel
+using Plots
+
+include(joinpath(@__DIR__, &quot;reactions_ex3.jl&quot;))
+
+#####################################################
+# Create model
+#######################################################
+
+model = PB.create_model_from_config(joinpath(@__DIR__, &quot;config_ex4.yaml&quot;), &quot;example4&quot;)
+
+run = PALEOmodel.Run(model=model, output = PALEOmodel.OutputWriters.OutputMemory())
+
+#########################################################
+# Initialize
+##########################################################
+
+initial_state, modeldata = PALEOmodel.initialize!(run)
+
+#####################################################################
+# Optional: call ODE function to check derivative
+#######################################################################
+initial_deriv = similar(initial_state)
+PALEOmodel.ODE.ModelODE(modeldata)(initial_deriv, initial_state , nothing, 0.0)
+println(&quot;initial_state: &quot;, initial_state)
+println(&quot;initial_deriv: &quot;, initial_deriv)
+
+#################################################################
+# Integrate vs time
+##################################################################
+println(&quot;integrate, ODE&quot;)
+# first run is slow as it includes JIT time
+@time PALEOmodel.ODE.integrate(
+    run, initial_state, modeldata, (0.0, 10.0), 
+    solvekwargs=(
+        reltol=1e-5,
+        # saveat=0.1, # save output every 0.1 yr see https://diffeq.sciml.ai/dev/basics/common_solver_opts/
+    )
+);
+   
+############################
+# Table of output
+###########################
+
+# vscodedisplay(
+#    PB.get_table(run.output, [&quot;Box1.A&quot;, &quot;Box2.B&quot;, &quot;global.E_total&quot;, &quot;Box1.decay_flux&quot;, &quot;fluxBoxes.flux_B&quot;]),
+#    &quot;Example 4&quot;
+# )
+
+########################################
+# Plot output
+########################################
+
+display(plot(run.output, [&quot;Box1.A&quot;, &quot;Box2.B&quot;, &quot;global.E_total&quot;]; ylabel=&quot;reservoir (mol)&quot;))
+display(plot(run.output, [&quot;Box1.decay_flux&quot;, &quot;fluxBoxes.flux_B&quot;]; ylabel=&quot;flux (mol yr-1)&quot;))
+
+</code></pre><p>and produces output showing the transfer between two Reservoirs in different Domains via the fluxBoxes flux coupler:</p><pre class="documenter-example-output"><code class="nohighlight hljs ansi">[ Info: ================================================================================
+[ Info: create_model_from_config file(s) [&quot;/home/runner/work/PALEOtutorials.jl/PALEOtutorials.jl/examples/reservoirs/config_ex4.yaml&quot;] configmodel example4
+[ Info: ================================================================================
+[ Info: generated Reaction catalog with 27 Reactions
+[ Info: creating domain &#39;global&#39; ID=1
+[ Info:   creating reaction global.reactions.sum_E classname ReactionSum
+[ Info:     set parameters: [config.yaml]  vars_to_add         =[&quot;Box1.A&quot;, &quot;Box2.B&quot;]
+[ Info:     set parameters: [Default]      vars_prefix         =
+[ Info:     set parameters: [Default]      component_to_add    =0
+[ Info:     set parameters: [Default]      vectorsum           =false
+[ Info: creating domain &#39;fluxBoxes&#39; ID=2
+[ Info:   creating reaction fluxBoxes.reactions.flux classname ReactionFluxTarget
+[ Info:     set parameters: [config.yaml]  fluxlist            =[&quot;B&quot;]
+[ Info:     set parameters: [config.yaml]  target_prefix       =flux_
+[ Info:     set parameters: [Default]      flux_totals         =false
+[ Info:     set parameters: [Default]      const_stub          =false
+[ Info: creating domain &#39;Box2&#39; ID=3
+[ Info:   creating reaction Box2.reactions.reservoir_B classname ReactionReservoirScalar
+[ Info:     set parameters: [Default]      field_data          =PALEOboxes.ScalarData
+[ Info:     set parameters: [Default]      const               =false
+[ Info:   creating reaction Box2.reactions.transfer_fluxBoxes classname ReactionFluxTransfer
+[ Info:     set parameters: [Default]      fluxlist            =String[]
+[ Info:     set parameters: [config.yaml]  input_fluxes        =fluxBoxes.flux_$fluxname$
+[ Info:     set parameters: [config.yaml]  output_fluxes       =$fluxname$_sms
+[ Info:     set parameters: [Default]      transfer_multiplier =1.0
+[ Info:     set parameters: [Default]      transfer_matrix     =Identity
+[ Info: creating domain &#39;Box1&#39; ID=4
+[ Info:   creating reaction Box1.reactions.Adecay classname ReactionExample3
+[ Info:     set parameters: [config.yaml]  kappa               =0.5
+[ Info:   creating reaction Box1.reactions.reservoir_A classname ReactionReservoirScalar
+[ Info:     set parameters: [Default]      field_data          =PALEOboxes.ScalarData
+[ Info:     set parameters: [Default]      const               =false
+[ Info: reaction global.sum_E add 1.0 * Box1.A
+[ Info: reaction global.sum_E add 1.0 * Box2.B
+[ Info: link_variables first pass
+[ Info: link_variables initialize dynamic variables
+[ Info: Reaction global.sum_E Variable global.E_total adding data=PALEOboxes.ScalarData
+[ Info: _configure_variables: ReactionSum global.sum_E
+[ Info:     set variable_links: sum                  -&gt; E_total
+[ Info: _configure_variables: ReactionReservoirScalar Box2.reservoir_B
+[ Info:     set variable_links: R                    -&gt; B
+[ Info:     set variable_links: R_sms                -&gt; B_sms
+[ Info:     set variable_links: R_norm               -&gt; B_norm
+[ Info:     set attribute: R                    :norm_value           = 10.0
+[ Info:     set attribute: R                    :initial_value        = 0.0
+[ Info: _configure_variables: ReactionExample3 Box1.Adecay
+[ Info:     set variable_links: input_particle       -&gt; A
+[ Info:     set variable_links: input_particle_sms   -&gt; A_sms
+[ Info:     set variable_links: output_flux          -&gt; fluxBoxes.flux_B
+[ Info: _configure_variables: ReactionReservoirScalar Box1.reservoir_A
+[ Info:     set variable_links: R                    -&gt; A
+[ Info:     set variable_links: R_sms                -&gt; A_sms
+[ Info:     set variable_links: R_norm               -&gt; A_norm
+[ Info:     set attribute: R                    :norm_value           = 10.0
+[ Info:     set attribute: R                    :initial_value        = 10.0
+[ Info: link_variables second pass:
+[ Info: link_variables unlinked variables:
+[ Info: ================================================================================
+[ Info: allocate_variables!
+[ Info: ================================================================================
+[ Info: Domain global               data dimensions PALEOboxes.NamedDimension[] allocating 1    variables (hostdep=nothing)
+[ Info: Domain fluxBoxes            data dimensions PALEOboxes.NamedDimension[] allocating 1    variables (hostdep=nothing)
+[ Info: Domain Box2                 data dimensions PALEOboxes.NamedDimension[] allocating 3    variables (hostdep=nothing)
+[ Info: Domain Box1                 data dimensions PALEOboxes.NamedDimension[] allocating 4    variables (hostdep=nothing)
+[ Info: create_solver_view:
+[ Info:   Domain global operatorID 0
+[ Info:     Any[(PALEOboxes.VF_StateExplicit, 0), (PALEOboxes.VF_Total, 0), (PALEOboxes.VF_Constraint, 0), (PALEOboxes.VF_State, 0), (PALEOboxes.VF_Undefined, 0)]
+[ Info:   Domain fluxBoxes operatorID 0
+[ Info:     Any[(PALEOboxes.VF_StateExplicit, 0), (PALEOboxes.VF_Total, 0), (PALEOboxes.VF_Constraint, 0), (PALEOboxes.VF_State, 0), (PALEOboxes.VF_Undefined, 0)]
+[ Info:   Domain Box2 operatorID 0
+[ Info:     Any[(PALEOboxes.VF_StateExplicit, 1), (PALEOboxes.VF_Total, 0), (PALEOboxes.VF_Constraint, 0), (PALEOboxes.VF_State, 0), (PALEOboxes.VF_Undefined, 0)]
+[ Info:   Domain Box1 operatorID 0
+[ Info:     Any[(PALEOboxes.VF_StateExplicit, 1), (PALEOboxes.VF_Total, 0), (PALEOboxes.VF_Constraint, 0), (PALEOboxes.VF_State, 0), (PALEOboxes.VF_Undefined, 0)]
+[ Info:   n_state_vars 2  (stateexplicit 2 + state 0)
+[ Info:   n_equations 2  (stateexplicit 2 + total 0 + constraint 0)
+[ Info:   including all host-dependent non-state Variables
+[ Info:   host-dependent non-state Variables (:vfunction VF_Undefined): Any[]
+[ Info: ================================================================================
+[ Info: initialize_reactiondata!
+[ Info: ================================================================================
+[ Info: prepare_do_transfer: ReactionMethod Box2.transfer_fluxBoxes.do_transfer
+[ Info:   active fluxes:
+[ Info:     B                      fluxBoxes.flux_B                         -&gt; Box2.B_sms
+[ Info:     using Identity transfer matrix * 1.0
+[ Info: ================================================================================
+[ Info: dispatch_setup :norm_value
+[ Info: ================================================================================
+[ Info:     Box2.reservoir_B.setup_initialvalue_vars_default
+[ Info: init_values!     :norm_value           Box2.B                         = 10.0
+[ Info:     Box1.reservoir_A.setup_initialvalue_vars_default
+[ Info: init_values!     :norm_value           Box1.A                         = 10.0
+[ Info: ================================================================================
+[ Info: dispatch_setup :initial_value
+[ Info: ================================================================================
+[ Info:     Box2.reservoir_B.setup_initialvalue_vars_default
+[ Info: init_values!     :initial_value        Box2.B                         = 0.0
+[ Info:     Box1.reservoir_A.setup_initialvalue_vars_default
+[ Info: init_values!     :initial_value        Box1.A                         = 10.0
+initial_state: [0.0, 10.0]
+initial_deriv: [5.0, -5.0]
+integrate, ODE
+[ Info: ODEfunction: using Jacobian NoJacobian
+[ Info: jac_config_ode: jac_ad=NoJacobian
+[ Info: integrate:  ODEProblem using algorithm: Sundials.CVODE_BDF{:Newton, :Dense, Nothing, Nothing}(0, 0, 0, false, 10, 5, 7, 3, 10, nothing, nothing, 0) Jacobian NoJacobian
+[ Info: ================================================================================
+[ Info: solve:  using BLAS with 1 threads
+[ Info: ================================================================================
+  0.296747 seconds (561.07 k allocations: 34.563 MiB, 99.71% compilation time)
+[ Info: ================================================================================
+[ Info: print_sol_stats:
+[ Info:   retcode=Success
+[ Info:   nsteps 55
+[ Info:   alg=Sundials.CVODE_BDF{:Newton, :Dense, Nothing, Nothing}(0, 0, 0, false, 10, 5, 7, 3, 10, nothing, nothing, 0)
+┌ Info:   DiffEqBase.DEStats
+│ Number of function 1 evaluations:                  64
+│ Number of function 2 evaluations:                  0
+│ Number of W matrix evaluations:                    16
+│ Number of linear solves:                           0
+│ Number of Jacobians created:                       2
+│ Number of nonlinear solver iterations:             61
+│ Number of nonlinear solver convergence failures:   0
+│ Number of rootfind condition calls:                0
+│ Number of accepted steps:                          53
+└ Number of rejected steps:                          1
+[ Info:   length(sol.t) 55
+[ Info:   size(sol) (2, 55)
+[ Info: ================================================================================
+[ Info: ODE.calc_output_sol: 55 records
+[ Info: ODE.calc_output_sol: done
+  1.151477 seconds (2.26 M allocations: 138.301 MiB, 4.70% gc time, 81.32% compilation time)</code></pre><p><img src="../ex4_plot1.svg" alt/> <img src="../ex4_plot2.svg" alt/></p><h2 id="Example-5-Isotopes-and-Rayleigh-fractionation"><a class="docs-heading-anchor" href="#Example-5-Isotopes-and-Rayleigh-fractionation">Example 5 Isotopes and Rayleigh fractionation</a><a id="Example-5-Isotopes-and-Rayleigh-fractionation-1"></a><a class="docs-heading-anchor-permalink" href="#Example-5-Isotopes-and-Rayleigh-fractionation" title="Permalink"></a></h2><p>PALEO Variables can represent isotopes by setting the <code>:field_data</code> Attribute. Currently <code>IsotopeLinear</code> is supported, which represents a linearized approximation to a single isotope using two components <code>total</code> and <code>total x delta</code>.  Standard arithmetic (additon/subtraction, multiplication by a scalar) is supported.</p><p>The Reaction code (file <code>examples/reservoirs/reactions_ex5.jl</code>) now requires additional Parameters <code>field_data</code> to set the data type, and <code>Delta</code> to set the fractionation assumed to occur during the decay/transfer. </p><pre><code class="language-julia hljs">module Example5
+
+import PALEOboxes as PB
+
+&quot;&quot;&quot;
+    ReactionExample5
+
+Minimal example, first order decay of a variable and transfer of decay flux with isotope fractionation
+
+Use config file `variable_links:` to rename `input_particle*` and `output_flux`.
+&quot;&quot;&quot;
+Base.@kwdef mutable struct ReactionExample5{P} &lt;: PB.AbstractReaction
+    base::PB.ReactionBase
+
+    pars::P = PB.ParametersTuple(
+        PB.ParDouble(&quot;kappa&quot;,   1.0, units=&quot;yr-1&quot;, 
+            description=&quot;first order decay constant&quot;),
+        PB.ParType(PB.AbstractData, &quot;field_data&quot;, PB.ScalarData,
+            allowed_values=PB.IsotopeTypes,
+            description=&quot;disable / enable isotopes and specify isotope type&quot;),
+        PB.ParDouble(&quot;Delta&quot;,   -10.0, units=&quot;per mil&quot;, 
+            description=&quot;isotope fractionation: delta(output_flux) = delta(input_particle) + Delta&quot;),
+    )
+
+end
+
+function PB.register_methods!(rj::ReactionExample5)
+    IsotopeType = rj.pars.field_data.v
+    vars = [
+        PB.VarDepScalar(&quot;input_particle&quot;,           &quot;mol&quot;,      &quot;reservoir for input&quot;,
+            attributes=(:field_data=&gt;IsotopeType,)),
+        PB.VarContribScalar(&quot;input_particle_sms&quot;,   &quot;mol yr-1&quot;, &quot;reservoir input source - sink&quot;,
+            attributes=(:field_data=&gt;IsotopeType,)),
+        PB.VarDepScalar(&quot;input_particle_delta&quot;,     &quot;per mil&quot;,  &quot;reservoir for input isotope delta&quot;),
+        PB.VarPropScalar(&quot;decay_flux&quot;,              &quot;mol yr-1&quot;, &quot;decay flux&quot;,
+            attributes=(:field_data=&gt;IsotopeType,)),
+        PB.VarContribScalar(&quot;output_flux&quot;,          &quot;mol yr-1&quot;, &quot;output flux&quot;,
+            attributes=(:field_data=&gt;IsotopeType,)),
+    ]
+
+    PB.add_method_do!(rj, do_example5,  (PB.VarList_namedtuple(vars), ), p=(IsotopeType, ) )
+
+    return nothing
+end
+
+# do method, called each main loop timestep
+function do_example5(m::PB.ReactionMethod, (varsdata, ), cellrange::PB.AbstractCellRange, deltat)
+    rj = m.reaction
+    (IsotopeType, ) = m.p
+
+    # mol yr-1                   yr-1           mol
+    varsdata.decay_flux[] = rj.pars.kappa.v * @PB.isotope_totaldelta(IsotopeType, 
+                                                PB.get_total(varsdata.input_particle[]), # total
+                                                varsdata.input_particle_delta[] + rj.pars.Delta.v) # delta
+
+    varsdata.input_particle_sms[] -= varsdata.decay_flux[]
+
+    varsdata.output_flux[] += varsdata.decay_flux[]
+
+    return nothing
+end
+
+
+end # module</code></pre><p>The model configuration (file <code>examples/reservoirs/config_ex5.yaml</code>) contains a global parameter <code>EIsotope</code> used to set the isotope Type for all Reactions affecting the hypothetical element <code>E</code>.</p><pre><code class="language-julia hljs">############################################
+# Example 5
+# First order decay of a scalar variable
+# with transfer of flux to a second variable
+# Two domains, with isotopes
+###########################################
+
+example5:
+    parameters:
+        EIsotope: IsotopeLinear    # hypothetical element E
+    domains:
+        fluxBoxes:
+            reactions:
+                flux:
+                    class: ReactionFluxTarget
+                    parameters:
+                        target_prefix: flux_
+                        fluxlist: [&quot;B::EIsotope&quot;]
+
+        global:
+            reactions:
+                sum_E:
+                    class: ReactionSum
+                    parameters:
+                        vars_to_add: [&quot;Box1.A&quot;, &quot;Box2.B&quot;]
+                    variable_links:
+                        sum: E_total
+
+        Box1:
+            # scalar domain
+            
+            reactions:
+                reservoir_A:
+                    class: ReactionReservoirScalar
+                    parameters:
+                        field_data:         external%EIsotope
+                    variable_links:
+                        R*: A*
+                    variable_attributes:
+                        R:initial_value:    10.0
+                        R:norm_value:       10.0            
+
+                Adecay:
+                    class: ReactionExample5
+                    parameters:
+                        field_data:         external%EIsotope
+                        kappa:              0.5
+                    variable_links:
+                        input_particle*:    A*
+                        output_flux:        fluxBoxes.flux_B
+                    
+
+        Box2:
+            # scalar domain
+        
+            reactions:
+
+                reservoir_B:
+                    class: ReactionReservoirScalar
+                    parameters:
+                        field_data: external%EIsotope
+                    variable_links:
+                        R*: B*
+                    variable_attributes:
+                        R:initial_value:  0.0
+                        R:norm_value:     10.0
+
+                transfer_fluxBoxes:
+                    class: ReactionFluxTransfer
+                    parameters:
+                        input_fluxes: fluxBoxes.flux_$fluxname$
+                        output_fluxes: $fluxname$_sms</code></pre><p>The script to run the model (file <code>examples/reservoirs/run_ex5.jl</code>) contains:</p><pre><code class="language-julia hljs">import PALEOboxes as PB
+import PALEOmodel
+using Plots
+
+include(joinpath(@__DIR__, &quot;reactions_ex5.jl&quot;))
+
+#####################################################
+# Create model
+#######################################################
+
+model = PB.create_model_from_config(joinpath(@__DIR__, &quot;config_ex5.yaml&quot;), &quot;example5&quot;)
+
+run = PALEOmodel.Run(model=model, output = PALEOmodel.OutputWriters.OutputMemory())
+
+#########################################################
+# Initialize
+##########################################################
+
+initial_state, modeldata = PALEOmodel.initialize!(run)
+
+#####################################################################
+# Optional: call ODE function to check derivative
+#######################################################################
+initial_deriv = similar(initial_state)
+PALEOmodel.ODE.ModelODE(modeldata)(initial_deriv, initial_state , nothing, 0.0)
+println(&quot;initial_state: &quot;, initial_state)
+println(&quot;initial_deriv: &quot;, initial_deriv)
+
+#################################################################
+# Integrate vs time
+##################################################################
+println(&quot;integrate, ODE&quot;)
+# first run is slow as it includes JIT time
+@time PALEOmodel.ODE.integrate(
+    run, initial_state, modeldata, (0.0, 10.0), 
+    solvekwargs=(
+        reltol=1e-5,
+        # saveat=0.1, # save output every 0.1 yr see https://diffeq.sciml.ai/dev/basics/common_solver_opts/
+    )
+);
+   
+############################
+# Table of output
+###########################
+
+# vscodedisplay(
+#     PB.get_table(run.output, [&quot;Box1.A&quot;, &quot;Box2.B&quot;, &quot;global.E_total&quot;, &quot;Box1.decay_flux&quot;, &quot;fluxBoxes.flux_B&quot;]),
+#     &quot;Example 5&quot;
+# )
+
+########################################
+# Plot output
+########################################
+
+display(plot(run.output, [&quot;Box1.A&quot;, &quot;Box2.B&quot;, &quot;global.E_total&quot;]; ylabel=&quot;reservoir (mol)&quot;))
+display(plot(run.output, [&quot;Box1.decay_flux&quot;, &quot;fluxBoxes.flux_B&quot;]; ylabel=&quot;flux (mol yr-1)&quot;))
+display(plot(run.output, [&quot;Box1.A_delta&quot;, &quot;Box1.decay_flux.v_delta&quot;, &quot;Box2.B_delta&quot;, &quot;global.E_total.v_delta&quot;, ]; ylabel=&quot;delta (per mil)&quot;))</code></pre><p>and produces output showing Rayleigh fractionation:</p><pre class="documenter-example-output"><code class="nohighlight hljs ansi">[ Info: ================================================================================
+[ Info: create_model_from_config file(s) [&quot;/home/runner/work/PALEOtutorials.jl/PALEOtutorials.jl/examples/reservoirs/config_ex5.yaml&quot;] configmodel example5
+[ Info: ================================================================================
+[ Info:     Model parameter: EIsotope             = IsotopeLinear
+[ Info: generated Reaction catalog with 27 Reactions
+[ Info: creating domain &#39;global&#39; ID=1
+[ Info:   creating reaction global.reactions.sum_E classname ReactionSum
+[ Info:     set parameters: [config.yaml]  vars_to_add         =[&quot;Box1.A&quot;, &quot;Box2.B&quot;]
+[ Info:     set parameters: [Default]      vars_prefix         =
+[ Info:     set parameters: [Default]      component_to_add    =0
+[ Info:     set parameters: [Default]      vectorsum           =false
+[ Info: creating domain &#39;fluxBoxes&#39; ID=2
+[ Info:   creating reaction fluxBoxes.reactions.flux classname ReactionFluxTarget
+[ Info:     set parameters: [config.yaml]  fluxlist            =[&quot;B::EIsotope&quot;]
+[ Info:     set parameters: [config.yaml]  target_prefix       =flux_
+[ Info:     set parameters: [Default]      flux_totals         =false
+[ Info:     set parameters: [Default]      const_stub          =false
+[ Info: creating domain &#39;Box2&#39; ID=3
+[ Info:   creating reaction Box2.reactions.reservoir_B classname ReactionReservoirScalar
+[ Info:     set parameters: [config.yaml]  field_data          =external%EIsotope
+[ Info:       expandvalue: external%EIsotope -&gt; IsotopeLinear
+[ Info:       after substitution field_data=IsotopeLinear
+[ Info:     set parameters: [Default]      const               =false
+[ Info:   creating reaction Box2.reactions.transfer_fluxBoxes classname ReactionFluxTransfer
+[ Info:     set parameters: [Default]      fluxlist            =String[]
+[ Info:     set parameters: [config.yaml]  input_fluxes        =fluxBoxes.flux_$fluxname$
+[ Info:     set parameters: [config.yaml]  output_fluxes       =$fluxname$_sms
+[ Info:     set parameters: [Default]      transfer_multiplier =1.0
+[ Info:     set parameters: [Default]      transfer_matrix     =Identity
+[ Info: creating domain &#39;Box1&#39; ID=4
+[ Info:   creating reaction Box1.reactions.Adecay classname ReactionExample5
+[ Info:     set parameters: [config.yaml]  kappa               =0.5
+[ Info:     set parameters: [config.yaml]  field_data          =external%EIsotope
+[ Info:       expandvalue: external%EIsotope -&gt; IsotopeLinear
+[ Info:       after substitution field_data=IsotopeLinear
+[ Info:     set parameters: [Default]      Delta               =-10.0
+[ Info:   creating reaction Box1.reactions.reservoir_A classname ReactionReservoirScalar
+[ Info:     set parameters: [config.yaml]  field_data          =external%EIsotope
+[ Info:       expandvalue: external%EIsotope -&gt; IsotopeLinear
+[ Info:       after substitution field_data=IsotopeLinear
+[ Info:     set parameters: [Default]      const               =false
+[ Info: reaction global.sum_E add 1.0 * Box1.A
+[ Info: reaction global.sum_E add 1.0 * Box2.B
+[ Info: link_variables first pass
+[ Info: link_variables initialize dynamic variables
+[ Info: Reaction global.sum_E Variable global.E_total adding data=PALEOboxes.IsotopeLinear
+[ Info: _configure_variables: ReactionSum global.sum_E
+[ Info:     set variable_links: sum                  -&gt; E_total
+[ Info: _configure_variables: ReactionReservoirScalar Box2.reservoir_B
+[ Info:     set variable_links: R                    -&gt; B
+[ Info:     set variable_links: R_sms                -&gt; B_sms
+[ Info:     set variable_links: R_norm               -&gt; B_norm
+[ Info:     set variable_links: R_delta              -&gt; B_delta
+[ Info:     set attribute: R                    :norm_value           = 10.0
+[ Info:     set attribute: R                    :initial_value        = 0.0
+[ Info: _configure_variables: ReactionExample5 Box1.Adecay
+[ Info:     set variable_links: input_particle       -&gt; A
+[ Info:     set variable_links: input_particle_sms   -&gt; A_sms
+[ Info:     set variable_links: input_particle_delta -&gt; A_delta
+[ Info:     set variable_links: output_flux          -&gt; fluxBoxes.flux_B
+[ Info: _configure_variables: ReactionReservoirScalar Box1.reservoir_A
+[ Info:     set variable_links: R                    -&gt; A
+[ Info:     set variable_links: R_sms                -&gt; A_sms
+[ Info:     set variable_links: R_norm               -&gt; A_norm
+[ Info:     set variable_links: R_delta              -&gt; A_delta
+[ Info:     set attribute: R                    :norm_value           = 10.0
+[ Info:     set attribute: R                    :initial_value        = 10.0
+[ Info: link_variables second pass:
+[ Info: link_variables unlinked variables:
+[ Info: ================================================================================
+[ Info: allocate_variables!
+[ Info: ================================================================================
+[ Info: Domain global               data dimensions PALEOboxes.NamedDimension[] allocating 1    variables (hostdep=nothing)
+[ Info: Domain fluxBoxes            data dimensions PALEOboxes.NamedDimension[] allocating 1    variables (hostdep=nothing)
+[ Info: Domain Box2                 data dimensions PALEOboxes.NamedDimension[] allocating 4    variables (hostdep=nothing)
+[ Info: Domain Box1                 data dimensions PALEOboxes.NamedDimension[] allocating 5    variables (hostdep=nothing)
+[ Info: create_solver_view:
+[ Info:   Domain global operatorID 0
+[ Info:     Any[(PALEOboxes.VF_StateExplicit, 0), (PALEOboxes.VF_Total, 0), (PALEOboxes.VF_Constraint, 0), (PALEOboxes.VF_State, 0), (PALEOboxes.VF_Undefined, 0)]
+[ Info:   Domain fluxBoxes operatorID 0
+[ Info:     Any[(PALEOboxes.VF_StateExplicit, 0), (PALEOboxes.VF_Total, 0), (PALEOboxes.VF_Constraint, 0), (PALEOboxes.VF_State, 0), (PALEOboxes.VF_Undefined, 0)]
+[ Info:   Domain Box2 operatorID 0
+[ Info:     Any[(PALEOboxes.VF_StateExplicit, 1), (PALEOboxes.VF_Total, 0), (PALEOboxes.VF_Constraint, 0), (PALEOboxes.VF_State, 0), (PALEOboxes.VF_Undefined, 0)]
+[ Info:   Domain Box1 operatorID 0
+[ Info:     Any[(PALEOboxes.VF_StateExplicit, 1), (PALEOboxes.VF_Total, 0), (PALEOboxes.VF_Constraint, 0), (PALEOboxes.VF_State, 0), (PALEOboxes.VF_Undefined, 0)]
+[ Info:   n_state_vars 2  (stateexplicit 2 + state 0)
+[ Info:   n_equations 2  (stateexplicit 2 + total 0 + constraint 0)
+[ Info:   including all host-dependent non-state Variables
+[ Info:   host-dependent non-state Variables (:vfunction VF_Undefined): Any[]
+[ Info: ================================================================================
+[ Info: initialize_reactiondata!
+[ Info: ================================================================================
+[ Info: prepare_do_transfer: ReactionMethod Box2.transfer_fluxBoxes.do_transfer
+[ Info:   active fluxes:
+[ Info:     B                      fluxBoxes.flux_B                         -&gt; Box2.B_sms
+[ Info:     using Identity transfer matrix * 1.0
+[ Info: ================================================================================
+[ Info: dispatch_setup :norm_value
+[ Info: ================================================================================
+[ Info:     Box2.reservoir_B.setup_initialvalue_vars_default
+[ Info: init_values!     :norm_value           Box2.B                         = 10.0, delta=1.0 (fixed delta value to calculate norm)
+[ Info:     Box1.reservoir_A.setup_initialvalue_vars_default
+[ Info: init_values!     :norm_value           Box1.A                         = 10.0, delta=1.0 (fixed delta value to calculate norm)
+[ Info: ================================================================================
+[ Info: dispatch_setup :initial_value
+[ Info: ================================================================================
+[ Info:     Box2.reservoir_B.setup_initialvalue_vars_default
+[ Info: init_values!     :initial_value        Box2.B                         = 0.0, delta=0.0
+[ Info:     Box1.reservoir_A.setup_initialvalue_vars_default
+[ Info: init_values!     :initial_value        Box1.A                         = 10.0, delta=0.0
+initial_state: [0.0, 0.0, 10.0, 0.0]
+initial_deriv: [5.0, -50.0, -5.0, 50.0]
+integrate, ODE
+[ Info: ODEfunction: using Jacobian NoJacobian
+[ Info: jac_config_ode: jac_ad=NoJacobian
+[ Info: integrate:  ODEProblem using algorithm: Sundials.CVODE_BDF{:Newton, :Dense, Nothing, Nothing}(0, 0, 0, false, 10, 5, 7, 3, 10, nothing, nothing, 0) Jacobian NoJacobian
+[ Info: ================================================================================
+[ Info: solve:  using BLAS with 1 threads
+[ Info: ================================================================================
+  0.293010 seconds (561.23 k allocations: 34.576 MiB, 99.68% compilation time)
+[ Info: ================================================================================
+[ Info: print_sol_stats:
+[ Info:   retcode=Success
+[ Info:   nsteps 67
+[ Info:   alg=Sundials.CVODE_BDF{:Newton, :Dense, Nothing, Nothing}(0, 0, 0, false, 10, 5, 7, 3, 10, nothing, nothing, 0)
+┌ Info:   DiffEqBase.DEStats
+│ Number of function 1 evaluations:                  80
+│ Number of function 2 evaluations:                  0
+│ Number of W matrix evaluations:                    20
+│ Number of linear solves:                           0
+│ Number of Jacobians created:                       2
+│ Number of nonlinear solver iterations:             77
+│ Number of nonlinear solver convergence failures:   0
+│ Number of rootfind condition calls:                0
+│ Number of accepted steps:                          66
+└ Number of rejected steps:                          0
+[ Info:   length(sol.t) 67
+[ Info:   size(sol) (4, 67)
+[ Info: ================================================================================
+[ Info: ODE.calc_output_sol: 67 records
+[ Info: ODE.calc_output_sol: done
+  1.337343 seconds (2.41 M allocations: 147.667 MiB, 7.64% gc time, 72.76% compilation time)</code></pre><p><img src="../ex5_plot1.svg" alt/> <img src="../ex5_plot2.svg" alt/> <img src="../ex5_plot3.svg" alt/></p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../ExampleInstallConfig/">« Installation and initial configuration</a><a class="docs-footer-nextpage" href="../ExampleCPU/">CPU (Carbon, Phosphorus, Uranium) model »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.19 on <span class="colophon-date" title="Sunday 12 June 2022 13:02">Sunday 12 June 2022</span>. Using Julia version 1.6.6.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
