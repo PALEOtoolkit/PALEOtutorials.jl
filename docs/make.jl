@@ -9,10 +9,11 @@ bib = CitationBibliography(joinpath(@__DIR__, "src/paleo_references.bib"))
 # Collate all markdown files and images folders from PALEOexamples/src/ into a tree of pages
 io = IOBuffer()
 println(io, "Collating all markdown files from ./examples:")
-examples_dir = "src/collated_examples"  # temporary folder to collate files
-rm(examples_dir, force=true, recursive=true)
+examples_folder = "collated_examples"  
+examples_path = normpath(@__DIR__, "src", examples_folder)  # temporary folder to collate files
+rm(examples_path, force=true, recursive=true)
 examples_pages, examples_includes = PB.collate_markdown(
-    io, "../examples", examples_dir;
+    io, normpath(@__DIR__, "../examples"), @__DIR__, examples_folder;
 )
 @info String(take!(io))
 
@@ -45,7 +46,7 @@ makedocs(bib, sitename="PALEOtutorials Documentation",
 
 @info "Local html documentation is available at $(joinpath(@__DIR__, "build/index.html"))"
 
-rm(examples_dir, force=true, recursive=true)
+rm(examples_path, force=true, recursive=true)
 
 deploydocs(
     repo = "github.com/PALEOtoolkit/PALEOtutorials.jl.git",
