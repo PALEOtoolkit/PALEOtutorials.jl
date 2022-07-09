@@ -7,7 +7,7 @@ These examples illustrate common configuration errors, for various misconfigurat
 The model configuration (file `examples/error_examples/config_ex5_reservoir_A_missing.yaml`) omits a `ReactionReservoirScalar`,
 resulting in Variable Dependencies and Contributors with no corresponding Properties and Targets.
 ```@eval
-str = read("../../examples/error_examples/config_ex5_reservoir_A_missing.yaml", String)
+str = read("../../../../examples/error_examples/config_ex5_reservoir_A_missing.yaml", String)
 str = """```julia
       $str
       ```"""
@@ -18,7 +18,7 @@ Markdown.parse(str)
 This results in an error when the Variables are linked:
 ```@repl
 try # hide
-      include("../../examples/error_examples/run_ex5_reservoir_A_missing.jl")
+      include("../../../../examples/error_examples/run_ex5_reservoir_A_missing.jl")
 catch # hide
       rethrow() # hide
 end # hide
@@ -29,7 +29,7 @@ end # hide
 The model configuration (file `examples/error_examples/config_ex5_reservoir_A_duplicate.yaml`) contains two copies of a
 `ReactionReservoirScalar`, both attempting to create the same VariableDomains
 ```@eval
-str = read("../../examples/error_examples/config_ex5_reservoir_A_duplicate.yaml", String)
+str = read("../../../../examples/error_examples/config_ex5_reservoir_A_duplicate.yaml", String)
 str = """```julia
       $str
       ```"""
@@ -40,7 +40,7 @@ Markdown.parse(str)
 This results in an error when the Variables are linked:
 ```@repl
 try # hide
-      include("../../examples/error_examples/run_ex5_reservoir_A_duplicate.jl")
+      include("../../../../examples/error_examples/run_ex5_reservoir_A_duplicate.jl")
 catch # hide
       rethrow() # hide
 end # hide
@@ -52,7 +52,7 @@ The model configuration (file `examples/error_examples/config_ex5_reservoir_A_no
 contains one `ReactionReservoirScalar` with `:field_data=ScalarData` where this species should have 
 `:field_data=IsotopeLinear`:
 ```@eval
-str = read("../../examples/error_examples/config_ex5_reservoir_A_noisotope.yaml", String)
+str = read("../../../../examples/error_examples/config_ex5_reservoir_A_noisotope.yaml", String)
 str = """```julia
       $str
       ```"""
@@ -63,7 +63,7 @@ Markdown.parse(str)
 This results in an error when the Variables are linked:
 ```@repl
 try # hide
-      include("../../examples/error_examples/run_ex5_reservoir_A_noisotope.jl")
+      include("../../../../examples/error_examples/run_ex5_reservoir_A_noisotope.jl")
 catch # hide
       rethrow() # hide
 end # hide
@@ -75,7 +75,7 @@ The model configuration (file `examples/error_examples/config_ex5_flux_noisotope
 contains a Variable defined by a `ReactionFluxTarget` with default `:field_data=ScalarData` where this species should have 
 `:field_data=IsotopeLinear`:
 ```@eval
-str = read("../../examples/error_examples/config_ex5_flux_noisotope.yaml", String)
+str = read("../../../../examples/error_examples/config_ex5_flux_noisotope.yaml", String)
 str = """```julia
       $str
       ```"""
@@ -86,7 +86,7 @@ Markdown.parse(str)
 This results in an error when the Variables are linked:
 ```@repl
 try # hide
-      include("../../examples/error_examples/run_ex5_flux_noisotope.jl")
+      include("../../../../examples/error_examples/run_ex5_flux_noisotope.jl")
 catch # hide
       rethrow() # hide
 end # hide

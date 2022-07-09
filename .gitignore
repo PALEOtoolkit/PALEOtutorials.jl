@@ -1,4 +1,5 @@
 Manifest.toml
 LocalPreferences.toml
 /docs/build/
+/docs/src/collated_examples/
 .vscode
