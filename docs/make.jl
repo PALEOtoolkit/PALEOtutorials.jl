@@ -2,26 +2,31 @@ using Documenter
 
 using DocumenterCitations
 
+import PALEOboxes as PB
+
 bib = CitationBibliography(joinpath(@__DIR__, "src/paleo_references.bib"))
 
-# Workaround for problem with @example block:
-# include that defines new AbstractReaction subtype is apparently invisible
-# to InteractiveUtils.subtypes()
-include("../examples/reservoirs/reactions_ex1.jl")
-include("../examples/reservoirs/reactions_ex2.jl")
-include("../examples/reservoirs/reactions_ex3.jl")
-include("../examples/reservoirs/reactions_ex5.jl")
+# Collate all markdown files and images folders from PALEOexamples/src/ into a tree of pages
+io = IOBuffer()
+println(io, "Collating all markdown files from ./examples:")
+examples_dir = "src/collated_examples"  # temporary folder to collate files
+rm(examples_dir, force=true, recursive=true)
+examples_pages, examples_includes = PB.collate_markdown(
+    io, "../examples", examples_dir;
+)
+@info String(take!(io))
+
+# include files that load modules etc from PALEOexamples folders
+include.(examples_includes)
 
 makedocs(bib, sitename="PALEOtutorials Documentation", 
 # makedocs(sitename="PALEO Documentation", 
     pages = [
         "index.md",
-        "Examples and Tutorials" => [
+        "Examples and Tutorials" => vcat(
             "ExampleInstallConfig.md",
-            "ExampleReservoirs.md",
-            "ExampleCPU.md",
-            "ExampleErrors.md",
-        ],
+            examples_pages,
+        ),
         # no Design docs yet
         "HOWTOS" => [
             "HOWTOJuliaUsage.md",
@@ -39,6 +44,8 @@ makedocs(bib, sitename="PALEOtutorials Documentation",
 )
 
 @info "Local html documentation is available at $(joinpath(@__DIR__, "build/index.html"))"
+
+rm(examples_dir, force=true, recursive=true)
 
 deploydocs(
     repo = "github.com/PALEOtoolkit/PALEOtutorials.jl.git",

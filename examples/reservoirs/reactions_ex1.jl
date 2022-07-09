@@ -42,10 +42,13 @@ function PB.register_methods!(rj::ReactionExample1)
 end
 
 # setup method, called at model startup
-# NB: this is called twice, with attribute_name indicating the value that should be set:
+# NB: this is called three times, with attribute_name indicating the action or value that should be set:
+#   :setup - any non-state-Variable initialisation (not used here)
 #   :norm_value - Variable normalisation, usually read from the :norm_value Variable attribute
 #   :initial_value - Variable initial value, usually read from the :initial_value attribute
 function setup_example1(m::PB.ReactionMethod, (varsdata, ), cellrange::PB.AbstractCellRange, attribute_name)
+
+    attribute_name in (:norm_value, :initial_value) || return
 
     var_A = PB.get_variable(m, "A")  # get the Variable as supplied to add_method_setup! 
     value = PB.get_attribute(var_A, attribute_name) # read attribute 
