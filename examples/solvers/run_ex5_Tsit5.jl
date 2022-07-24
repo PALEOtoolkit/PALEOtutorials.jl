@@ -1,15 +1,15 @@
 import PALEOboxes as PB
 import PALEOmodel
 using Plots
-import Sundials
+import OrdinaryDiffEq
 
-include(joinpath(@__DIR__, "reactions_ex5.jl"))
+include(joinpath(@__DIR__, "../reservoirs/reactions_ex5.jl"))
 
 #####################################################
 # Create model
 #######################################################
 
-model = PB.create_model_from_config(joinpath(@__DIR__, "config_ex5.yaml"), "example5")
+model = PB.create_model_from_config(joinpath(@__DIR__, "../reservoirs/config_ex5.yaml"), "example5")
 
 run = PALEOmodel.Run(model=model, output = PALEOmodel.OutputWriters.OutputMemory())
 
@@ -34,10 +34,10 @@ println("integrate, ODE")
 # first run is slow as it includes JIT time
 @time PALEOmodel.ODE.integrate(
     run, initial_state, modeldata, (0.0, 10.0);
-    alg=Sundials.CVODE_BDF(), # this is the PALEOmodel default 
+    alg=OrdinaryDiffEq.Tsit5(), # recommended non-stiff solver, see https://diffeq.sciml.ai/stable/solvers/ode_solve/
     solvekwargs=(
         reltol=1e-5,
-        # saveat=0.1, # save output every 0.1 yr see https://diffeq.sciml.ai/dev/basics/common_solver_opts/
+        # saveat=0.1, # save output every 0.1 yr, see https://diffeq.sciml.ai/dev/basics/common_solver_opts/
     )
 );
    

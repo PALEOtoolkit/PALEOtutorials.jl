@@ -2,6 +2,28 @@
 
 These examples illustrate common configuration errors, for various misconfigurations of [Example 5 Isotopes and Rayleigh fractionation](@ref)
 
+## Syntax error in .yaml config file
+
+The model configuration (file `examples/error_examples/config_ex5_syntax_error.yaml`) contains a syntax error in the .yaml config file,
+hence the initial parsing of the file fails.
+```@eval
+str = read("../../../../examples/error_examples/config_ex5_syntax_error.yaml", String)
+str = """```julia
+      $str
+      ```"""
+import Markdown
+Markdown.parse(str)
+```
+
+This results in an error when the file is parsed (note that the informative message indicating that there is a problem with the YAML parsing is near the top of the stack trace):
+```@repl
+try # hide
+      include("../../../../examples/error_examples/run_ex5_syntax_error.jl")
+catch # hide
+      rethrow() # hide
+end # hide
+```
+
 ## Missing / unlinked Variables
 
 The model configuration (file `examples/error_examples/config_ex5_reservoir_A_missing.yaml`) omits a `ReactionReservoirScalar`,
