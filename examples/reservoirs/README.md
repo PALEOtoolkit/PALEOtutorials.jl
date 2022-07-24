@@ -18,6 +18,9 @@ F = \kappa A
 
 This is verbose as we have to (re)implement Variable setup and initialisation as well as the biogeochemical reaction of interest, but illustrates the structure of a PALEO model.
 
+!!! info
+    This verbose approach is not usually required, it is usually simpler to use predefined PALEO Reservoirs as described below, [Example 2 Using a PALEO Reservoir](@ref)
+
 The code to implement a self-contained PALEO reaction is in file `examples/reservoirs/reactions_ex1.jl`, and needs to provide three
 methods for Variable setup, initialization at the start of the main loop, as well as the actual main loop do method. Variables are labelled as state Variables and derivatives by setting the `:vfunction` attribute to `VF_StateExplicit` and `VF_Deriv`.
 ```@eval
