@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>ODE solvers · PALEOtutorials Documentation</title><script data-outdated-warner src="../../../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.045/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.24/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../../assets/documenter.js"></script><script src="../../../siteinfo.js"></script><script src="../../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../../../">PALEOtutorials Documentation</a></span></div><form class="docs-search" action="../../../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../../../">PALEOtutorials.jl documentation</a></li><li><span class="tocitem">Examples and Tutorials</span><ul><li><a class="tocitem" href="../../../ExampleInstallConfig/">Installation and initial configuration</a></li><li><input class="collapse-toggle" id="menuitem-2-2" type="checkbox"/><label class="tocitem" for="menuitem-2-2"><span class="docs-label">reservoirs</span><i class="docs-chevron"></i></label><ul class="collapsed"><li><a class="tocitem" href="../../reservoirs/README/">Reservoirs and fluxes</a></li></ul></li><li><input class="collapse-toggle" id="menuitem-2-3" type="checkbox" checked/><label class="tocitem" for="menuitem-2-3"><span class="docs-label">solvers</span><i class="docs-chevron"></i></label><ul class="collapsed"><li class="is-active"><a class="tocitem" href>ODE solvers</a><ul class="internal"><li><a class="tocitem" href="#Naive-first-order-explicit-Euler-&#39;by-hand&#39;"><span>Naive first-order explicit Euler &#39;by hand&#39;</span></a></li><li><a class="tocitem" href="#PALEOmodel-default-SUNDIALS-CVODE-solver"><span>PALEOmodel default SUNDIALS CVODE solver</span></a></li><li><a class="tocitem" href="#Using-a-non-default-solver"><span>Using a non-default solver</span></a></li></ul></li></ul></li><li><input class="collapse-toggle" id="menuitem-2-4" type="checkbox"/><label class="tocitem" for="menuitem-2-4"><span class="docs-label">error_examples</span><i class="docs-chevron"></i></label><ul class="collapsed"><li><a class="tocitem" href="../../error_examples/README/">Configuration Errors</a></li></ul></li><li><input class="collapse-toggle" id="menuitem-2-5" type="checkbox"/><label class="tocitem" for="menuitem-2-5"><span class="docs-label">CPU</span><i class="docs-chevron"></i></label><ul class="collapsed"><li><a class="tocitem" href="../../CPU/README/">CPU (Carbon, Phosphorus, Uranium) model</a></li></ul></li></ul></li><li><span class="tocitem">HOWTOS</span><ul><li><a class="tocitem" href="../../../HOWTOJuliaUsage/">Julia usage</a></li><li><a class="tocitem" href="../../../HOWTOadditionalconfig/">Optional additional configuration</a></li><li><a class="tocitem" href="../../../HOWTOminimalGit/">Minimal git workflow for scientific collaboration and reproducibility</a></li><li><a class="tocitem" href="../../../HOWTOPython/">Configuring for Julia - python interoperability</a></li></ul></li><li><a class="tocitem" href="../../../References/">References</a></li><li><a class="tocitem" href="../../../indexpage/">Index</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Examples and Tutorials</a></li><li><a class="is-disabled">solvers</a></li><li class="is-active"><a href>ODE solvers</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>ODE solvers</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/PALEOtoolkit/PALEOtutorials.jl/blob/main/docs/src/collated_examples/solvers/README.md" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="ODE-solvers"><a class="docs-heading-anchor" href="#ODE-solvers">ODE solvers</a><a id="ODE-solvers-1"></a><a class="docs-heading-anchor-permalink" href="#ODE-solvers" title="Permalink"></a></h1><p>These examples use of different ODE solvers for <a href="../../reservoirs/README/#Example-5-Isotopes-and-Rayleigh-fractionation">Example 5 Isotopes and Rayleigh fractionation</a></p><h2 id="Naive-first-order-explicit-Euler-&#39;by-hand&#39;"><a class="docs-heading-anchor" href="#Naive-first-order-explicit-Euler-&#39;by-hand&#39;">Naive first-order explicit Euler &#39;by hand&#39;</a><a id="Naive-first-order-explicit-Euler-&#39;by-hand&#39;-1"></a><a class="docs-heading-anchor-permalink" href="#Naive-first-order-explicit-Euler-&#39;by-hand&#39;" title="Permalink"></a></h2><p>This example demonstrates a naive approach using first-order explicit Euler to integrate the two state variables <code>Box1.A</code> and <code>Box2.B</code> forward in time, using a fixed timestep of 0.5 yr.  This can be useful for testing, but for convenience and accuracy for practical use, it is usually better to use the PALEOmodel wrappers for the Julia SciML solvers, see <a href="https://paleotoolkit.github.io/PALEOmodel.jl/stable/PALEOmodelSolvers/">https://paleotoolkit.github.io/PALEOmodel.jl/stable/PALEOmodelSolvers/</a>.</p><div class="admonition is-warning"><header class="admonition-header">Warning</header><div class="admonition-body"><p>This is NOT recommended except for testing - use the <a href="https://paleotoolkit.github.io/PALEOmodel.jl/stable/PALEOmodelSolvers/">PALEOmodel wrappers</a> for the solvers from the Julia SciML ecosystem, as described below.</p></div></div><p>The script to run the model (file <code>examples/reservoirs/run_ex5.yaml</code>) contains:</p><pre><code class="language-julia hljs">import PALEOboxes as PB
+import PALEOmodel
+using Plots
+
+include(joinpath(@__DIR__, &quot;../reservoirs/reactions_ex5.jl&quot;))
+
+#####################################################
+# Create model
+#######################################################
+
+model = PB.create_model_from_config(
+    joinpath(@__DIR__, &quot;../reservoirs/config_ex5.yaml&quot;),
+    &quot;example5&quot;
+)
+
+
+#########################################################
+# Initialize
+##########################################################
+
+initial_state, modeldata = PALEOmodel.initialize!(model)
+
+tspan = (0.0, 10.0)
+dt = 0.5
+
+# get nested NamedTuples with data arrays for every Variable in the model
+all_vars = PB.VariableAggregatorNamed(modeldata)
+all_values = all_vars.values # nested NamedTuples 
+
+# create an object to hold output
+output_euler = PALEOmodel.OutputWriters.OutputMemory()
+nsteps = floor(Int, (tspan[2] - tspan[1])/dt)
+PALEOmodel.OutputWriters.initialize!(output_euler, model, modeldata, nsteps+1; rec_coord=:tmodel)
+
+#################################################################
+# Integrate vs time
+##################################################################
+println(&quot;integrate, using first-order explicit Euler &#39;by hand&#39;&quot;)
+
+# set initial time
+tmodel = tspan[1]
+# step number
+n = 0
+
+# loop over time steps, taking a zero last timestep to save output
+while tmodel &lt;= tspan[2] &amp;&amp; n &lt;= nsteps
+    # calculate time derivative (_sms Variables)
+    PB.do_deriv(modeldata.dispatchlists_all)
+
+    # add record to output
+    PALEOmodel.OutputWriters.add_record!(output_euler, model, modeldata, tmodel)
+
+    # account for a short (or zero) last timestep
+    global dt_actual = min(dt, tspan[2] - tmodel)
+
+    # naive first order explicit Euler for our two state Variables
+    # (advances state variable from tmodel -&gt; tmodel + dt)
+    all_values.Box1.A .+= dt_actual .* all_values.Box1.A_sms
+    all_values.Box2.B .+= dt_actual .* all_values.Box2.B_sms
+
+    global tmodel += dt_actual  # update tmodel to time we have now stepped to
+    global n += 1
+end
+
+############################
+# Table of output
+###########################
+
+# vscodedisplay(
+#     PB.get_table(run.output, [&quot;Box1.A&quot;, &quot;Box2.B&quot;, &quot;global.E_total&quot;, &quot;Box1.decay_flux&quot;, &quot;fluxBoxes.flux_B&quot;]),
+#     &quot;Example 5&quot;
+# )
+
+########################################
+# Plot output
+########################################
+
+display(plot(output_euler, [&quot;Box1.A&quot;, &quot;Box2.B&quot;, &quot;global.E_total&quot;]; ylabel=&quot;reservoir (mol)&quot;))
+display(plot(output_euler, [&quot;Box1.A.v_moldelta&quot;, &quot;Box2.B.v_moldelta&quot;, &quot;global.E_total.v_moldelta&quot;]; ylabel=&quot;reservoir (mol * delta)&quot;))
+display(plot(output_euler, [&quot;Box1.decay_flux&quot;, &quot;fluxBoxes.flux_B&quot;]; ylabel=&quot;flux (mol yr-1)&quot;))
+display(plot(output_euler, [&quot;Box1.A_delta&quot;, &quot;Box1.decay_flux.v_delta&quot;, &quot;Box2.B_delta&quot;, &quot;global.E_total.v_delta&quot;, ]; ylim=(-20, 100), ylabel=&quot;delta (per mil)&quot;))</code></pre><p>And produces output (solid lines, dashed lines show accurate output from CVODE solver):</p><p><img src="../ex5_naive_euler_plot1.svg" alt/> <img src="../ex5_naive_euler_plot2.svg" alt/> <img src="../ex5_naive_euler_plot3.svg" alt/></p><p>Note that although isotope mass balance is maintained, and the final state for B is correct, the Rayleigh fractionation of A is inaccurate due to the coarse timestep and inaccuracy of the first-order explicit Euler method.</p><h2 id="PALEOmodel-default-SUNDIALS-CVODE-solver"><a class="docs-heading-anchor" href="#PALEOmodel-default-SUNDIALS-CVODE-solver">PALEOmodel default SUNDIALS CVODE solver</a><a id="PALEOmodel-default-SUNDIALS-CVODE-solver-1"></a><a class="docs-heading-anchor-permalink" href="#PALEOmodel-default-SUNDIALS-CVODE-solver" title="Permalink"></a></h2><p>This repeats <a href="../../reservoirs/README/#Example-5-Isotopes-and-Rayleigh-fractionation">Example 5 Isotopes and Rayleigh fractionation</a>, which uses the <code>PALEOmodel.ODE.integrate</code> wrapper function for the solvers in the Julia <a href="https://diffeq.sciml.ai/stable/">SciML</a> ecosystem. The PALEOmodel default solver (set by the <code>alg</code> argument) is <a href="https://diffeq.sciml.ai/stable/solvers/ode_solve/#ode_solve_sundials">SUNDIALS CVODE</a>. This is a stiff solver that requires a Jacobian, either (as here) calculated using finite differences or passed explicitly, where <a href="https://paleotoolkit.github.io/PALEOmodel.jl/stable/PALEOmodelSolvers/#High-level-wrappers">PALEOmodel</a> includes options to calculate a sparse Jacobian using automatic differentiation.</p><p>Options <code>solvekwargs</code> are passed through to the SciML <code>solve</code> method, see <a href="https://diffeq.sciml.ai/dev/basics/common_solver_opts/">https://diffeq.sciml.ai/dev/basics/common_solver_opts/</a>.</p><p>The script to run the model (file <code>examples/reservoirs/run_ex5.jl</code>) contains:</p><pre><code class="language-julia hljs">import PALEOboxes as PB
+import PALEOmodel
+using Plots
+import Sundials
+
+include(joinpath(@__DIR__, &quot;reactions_ex5.jl&quot;))
+
+#####################################################
+# Create model
+#######################################################
+
+model = PB.create_model_from_config(joinpath(@__DIR__, &quot;config_ex5.yaml&quot;), &quot;example5&quot;)
+
+run = PALEOmodel.Run(model=model, output = PALEOmodel.OutputWriters.OutputMemory())
+
+#########################################################
+# Initialize
+##########################################################
+
+initial_state, modeldata = PALEOmodel.initialize!(run)
+
+#####################################################################
+# Optional: call ODE function to check derivative
+#######################################################################
+initial_deriv = similar(initial_state)
+PALEOmodel.ODE.ModelODE(modeldata)(initial_deriv, initial_state , nothing, 0.0)
+println(&quot;initial_state: &quot;, initial_state)
+println(&quot;initial_deriv: &quot;, initial_deriv)
+
+#################################################################
+# Integrate vs time
+##################################################################
+println(&quot;integrate, ODE&quot;)
+# first run is slow as it includes JIT time
+@time PALEOmodel.ODE.integrate(
+    run, initial_state, modeldata, (0.0, 10.0);
+    alg=Sundials.CVODE_BDF(), # this is the PALEOmodel default 
+    solvekwargs=(
+        reltol=1e-5,
+        # saveat=0.1, # save output every 0.1 yr see https://diffeq.sciml.ai/dev/basics/common_solver_opts/
+    )
+);
+   
+############################
+# Table of output
+###########################
+
+# vscodedisplay(
+#     PB.get_table(run.output, [&quot;Box1.A&quot;, &quot;Box2.B&quot;, &quot;global.E_total&quot;, &quot;Box1.decay_flux&quot;, &quot;fluxBoxes.flux_B&quot;]),
+#     &quot;Example 5&quot;
+# )
+
+########################################
+# Plot output
+########################################
+
+display(plot(run.output, [&quot;Box1.A&quot;, &quot;Box2.B&quot;, &quot;global.E_total&quot;]; ylabel=&quot;reservoir (mol)&quot;))
+display(plot(run.output, [&quot;Box1.decay_flux&quot;, &quot;fluxBoxes.flux_B&quot;]; ylabel=&quot;flux (mol yr-1)&quot;))
+display(plot(run.output, [&quot;Box1.A_delta&quot;, &quot;Box1.decay_flux.v_delta&quot;, &quot;Box2.B_delta&quot;, &quot;global.E_total.v_delta&quot;, ]; ylabel=&quot;delta (per mil)&quot;))</code></pre><p>and produces output showing Rayleigh fractionation:</p><p><img src="../ex5_plot1.svg" alt/> <img src="../ex5_plot2.svg" alt/> <img src="../ex5_plot3.svg" alt/></p><h2 id="Using-a-non-default-solver"><a class="docs-heading-anchor" href="#Using-a-non-default-solver">Using a non-default solver</a><a id="Using-a-non-default-solver-1"></a><a class="docs-heading-anchor-permalink" href="#Using-a-non-default-solver" title="Permalink"></a></h2><p>Recommended SciML solvers are documented at <a href="https://diffeq.sciml.ai/stable/">https://diffeq.sciml.ai/stable/</a>. As this system is not stiff (no short timescales) the SciML Tsit5 solver is also a good choice, set using the <code>alg</code> argument to <code>PALEOmodel.ODE.integrate</code> (this is passed through to the SciML <code>solve</code> method).</p><p>The script to run the model (file <code>examples/reservoirs/run_ex5.yaml</code>) with this solver contains:</p><pre><code class="language-julia hljs">import PALEOboxes as PB
+import PALEOmodel
+using Plots
+import OrdinaryDiffEq
+
+include(joinpath(@__DIR__, &quot;../reservoirs/reactions_ex5.jl&quot;))
+
+#####################################################
+# Create model
+#######################################################
+
+model = PB.create_model_from_config(joinpath(@__DIR__, &quot;../reservoirs/config_ex5.yaml&quot;), &quot;example5&quot;)
+
+run = PALEOmodel.Run(model=model, output = PALEOmodel.OutputWriters.OutputMemory())
+
+#########################################################
+# Initialize
+##########################################################
+
+initial_state, modeldata = PALEOmodel.initialize!(run)
+
+#####################################################################
+# Optional: call ODE function to check derivative
+#######################################################################
+initial_deriv = similar(initial_state)
+PALEOmodel.ODE.ModelODE(modeldata)(initial_deriv, initial_state , nothing, 0.0)
+println(&quot;initial_state: &quot;, initial_state)
+println(&quot;initial_deriv: &quot;, initial_deriv)
+
+#################################################################
+# Integrate vs time
+##################################################################
+println(&quot;integrate, ODE&quot;)
+# first run is slow as it includes JIT time
+@time PALEOmodel.ODE.integrate(
+    run, initial_state, modeldata, (0.0, 10.0);
+    alg=OrdinaryDiffEq.Tsit5(), # recommended non-stiff solver, see https://diffeq.sciml.ai/stable/solvers/ode_solve/
+    solvekwargs=(
+        reltol=1e-5,
+        # saveat=0.1, # save output every 0.1 yr, see https://diffeq.sciml.ai/dev/basics/common_solver_opts/
+    )
+);
+   
+############################
+# Table of output
+###########################
+
+# vscodedisplay(
+#     PB.get_table(run.output, [&quot;Box1.A&quot;, &quot;Box2.B&quot;, &quot;global.E_total&quot;, &quot;Box1.decay_flux&quot;, &quot;fluxBoxes.flux_B&quot;]),
+#     &quot;Example 5&quot;
+# )
+
+########################################
+# Plot output
+########################################
+
+display(plot(run.output, [&quot;Box1.A&quot;, &quot;Box2.B&quot;, &quot;global.E_total&quot;]; ylabel=&quot;reservoir (mol)&quot;))
+display(plot(run.output, [&quot;Box1.decay_flux&quot;, &quot;fluxBoxes.flux_B&quot;]; ylabel=&quot;flux (mol yr-1)&quot;))
+display(plot(run.output, [&quot;Box1.A_delta&quot;, &quot;Box1.decay_flux.v_delta&quot;, &quot;Box2.B_delta&quot;, &quot;global.E_total.v_delta&quot;, ]; ylabel=&quot;delta (per mil)&quot;))</code></pre><p>As expected the output using Tsit5 (solid lines) and CVODE_BDF (dashed lines) is indistinguishable as both solvers will maintain relative accuracy within the specified <code>reltol=1e-5</code>:</p><p><img src="../ex5_tsit5_plot1.svg" alt/> <img src="../ex5_tsit5_plot2.svg" alt/> <img src="../ex5_tsit5_plot3.svg" alt/></p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../reservoirs/README/">« Reservoirs and fluxes</a><a class="docs-footer-nextpage" href="../../error_examples/README/">Configuration Errors »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.22 on <span class="colophon-date" title="Sunday 24 July 2022 18:11">Sunday 24 July 2022</span>. Using Julia version 1.6.7.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
