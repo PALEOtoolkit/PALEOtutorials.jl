@@ -10,13 +10,11 @@ include(joinpath(@__DIR__, "reactions_ex3.jl"))
 
 model = PB.create_model_from_config(joinpath(@__DIR__, "config_ex3.yaml"), "example3")
 
-run = PALEOmodel.Run(model=model, output = PALEOmodel.OutputWriters.OutputMemory())
-
 #########################################################
 # Initialize
 ##########################################################
 
-initial_state, modeldata = PALEOmodel.initialize!(run)
+initial_state, modeldata = PALEOmodel.initialize!(model)
 
 #####################################################################
 # Optional: call ODE function to check derivative
@@ -29,6 +27,10 @@ println("initial_deriv: ", initial_deriv)
 #################################################################
 # Integrate vs time
 ##################################################################
+
+# create a Run object to hold model and output
+run = PALEOmodel.Run(model=model, output = PALEOmodel.OutputWriters.OutputMemory())
+
 println("integrate, ODE")
 # first run is slow as it includes JIT time
 @time PALEOmodel.ODE.integrate(

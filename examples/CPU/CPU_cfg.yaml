@@ -6,6 +6,9 @@
 ########################################################
 CPU_Zhang2020:
     parameters:
+        # model-wide Parameters
+        # These will be read by any Reaction Parameter that has 'external=true',
+        # or can be used to set any Reaction Parameter explicitly as eg 'external%CIsotope'
         CIsotope: IsotopeLinear       
         UIsotope: IsotopeLinear
     domains:

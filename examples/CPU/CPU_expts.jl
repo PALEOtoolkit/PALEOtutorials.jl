@@ -9,7 +9,7 @@ function CPU_expts(expts)
     model = PB.create_model_from_config(
         joinpath(@__DIR__, "CPU_cfg.yaml"), 
         "CPU_Zhang2020"; 
-        modelpars=Dict(),
+        modelpars=Dict(), # optional Dict can be supplied to set top-level (model wide) Parameters
     )
         
     ###############################################
@@ -49,9 +49,7 @@ function CPU_expts(expts)
         end
     end
 
-    run = PALEOmodel.Run(model=model, output = PALEOmodel.OutputWriters.OutputMemory())
-
-    return run
+    return model
 end
 
 

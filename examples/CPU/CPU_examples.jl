@@ -16,17 +16,17 @@ include("CPU_reactions.jl")
 include("CPU_expts.jl")
 
 # baseline steady-state
-# run = CPU_expts([], comparedata)
+# model = CPU_expts([], comparedata)
 
 # LIP CO2 input
-run = CPU_expts([("LIP", 3e18)])
+model = CPU_expts([("LIP", 3e18)])
 
 # increase E
-# run = CPU_expts([("E", 2.0)])
+# model = CPU_expts([("E", 2.0)])
 # increase V
-# run = CPU_expts([("V", 2.0)])
+# model = CPU_expts([("V", 2.0)])
 
-initial_state, modeldata = PALEOmodel.initialize!(run)
+initial_state, modeldata = PALEOmodel.initialize!(model)
 
 # call ODE function to check derivative
 initial_deriv = similar(initial_state)
@@ -34,6 +34,7 @@ PALEOmodel.ODE.ModelODE(modeldata)(initial_deriv, initial_state , nothing, 0.0)
 println("initial_state", initial_state)
 println("initial_deriv", initial_deriv)
 
+run = PALEOmodel.Run(model=model, output = PALEOmodel.OutputWriters.OutputMemory())
 
 println("integrate, ODE")
 # first run is slow as it includes JIT time

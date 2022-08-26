@@ -14,5 +14,5 @@ Revise = "295af30f-e4ad-537b-8983-00126c2a3abe"
 Sundials = "c3572dad-4567-51f8-b174-8c6c989267f4"
 
 [compat]
-PALEOboxes = "0.20.2"
+PALEOboxes = "0.20.4"
 PALEOmodel = "0.15.3"
