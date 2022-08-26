@@ -13,17 +13,19 @@ model = PB.create_model_from_config(
     "example5_flux_noisotope"
 )
 
-run = PALEOmodel.Run(model=model, output = PALEOmodel.OutputWriters.OutputMemory())
-
 #########################################################
 # Initialize
 ##########################################################
 
-initial_state, modeldata = PALEOmodel.initialize!(run)
+initial_state, modeldata = PALEOmodel.initialize!(model)
 
 #####################################################################
 # Optional: call ODE function to check derivative
 #######################################################################
+
+# create a Run object to hold model and output
+run = PALEOmodel.Run(model=model, output = PALEOmodel.OutputWriters.OutputMemory())
+
 initial_deriv = similar(initial_state)
 PALEOmodel.ODE.ModelODE(modeldata)(initial_deriv, initial_state , nothing, 0.0)
 println("initial_state: ", initial_state)

@@ -52,7 +52,18 @@ Base.@kwdef mutable struct ReactionModelCPU{P} <: PB.AbstractReaction
         PB.ParDouble("k_other",      34e6,  units="mol U/yr",   description="other sinks combined"),
         PB.ParDouble("delta_riv",   -0.26,  units="per mil",    description="Composition of river input"),
         PB.ParDouble("Delta_anoxic", 0.6,   units="per mil",    description="Anoxic sink fractionation"),
-        PB.ParDouble("Delta_other",  0.005, units="per mil",    description="Other sinks fractionation"),       
+        PB.ParDouble("Delta_other",  0.005, units="per mil",    description="Other sinks fractionation"),
+
+        # isotope configuration
+        # 'external=true' so can be set by global Parameters that apply to the whole model
+        PB.ParType(PB.AbstractData, "CIsotope", PB.ScalarData,
+            external=true,
+            allowed_values=PB.IsotopeTypes,
+            description="disable / enable carbon isotopes and specify isotope type"),
+        PB.ParType(PB.AbstractData, "UIsotope", PB.ScalarData,
+            external=true,
+            allowed_values=PB.IsotopeTypes,
+            description="disable / enable uranium isotopes and specify isotope type"),
     )
 
 end
@@ -60,8 +71,8 @@ end
 
 function PB.register_methods!(rj::ReactionModelCPU)
  
-    _, CIsotopeType = PB.split_nameisotope("::CIsotope", rj.external_parameters)
-    _, UIsotopeType = PB.split_nameisotope("::UIsotope", rj.external_parameters)
+    CIsotopeType = rj.pars.CIsotope[]
+    UIsotopeType = rj.pars.UIsotope[]
 
     # Variables: 
     # 'Dep' - an external dependency (forcing, reservoir, ...)
@@ -138,50 +149,48 @@ function PB.register_methods!(rj::ReactionModelCPU)
             attributes=(:field_data=>UIsotopeType,)),
     ]
 
-    p = (CIsotopeType, UIsotopeType)
     PB.add_method_do!(
         rj,
         do_CPU,  
         (
             PB.VarList_namedtuple(vars),
         ),
-        p = p,
+        p = (CIsotopeType, UIsotopeType), # provide isotope types here so Julia will generate specialized (fast) code
     )
 
     return nothing
 end
 
 
-function do_CPU(m::PB.ReactionMethod, (vars, ), cellrange::PB.AbstractCellRange, deltat)
-    CIsotopeType, UIsotopeType = m.p
-    pars = m.reaction.pars
+function do_CPU(m::PB.ReactionMethod, pars, (vars, ), cellrange::PB.AbstractCellRange, deltat)
+    CIsotopeType, UIsotopeType = m.p # This is (much) faster than rereading Parameters, as Julia generates specialized (fast) code based on the type(s) of p
 
     # Key variables
     vars.DeltaT[] = vars.TEMP[] - (15 + PB.Constants.k_CtoK)
     vars.f_CO2[] = 2*vars.pCO2PAL[]/(1.0 + vars.pCO2PAL[])
     vars.f_T[] = exp(0.09*vars.DeltaT[])
-    vars.f_anoxic[] = 1.0/(1.0 + exp(-pars.k_anox.v*(pars.k_u.v*vars.P_norm[]-vars.pO2PAL[])))    
+    vars.f_anoxic[] = 1.0/(1.0 + exp(-pars.k_anox[]*(pars.k_u[]*vars.P_norm[]-vars.pO2PAL[])))    
 
     # Carbon fluxes
     vars.F_w_norm[] = vars.E[]*vars.W[]*vars.V[]*vars.f_CO2[]*vars.f_T[]
-    vars.F_w[] = pars.k_w.v*vars.F_w_norm[]
+    vars.F_w[] = pars.k_w[]*vars.F_w_norm[]
     vars.F_d[] = @PB.isotope_totaldelta(CIsotopeType,
-        pars.k_d.v*vars.D[], # total
-        pars.delta_in.v) # delta
+        pars.k_d[]*vars.D[], # total
+        pars.delta_in[]) # delta
     vars.F_ox[] = @PB.isotope_totaldelta(CIsotopeType, 
-        pars.k_ox.v, # total
-        pars.delta_in.v) # delta
+        pars.k_ox[], # total
+        pars.delta_in[]) # delta
     vars.F_cw[] = @PB.isotope_totaldelta(CIsotopeType,
-        pars.k_carb.v, # total
-        pars.delta_in.v) # delta
+        pars.k_carb[], # total
+        pars.delta_in[]) # delta
     vars.F_in[] = vars.F_d[] + vars.F_ox[] + vars.F_cw[]
 
     vars.F_torg[] = @PB.isotope_totaldelta(CIsotopeType,
-        pars.k_torg.v*vars.V[]*vars.f_CO2[], # total
-        vars.A_delta[]-pars.Delta.v) # delta
+        pars.k_torg[]*vars.V[]*vars.f_CO2[], # total
+        vars.A_delta[]-pars.Delta[]) # delta
     vars.F_morg[] = @PB.isotope_totaldelta(CIsotopeType,
-        pars.k_morg.v*vars.P_norm[], # total
-        vars.A_delta[]-pars.Delta.v) # delta
+        pars.k_morg[]*vars.P_norm[], # total
+        vars.A_delta[]-pars.Delta[]) # delta
     vars.F_org[] = vars.F_morg[] + vars.F_torg[]
    
     vars.F_carb[] = @PB.isotope_totaldelta(CIsotopeType,
@@ -189,22 +198,22 @@ function do_CPU(m::PB.ReactionMethod, (vars, ), cellrange::PB.AbstractCellRange,
         vars.A_delta[]) # delta assume no fractionation of carbonate burial relative to A
     
     # Phosphorus fluxes
-    vars.F_Pw[] = pars.k_Pw.v*vars.F_w_norm[]
-    vars.CP[] = vars.f_anoxic[]/pars.CPanoxic.v + (1-vars.f_anoxic[])/pars.CPoxic.v
+    vars.F_Pw[] = pars.k_Pw[]*vars.F_w_norm[]
+    vars.CP[] = vars.f_anoxic[]/pars.CPanoxic[] + (1-vars.f_anoxic[])/pars.CPoxic[]
     vars.F_OrgP[] = PB.get_total(vars.F_morg[])*vars.CP[]
-    vars.F_FeP[] = pars.k_FeP.v*(1-vars.f_anoxic[])
-    vars.F_CaP[] = pars.k_CaP.v*vars.P_norm[]
+    vars.F_FeP[] = pars.k_FeP[]*(1-vars.f_anoxic[])
+    vars.F_CaP[] = pars.k_CaP[]*vars.P_norm[]
 
     # Uranium fluxes
     vars.F_riv[] = @PB.isotope_totaldelta(UIsotopeType, 
-        pars.k_riv.v*vars.F_w_norm[],  # total
-        pars.delta_riv.v)              # delta
+        pars.k_riv[]*vars.F_w_norm[],  # total
+        pars.delta_riv[])              # delta
     vars.F_anoxic[] = @PB.isotope_totaldelta(UIsotopeType, 
-        pars.k_anoxic.v*vars.U_norm[]*vars.f_anoxic[]/pars.f_anoxic0.v, # total
-        vars.U_delta[] + pars.Delta_anoxic.v) # delta
+        pars.k_anoxic[]*vars.U_norm[]*vars.f_anoxic[]/pars.f_anoxic0[], # total
+        vars.U_delta[] + pars.Delta_anoxic[]) # delta
     vars.F_other[] = @PB.isotope_totaldelta(UIsotopeType,
-        pars.k_other.v*vars.U_norm[]*(1-vars.f_anoxic[])/(1-pars.f_anoxic0.v), # total
-        vars.U_delta[] + pars.Delta_other.v) # delta
+        pars.k_other[]*vars.U_norm[]*(1-vars.f_anoxic[])/(1-pars.f_anoxic0[]), # total
+        vars.U_delta[] + pars.Delta_other[]) # delta
 
 
     # Reservoir source-sink

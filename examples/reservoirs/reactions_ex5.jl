@@ -25,7 +25,7 @@ Base.@kwdef mutable struct ReactionExample5{P} <: PB.AbstractReaction
 end
 
 function PB.register_methods!(rj::ReactionExample5)
-    IsotopeType = rj.pars.field_data.v
+    IsotopeType = rj.pars.field_data[]
     vars = [
         PB.VarDepScalar("input_particle",           "mol",      "reservoir for input",
             attributes=(:field_data=>IsotopeType,)),
@@ -44,14 +44,14 @@ function PB.register_methods!(rj::ReactionExample5)
 end
 
 # do method, called each main loop timestep
-function do_example5(m::PB.ReactionMethod, (varsdata, ), cellrange::PB.AbstractCellRange, deltat)
+function do_example5(m::PB.ReactionMethod, pars, (varsdata, ), cellrange::PB.AbstractCellRange, deltat)
     rj = m.reaction
     (IsotopeType, ) = m.p
 
     # mol yr-1                   yr-1           mol
-    varsdata.decay_flux[] = rj.pars.kappa.v * @PB.isotope_totaldelta(IsotopeType, 
+    varsdata.decay_flux[] = pars.kappa[] * @PB.isotope_totaldelta(IsotopeType, 
                                                 PB.get_total(varsdata.input_particle[]), # total
-                                                varsdata.input_particle_delta[] + rj.pars.Delta.v) # delta
+                                                varsdata.input_particle_delta[] + pars.Delta[]) # delta
 
     varsdata.input_particle_sms[] -= varsdata.decay_flux[]
 

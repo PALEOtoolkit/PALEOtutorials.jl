@@ -32,11 +32,11 @@ function PB.register_methods!(rj::ReactionExample3)
 end
 
 # do method, called each main loop timestep
-function do_example3(m::PB.ReactionMethod, (varsdata, ), cellrange::PB.AbstractCellRange, deltat)
+function do_example3(m::PB.ReactionMethod, pars, (varsdata, ), cellrange::PB.AbstractCellRange, deltat)
     rj = m.reaction
 
     # mol yr-1                   yr-1           mol
-    varsdata.decay_flux[] = rj.pars.kappa.v * varsdata.input_particle[]
+    varsdata.decay_flux[] = pars.kappa[] * varsdata.input_particle[]
 
     varsdata.input_particle_sms[] -= varsdata.decay_flux[]
 
