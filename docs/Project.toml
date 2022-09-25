@@ -11,7 +11,7 @@ Sundials = "c3572dad-4567-51f8-b174-8c6c989267f4"
 [compat]
 Documenter = "0.27"
 DocumenterCitations = "0.2"
-PALEOboxes = "0.20.2"
+PALEOboxes = "0.20.4, 0.21"
 PALEOmodel = "0.15.3"
 Revise = "3.1"
 julia = "1.6"
