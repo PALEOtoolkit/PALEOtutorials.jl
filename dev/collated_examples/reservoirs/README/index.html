@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Reservoirs and fluxes · PALEOtutorials Documentation</title><script data-outdated-warner src="../../../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.045/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.24/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../../assets/documenter.js"></script><script src="../../../siteinfo.js"></script><script src="../../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../../../">PALEOtutorials Documentation</a></span></div><form class="docs-search" action="../../../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../../../">PALEOtutorials.jl documentation</a></li><li><span class="tocitem">Examples and Tutorials</span><ul><li><a class="tocitem" href="../../../ExampleInstallConfig/">Installation and initial configuration</a></li><li><input class="collapse-toggle" id="menuitem-2-2" type="checkbox" checked/><label class="tocitem" for="menuitem-2-2"><span class="docs-label">reservoirs</span><i class="docs-chevron"></i></label><ul class="collapsed"><li class="is-active"><a class="tocitem" href>Reservoirs and fluxes</a><ul class="internal"><li><a class="tocitem" href="#Example-1-A-minimal-self-contained-PALEO-reaction"><span>Example 1 A minimal self-contained PALEO reaction</span></a></li><li><a class="tocitem" href="#Example-2-Using-a-PALEO-Reservoir"><span>Example 2 Using a PALEO Reservoir</span></a></li><li><a class="tocitem" href="#Example-3-Transfer-between-two-Reservoirs"><span>Example 3 Transfer between two Reservoirs</span></a></li><li><a class="tocitem" href="#Example-4-Transfer-between-Domains"><span>Example 4 Transfer between Domains</span></a></li><li><a class="tocitem" href="#Example-5-Isotopes-and-Rayleigh-fractionation"><span>Example 5 Isotopes and Rayleigh fractionation</span></a></li></ul></li></ul></li><li><input class="collapse-toggle" id="menuitem-2-3" type="checkbox"/><label class="tocitem" for="menuitem-2-3"><span class="docs-label">solvers</span><i class="docs-chevron"></i></label><ul class="collapsed"><li><a class="tocitem" href="../../solvers/README/">ODE solvers</a></li></ul></li><li><input class="collapse-toggle" id="menuitem-2-4" type="checkbox"/><label class="tocitem" for="menuitem-2-4"><span class="docs-label">error_examples</span><i class="docs-chevron"></i></label><ul class="collapsed"><li><a class="tocitem" href="../../error_examples/README/">Configuration Errors</a></li></ul></li><li><input class="collapse-toggle" id="menuitem-2-5" type="checkbox"/><label class="tocitem" for="menuitem-2-5"><span class="docs-label">CPU</span><i class="docs-chevron"></i></label><ul class="collapsed"><li><a class="tocitem" href="../../CPU/README/">CPU (Carbon, Phosphorus, Uranium) model</a></li></ul></li></ul></li><li><span class="tocitem">HOWTOS</span><ul><li><a class="tocitem" href="../../../HOWTOJuliaUsage/">Julia usage</a></li><li><a class="tocitem" href="../../../HOWTOadditionalconfig/">Optional additional configuration</a></li><li><a class="tocitem" href="../../../HOWTOminimalGit/">Minimal git workflow for scientific collaboration and reproducibility</a></li><li><a class="tocitem" href="../../../HOWTOPython/">Configuring for Julia - python interoperability</a></li></ul></li><li><a class="tocitem" href="../../../References/">References</a></li><li><a class="tocitem" href="../../../indexpage/">Index</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Examples and Tutorials</a></li><li><a class="is-disabled">reservoirs</a></li><li class="is-active"><a href>Reservoirs and fluxes</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Reservoirs and fluxes</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/PALEOtoolkit/PALEOtutorials.jl/blob/main/docs/src/collated_examples/reservoirs/README.md" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="Reservoirs-and-fluxes"><a class="docs-heading-anchor" href="#Reservoirs-and-fluxes">Reservoirs and fluxes</a><a id="Reservoirs-and-fluxes-1"></a><a class="docs-heading-anchor-permalink" href="#Reservoirs-and-fluxes" title="Permalink"></a></h1><p>These examples illustrate how to code a PALEO Reaction and configure a model, working through a minimal example of first order decay or transformation of a scalar biogeochemical reservoir <span>$A$</span> into a second reservoir <span>$B$</span> via a flux <span>$F$</span>, with equations:</p><p class="math-container">\[F = \kappa A\]</p><p class="math-container">\[\frac{dA}{dt} = - F \\\]</p><p class="math-container">\[\frac{dB}{dt} =   F \\\]</p><h2 id="Example-1-A-minimal-self-contained-PALEO-reaction"><a class="docs-heading-anchor" href="#Example-1-A-minimal-self-contained-PALEO-reaction">Example 1 A minimal self-contained PALEO reaction</a><a id="Example-1-A-minimal-self-contained-PALEO-reaction-1"></a><a class="docs-heading-anchor-permalink" href="#Example-1-A-minimal-self-contained-PALEO-reaction" title="Permalink"></a></h2><p>This is verbose as we have to (re)implement Variable setup and initialisation as well as the biogeochemical reaction of interest, but illustrates the structure of a PALEO model.</p><div class="admonition is-info"><header class="admonition-header">Info</header><div class="admonition-body"><p>This verbose approach is not usually required, it is usually simpler to use predefined PALEO Reservoirs as described below, <a href="#Example-2-Using-a-PALEO-Reservoir">Example 2 Using a PALEO Reservoir</a></p></div></div><p>The code to implement a self-contained PALEO reaction is in file <code>examples/reservoirs/reactions_ex1.jl</code>, and needs to provide three methods for Variable setup, initialization at the start of the main loop, as well as the actual main loop do method. Variables are labelled as state Variables and derivatives by setting the <code>:vfunction</code> attribute to <code>VF_StateExplicit</code> and <code>VF_Deriv</code>.</p><pre><code class="language-julia hljs">module Example1
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Reservoirs and fluxes · PALEOtutorials Documentation</title><script data-outdated-warner src="../../../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.045/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.24/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../../assets/documenter.js"></script><script src="../../../siteinfo.js"></script><script src="../../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../../../">PALEOtutorials Documentation</a></span></div><form class="docs-search" action="../../../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../../../">PALEOtutorials.jl documentation</a></li><li><span class="tocitem">Examples and Tutorials</span><ul><li><a class="tocitem" href="../../../ExampleInstallConfig/">Installation and initial configuration</a></li><li><input class="collapse-toggle" id="menuitem-2-2" type="checkbox" checked/><label class="tocitem" for="menuitem-2-2"><span class="docs-label">reservoirs</span><i class="docs-chevron"></i></label><ul class="collapsed"><li class="is-active"><a class="tocitem" href>Reservoirs and fluxes</a><ul class="internal"><li><a class="tocitem" href="#Example-1-A-minimal-self-contained-PALEO-reaction"><span>Example 1 A minimal self-contained PALEO reaction</span></a></li><li><a class="tocitem" href="#Example-2-Using-a-PALEO-Reservoir"><span>Example 2 Using a PALEO Reservoir</span></a></li><li><a class="tocitem" href="#Example-3-Transfer-between-two-Reservoirs"><span>Example 3 Transfer between two Reservoirs</span></a></li><li><a class="tocitem" href="#Example-4-Transfer-between-Domains"><span>Example 4 Transfer between Domains</span></a></li><li><a class="tocitem" href="#Example-5-Isotopes-and-Rayleigh-fractionation"><span>Example 5 Isotopes and Rayleigh fractionation</span></a></li></ul></li></ul></li><li><input class="collapse-toggle" id="menuitem-2-3" type="checkbox"/><label class="tocitem" for="menuitem-2-3"><span class="docs-label">solvers</span><i class="docs-chevron"></i></label><ul class="collapsed"><li><a class="tocitem" href="../../solvers/README/">ODE solvers</a></li></ul></li><li><input class="collapse-toggle" id="menuitem-2-4" type="checkbox"/><label class="tocitem" for="menuitem-2-4"><span class="docs-label">error_examples</span><i class="docs-chevron"></i></label><ul class="collapsed"><li><a class="tocitem" href="../../error_examples/README/">Configuration Errors</a></li></ul></li><li><input class="collapse-toggle" id="menuitem-2-5" type="checkbox"/><label class="tocitem" for="menuitem-2-5"><span class="docs-label">CPU</span><i class="docs-chevron"></i></label><ul class="collapsed"><li><a class="tocitem" href="../../CPU/README/">CPU (Carbon, Phosphorus, Uranium) model</a></li></ul></li><li><input class="collapse-toggle" id="menuitem-2-6" type="checkbox"/><label class="tocitem" for="menuitem-2-6"><span class="docs-label">CPU_modular</span><i class="docs-chevron"></i></label><ul class="collapsed"><li><a class="tocitem" href="../../CPU_modular/README/">CPU (Carbon, Phosphorus, Uranium) model</a></li></ul></li></ul></li><li><span class="tocitem">HOWTOS</span><ul><li><a class="tocitem" href="../../../HOWTOJuliaUsage/">Julia usage</a></li><li><a class="tocitem" href="../../../HOWTOadditionalconfig/">Optional additional configuration</a></li><li><a class="tocitem" href="../../../HOWTOminimalGit/">Minimal git workflow for scientific collaboration and reproducibility</a></li><li><a class="tocitem" href="../../../HOWTOPython/">Configuring for Julia - python interoperability</a></li></ul></li><li><a class="tocitem" href="../../../References/">References</a></li><li><a class="tocitem" href="../../../indexpage/">Index</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Examples and Tutorials</a></li><li><a class="is-disabled">reservoirs</a></li><li class="is-active"><a href>Reservoirs and fluxes</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Reservoirs and fluxes</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/PALEOtoolkit/PALEOtutorials.jl/blob/main/docs/src/collated_examples/reservoirs/README.md" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="Reservoirs-and-fluxes"><a class="docs-heading-anchor" href="#Reservoirs-and-fluxes">Reservoirs and fluxes</a><a id="Reservoirs-and-fluxes-1"></a><a class="docs-heading-anchor-permalink" href="#Reservoirs-and-fluxes" title="Permalink"></a></h1><p>These examples illustrate how to code a PALEO Reaction and configure a model, working through a minimal example of first order decay or transformation of a scalar biogeochemical reservoir <span>$A$</span> into a second reservoir <span>$B$</span> via a flux <span>$F$</span>, with equations:</p><p class="math-container">\[F = \kappa A\]</p><p class="math-container">\[\frac{dA}{dt} = - F \\\]</p><p class="math-container">\[\frac{dB}{dt} =   F \\\]</p><h2 id="Example-1-A-minimal-self-contained-PALEO-reaction"><a class="docs-heading-anchor" href="#Example-1-A-minimal-self-contained-PALEO-reaction">Example 1 A minimal self-contained PALEO reaction</a><a id="Example-1-A-minimal-self-contained-PALEO-reaction-1"></a><a class="docs-heading-anchor-permalink" href="#Example-1-A-minimal-self-contained-PALEO-reaction" title="Permalink"></a></h2><p>This is verbose as we have to (re)implement Variable setup and initialisation as well as the biogeochemical reaction of interest, but illustrates the structure of a PALEO model.</p><div class="admonition is-info"><header class="admonition-header">Info</header><div class="admonition-body"><p>This verbose approach is not usually required, it is usually simpler to use predefined PALEO Reservoirs as described below, <a href="#Example-2-Using-a-PALEO-Reservoir">Example 2 Using a PALEO Reservoir</a></p></div></div><p>The code to implement a self-contained PALEO reaction is in file <code>examples/reservoirs/reactions_ex1.jl</code>, and needs to provide three methods for Variable setup, initialization at the start of the main loop, as well as the actual main loop do method. Variables are labelled as state Variables and derivatives by setting the <code>:vfunction</code> attribute to <code>VF_StateExplicit</code> and <code>VF_Deriv</code>.</p><pre><code class="language-julia hljs">module Example1
 
 import PALEOboxes as PB
 
@@ -161,10 +161,10 @@ display(plot(run.output, &quot;global.decay_flux&quot;))</code></pre><p>And prod
 [ Info: link_variables second pass:
 [ Info: link_variables unlinked variables:
 [ Info: ================================================================================
-[ Info: allocate_variables!
+[ Info: allocate_variables! (modeldata arrays_idx=1)
 [ Info: ================================================================================
 [ Info: Domain global               data dimensions PALEOboxes.NamedDimension[] allocating 3    variables (hostdep=nothing)
-┌ Info: create_solver_view:
+┌ Info: SolverView:
 │     host-dependent Variables:
 │     ------------------------------------------------------------------------------------------------------------------------------
 │     Domain                  operatorID  VF_StateExplicit  VF_Total          VF_Constraint     VF_State          VF_Undefined
@@ -177,7 +177,7 @@ display(plot(run.output, &quot;global.decay_flux&quot;))</code></pre><p>And prod
 │   including all host-dependent non-state Variables
 └   host-dependent non-state Variables (:vfunction PB.VF_Undefined): Any[]
 [ Info: ================================================================================
-[ Info: initialize_reactiondata!
+[ Info: initialize_reactiondata! (modeldata arrays_indices=1:1)
 [ Info: ================================================================================
 [ Info: ================================================================================
 [ Info: dispatch_setup :setup
@@ -199,13 +199,13 @@ integrate, ODE
 │ integrate:  ODEProblem using algorithm: Sundials.CVODE_BDF{:Newton, :Dense, Nothing, Nothing}(0, 0, 0, false, 10, 5, 7, 3, 10, nothing, nothing, 0) Jacobian NoJacobian
 │     using BLAS with 1 threads
 └ ================================================================================
-  1.771710 seconds (3.53 M allocations: 246.363 MiB, 2.72% gc time, 99.73% compilation time)
+  1.584875 seconds (2.04 M allocations: 114.941 MiB, 3.70% gc time, 99.56% compilation time)
 ┌ Info: ================================================================================
 │ print_sol_stats:
 │   retcode=Success
 │   nsteps 75
 │   alg=Sundials.CVODE_BDF{:Newton, :Dense, Nothing, Nothing}(0, 0, 0, false, 10, 5, 7, 3, 10, nothing, nothing, 0)
-│   DiffEqBase.DEStats
+│   DiffEqBase.Stats
 │ Number of function 1 evaluations:                  92
 │ Number of function 2 evaluations:                  0
 │ Number of W matrix evaluations:                    11
@@ -221,7 +221,7 @@ integrate, ODE
 └ ================================================================================
 [ Info: ODE.calc_output_sol!: 75 records
 [ Info: ODE.calc_output_sol!: done
-  7.168429 seconds (12.94 M allocations: 876.825 MiB, 4.74% gc time, 99.79% compilation time)</code></pre><p><img src="../ex1_plot1.svg" alt/> <img src="../ex1_plot2.svg" alt/></p><h2 id="Example-2-Using-a-PALEO-Reservoir"><a class="docs-heading-anchor" href="#Example-2-Using-a-PALEO-Reservoir">Example 2 Using a PALEO Reservoir</a><a id="Example-2-Using-a-PALEO-Reservoir-1"></a><a class="docs-heading-anchor-permalink" href="#Example-2-Using-a-PALEO-Reservoir" title="Permalink"></a></h2><p>The standard way to configure PALEO models is to use a combination of ReactionReservoirs (from the <a href="https://paleotoolkit.github.io/PALEOboxes.jl/stable/ReactionCatalog/#Reservoirs"><code>Reaction catalog</code></a> provided by the <code>PALEOboxes</code> package) to define model state Variables and provide setup and initialisation, and then link to these Variables from other Reactions.</p><p>In this example, the Reaction code now only needs to implement a &#39;do&#39; method (file <code>examples/reservoirs/reactions_ex2.jl</code>):</p><pre><code class="language-julia hljs">module Example2
+ 10.941625 seconds (11.97 M allocations: 665.088 MiB, 2.80% gc time, 99.81% compilation time: 13% of which was recompilation)</code></pre><p><img src="../ex1_plot1.svg" alt/> <img src="../ex1_plot2.svg" alt/></p><h2 id="Example-2-Using-a-PALEO-Reservoir"><a class="docs-heading-anchor" href="#Example-2-Using-a-PALEO-Reservoir">Example 2 Using a PALEO Reservoir</a><a id="Example-2-Using-a-PALEO-Reservoir-1"></a><a class="docs-heading-anchor-permalink" href="#Example-2-Using-a-PALEO-Reservoir" title="Permalink"></a></h2><p>The standard way to configure PALEO models is to use a combination of ReactionReservoirs (from the <a href="https://paleotoolkit.github.io/PALEOboxes.jl/stable/ReactionCatalog/#Reservoirs"><code>Reaction catalog</code></a> provided by the <code>PALEOboxes</code> package) to define model state Variables and provide setup and initialisation, and then link to these Variables from other Reactions.</p><p>In this example, the Reaction code now only needs to implement a &#39;do&#39; method (file <code>examples/reservoirs/reactions_ex2.jl</code>):</p><pre><code class="language-julia hljs">module Example2
 
 import PALEOboxes as PB
 
@@ -361,10 +361,10 @@ display(plot(run.output, &quot;global.decay_flux&quot;))
 [ Info: link_variables second pass:
 [ Info: link_variables unlinked variables:
 [ Info: ================================================================================
-[ Info: allocate_variables!
+[ Info: allocate_variables! (modeldata arrays_idx=1)
 [ Info: ================================================================================
 [ Info: Domain global               data dimensions PALEOboxes.NamedDimension[] allocating 4    variables (hostdep=nothing)
-┌ Info: create_solver_view:
+┌ Info: SolverView:
 │     host-dependent Variables:
 │     ------------------------------------------------------------------------------------------------------------------------------
 │     Domain                  operatorID  VF_StateExplicit  VF_Total          VF_Constraint     VF_State          VF_Undefined
@@ -377,7 +377,7 @@ display(plot(run.output, &quot;global.decay_flux&quot;))
 │   including all host-dependent non-state Variables
 └   host-dependent non-state Variables (:vfunction PB.VF_Undefined): Any[]
 [ Info: ================================================================================
-[ Info: initialize_reactiondata!
+[ Info: initialize_reactiondata! (modeldata arrays_indices=1:1)
 [ Info: ================================================================================
 [ Info: ================================================================================
 [ Info: dispatch_setup :setup
@@ -401,13 +401,13 @@ integrate, ODE
 │ integrate:  ODEProblem using algorithm: Sundials.CVODE_BDF{:Newton, :Dense, Nothing, Nothing}(0, 0, 0, false, 10, 5, 7, 3, 10, nothing, nothing, 0) Jacobian NoJacobian
 │     using BLAS with 1 threads
 └ ================================================================================
-  0.665522 seconds (1.12 M allocations: 62.353 MiB, 6.14% gc time, 99.84% compilation time)
+  0.900852 seconds (1.04 M allocations: 57.994 MiB, 99.75% compilation time)
 ┌ Info: ================================================================================
 │ print_sol_stats:
 │   retcode=Success
 │   nsteps 75
 │   alg=Sundials.CVODE_BDF{:Newton, :Dense, Nothing, Nothing}(0, 0, 0, false, 10, 5, 7, 3, 10, nothing, nothing, 0)
-│   DiffEqBase.DEStats
+│   DiffEqBase.Stats
 │ Number of function 1 evaluations:                  92
 │ Number of function 2 evaluations:                  0
 │ Number of W matrix evaluations:                    11
@@ -423,7 +423,7 @@ integrate, ODE
 └ ================================================================================
 [ Info: ODE.calc_output_sol!: 75 records
 [ Info: ODE.calc_output_sol!: done
-  0.816195 seconds (1.30 M allocations: 73.663 MiB, 5.01% gc time, 99.20% compilation time)</code></pre><p><img src="../ex2_plot1.svg" alt/> <img src="../ex2_plot2.svg" alt/></p><h2 id="Example-3-Transfer-between-two-Reservoirs"><a class="docs-heading-anchor" href="#Example-3-Transfer-between-two-Reservoirs">Example 3 Transfer between two Reservoirs</a><a id="Example-3-Transfer-between-two-Reservoirs-1"></a><a class="docs-heading-anchor-permalink" href="#Example-3-Transfer-between-two-Reservoirs" title="Permalink"></a></h2><p>Generalizing the Reaction to transfer between two reservoirs.</p><p>The Reaction code (file <code>examples/reservoirs/reactions_ex3.jl</code>) now produces an <code>output_flux</code>, and has been generalized to operate on a generic <code>input_particle</code> Reservoir:</p><pre><code class="language-julia hljs">module Example3
+  1.108822 seconds (1.22 M allocations: 69.563 MiB, 99.10% compilation time)</code></pre><p><img src="../ex2_plot1.svg" alt/> <img src="../ex2_plot2.svg" alt/></p><h2 id="Example-3-Transfer-between-two-Reservoirs"><a class="docs-heading-anchor" href="#Example-3-Transfer-between-two-Reservoirs">Example 3 Transfer between two Reservoirs</a><a id="Example-3-Transfer-between-two-Reservoirs-1"></a><a class="docs-heading-anchor-permalink" href="#Example-3-Transfer-between-two-Reservoirs" title="Permalink"></a></h2><p>Generalizing the Reaction to transfer between two reservoirs.</p><p>The Reaction code (file <code>examples/reservoirs/reactions_ex3.jl</code>) now produces an <code>output_flux</code>, and has been generalized to operate on a generic <code>input_particle</code> Reservoir:</p><pre><code class="language-julia hljs">module Example3
 
 import PALEOboxes as PB
 
@@ -592,10 +592,10 @@ display(plot(run.output, &quot;global.decay_flux&quot;))</code></pre><p>and prod
 [ Info: link_variables second pass:
 [ Info: link_variables unlinked variables:
 [ Info: ================================================================================
-[ Info: allocate_variables!
+[ Info: allocate_variables! (modeldata arrays_idx=1)
 [ Info: ================================================================================
 [ Info: Domain global               data dimensions PALEOboxes.NamedDimension[] allocating 7    variables (hostdep=nothing)
-┌ Info: create_solver_view:
+┌ Info: SolverView:
 │     host-dependent Variables:
 │     ------------------------------------------------------------------------------------------------------------------------------
 │     Domain                  operatorID  VF_StateExplicit  VF_Total          VF_Constraint     VF_State          VF_Undefined
@@ -608,7 +608,7 @@ display(plot(run.output, &quot;global.decay_flux&quot;))</code></pre><p>and prod
 │   including all host-dependent non-state Variables
 └   host-dependent non-state Variables (:vfunction PB.VF_Undefined): Any[]
 [ Info: ================================================================================
-[ Info: initialize_reactiondata!
+[ Info: initialize_reactiondata! (modeldata arrays_indices=1:1)
 [ Info: ================================================================================
 [ Info: ================================================================================
 [ Info: dispatch_setup :setup
@@ -636,13 +636,13 @@ integrate, ODE
 │ integrate:  ODEProblem using algorithm: Sundials.CVODE_BDF{:Newton, :Dense, Nothing, Nothing}(0, 0, 0, false, 10, 5, 7, 3, 10, nothing, nothing, 0) Jacobian NoJacobian
 │     using BLAS with 1 threads
 └ ================================================================================
-  0.700722 seconds (1.14 M allocations: 63.448 MiB, 6.30% gc time, 99.83% compilation time)
+  0.973302 seconds (1.04 M allocations: 57.983 MiB, 10.41% gc time, 99.76% compilation time)
 ┌ Info: ================================================================================
 │ print_sol_stats:
 │   retcode=Success
 │   nsteps 55
 │   alg=Sundials.CVODE_BDF{:Newton, :Dense, Nothing, Nothing}(0, 0, 0, false, 10, 5, 7, 3, 10, nothing, nothing, 0)
-│   DiffEqBase.DEStats
+│   DiffEqBase.Stats
 │ Number of function 1 evaluations:                  64
 │ Number of function 2 evaluations:                  0
 │ Number of W matrix evaluations:                    16
@@ -658,7 +658,7 @@ integrate, ODE
 └ ================================================================================
 [ Info: ODE.calc_output_sol!: 55 records
 [ Info: ODE.calc_output_sol!: done
-  0.876305 seconds (1.33 M allocations: 75.567 MiB, 5.04% gc time, 99.25% compilation time)</code></pre><p><img src="../ex3_plot1.svg" alt/> <img src="../ex3_plot2.svg" alt/></p><h2 id="Example-4-Transfer-between-Domains"><a class="docs-heading-anchor" href="#Example-4-Transfer-between-Domains">Example 4 Transfer between Domains</a><a id="Example-4-Transfer-between-Domains-1"></a><a class="docs-heading-anchor-permalink" href="#Example-4-Transfer-between-Domains" title="Permalink"></a></h2><p>The <code>ReactionExample3</code> from the previous example can be reused in a different model configuration that includes flux transfer between Reservoirs in two Domains. </p><p>The model configuration (file <code>examples/reservoirs/config_ex4.yaml</code>) contains two Domains <code>Box1</code> and <code>Box2</code>, and a flux coupler Domain <code>fluxBoxes</code>.  The <code>ReactionSum</code> in the <code>global</code> Domain tracks conservation:</p><pre><code class="language-julia hljs">############################################
+  1.222442 seconds (1.24 M allocations: 70.360 MiB, 8.29% gc time, 99.15% compilation time)</code></pre><p><img src="../ex3_plot1.svg" alt/> <img src="../ex3_plot2.svg" alt/></p><h2 id="Example-4-Transfer-between-Domains"><a class="docs-heading-anchor" href="#Example-4-Transfer-between-Domains">Example 4 Transfer between Domains</a><a id="Example-4-Transfer-between-Domains-1"></a><a class="docs-heading-anchor-permalink" href="#Example-4-Transfer-between-Domains" title="Permalink"></a></h2><p>The <code>ReactionExample3</code> from the previous example can be reused in a different model configuration that includes flux transfer between Reservoirs in two Domains. </p><p>The model configuration (file <code>examples/reservoirs/config_ex4.yaml</code>) contains two Domains <code>Box1</code> and <code>Box2</code>, and a flux coupler Domain <code>fluxBoxes</code>.  The <code>ReactionSum</code> in the <code>global</code> Domain tracks conservation:</p><pre><code class="language-julia hljs">############################################
 # Example 4
 # First order decay of a scalar variable
 # with transfer of flux to a second variable
@@ -840,13 +840,13 @@ display(plot(run.output, [&quot;Box1.decay_flux&quot;, &quot;fluxBoxes.flux_B&qu
 [ Info: link_variables second pass:
 [ Info: link_variables unlinked variables:
 [ Info: ================================================================================
-[ Info: allocate_variables!
+[ Info: allocate_variables! (modeldata arrays_idx=1)
 [ Info: ================================================================================
 [ Info: Domain global               data dimensions PALEOboxes.NamedDimension[] allocating 1    variables (hostdep=nothing)
 [ Info: Domain fluxBoxes            data dimensions PALEOboxes.NamedDimension[] allocating 1    variables (hostdep=nothing)
 [ Info: Domain Box2                 data dimensions PALEOboxes.NamedDimension[] allocating 3    variables (hostdep=nothing)
 [ Info: Domain Box1                 data dimensions PALEOboxes.NamedDimension[] allocating 4    variables (hostdep=nothing)
-┌ Info: create_solver_view:
+┌ Info: SolverView:
 │     host-dependent Variables:
 │     ------------------------------------------------------------------------------------------------------------------------------
 │     Domain                  operatorID  VF_StateExplicit  VF_Total          VF_Constraint     VF_State          VF_Undefined
@@ -862,7 +862,7 @@ display(plot(run.output, [&quot;Box1.decay_flux&quot;, &quot;fluxBoxes.flux_B&qu
 │   including all host-dependent non-state Variables
 └   host-dependent non-state Variables (:vfunction PB.VF_Undefined): Any[]
 [ Info: ================================================================================
-[ Info: initialize_reactiondata!
+[ Info: initialize_reactiondata! (modeldata arrays_indices=1:1)
 [ Info: ================================================================================
 [ Info: prepare_do_transfer: ReactionMethod Box2.transfer_fluxBoxes.do_transfer
 [ Info:   active fluxes:
@@ -894,13 +894,13 @@ integrate, ODE
 │ integrate:  ODEProblem using algorithm: Sundials.CVODE_BDF{:Newton, :Dense, Nothing, Nothing}(0, 0, 0, false, 10, 5, 7, 3, 10, nothing, nothing, 0) Jacobian NoJacobian
 │     using BLAS with 1 threads
 └ ================================================================================
-  0.683606 seconds (1.12 M allocations: 62.376 MiB, 6.29% gc time, 99.82% compilation time)
+  0.888674 seconds (1.04 M allocations: 57.980 MiB, 99.81% compilation time)
 ┌ Info: ================================================================================
 │ print_sol_stats:
 │   retcode=Success
 │   nsteps 55
 │   alg=Sundials.CVODE_BDF{:Newton, :Dense, Nothing, Nothing}(0, 0, 0, false, 10, 5, 7, 3, 10, nothing, nothing, 0)
-│   DiffEqBase.DEStats
+│   DiffEqBase.Stats
 │ Number of function 1 evaluations:                  64
 │ Number of function 2 evaluations:                  0
 │ Number of W matrix evaluations:                    16
@@ -916,7 +916,7 @@ integrate, ODE
 └ ================================================================================
 [ Info: ODE.calc_output_sol!: 55 records
 [ Info: ODE.calc_output_sol!: done
-  0.839746 seconds (1.30 M allocations: 73.785 MiB, 5.12% gc time, 99.23% compilation time)</code></pre><p><img src="../ex4_plot1.svg" alt/> <img src="../ex4_plot2.svg" alt/></p><h2 id="Example-5-Isotopes-and-Rayleigh-fractionation"><a class="docs-heading-anchor" href="#Example-5-Isotopes-and-Rayleigh-fractionation">Example 5 Isotopes and Rayleigh fractionation</a><a id="Example-5-Isotopes-and-Rayleigh-fractionation-1"></a><a class="docs-heading-anchor-permalink" href="#Example-5-Isotopes-and-Rayleigh-fractionation" title="Permalink"></a></h2><p>PALEO Variables can represent isotopes by setting the <code>:field_data</code> Attribute. Currently <code>IsotopeLinear</code> is supported, which represents a linearized approximation to a single isotope using two components <code>total</code> and <code>total x delta</code>.  Standard arithmetic (additon/subtraction, multiplication by a scalar) is supported.</p><p>The Reaction code (file <code>examples/reservoirs/reactions_ex5.jl</code>) now requires additional Parameters <code>field_data</code> to set the data type, and <code>Delta</code> to set the fractionation assumed to occur during the decay/transfer. </p><pre><code class="language-julia hljs">module Example5
+  1.106551 seconds (1.22 M allocations: 69.643 MiB, 99.15% compilation time)</code></pre><p><img src="../ex4_plot1.svg" alt/> <img src="../ex4_plot2.svg" alt/></p><h2 id="Example-5-Isotopes-and-Rayleigh-fractionation"><a class="docs-heading-anchor" href="#Example-5-Isotopes-and-Rayleigh-fractionation">Example 5 Isotopes and Rayleigh fractionation</a><a id="Example-5-Isotopes-and-Rayleigh-fractionation-1"></a><a class="docs-heading-anchor-permalink" href="#Example-5-Isotopes-and-Rayleigh-fractionation" title="Permalink"></a></h2><p>PALEO Variables can represent isotopes by setting the <code>:field_data</code> Attribute. Currently <code>IsotopeLinear</code> is supported, which represents a linearized approximation to a single isotope using two components <code>total</code> and <code>total x delta</code>.  Standard arithmetic (additon/subtraction, multiplication by a scalar) is supported.</p><p>The Reaction code (file <code>examples/reservoirs/reactions_ex5.jl</code>) now requires additional Parameters <code>field_data</code> to set the data type, and <code>Delta</code> to set the fractionation assumed to occur during the decay/transfer. </p><pre><code class="language-julia hljs">module Example5
 
 import PALEOboxes as PB
 
@@ -1179,13 +1179,13 @@ display(plot(run.output, [&quot;Box1.A_delta&quot;, &quot;Box1.decay_flux.v_delt
 [ Info: link_variables second pass:
 [ Info: link_variables unlinked variables:
 [ Info: ================================================================================
-[ Info: allocate_variables!
+[ Info: allocate_variables! (modeldata arrays_idx=1)
 [ Info: ================================================================================
 [ Info: Domain global               data dimensions PALEOboxes.NamedDimension[] allocating 1    variables (hostdep=nothing)
 [ Info: Domain fluxBoxes            data dimensions PALEOboxes.NamedDimension[] allocating 1    variables (hostdep=nothing)
 [ Info: Domain Box2                 data dimensions PALEOboxes.NamedDimension[] allocating 4    variables (hostdep=nothing)
 [ Info: Domain Box1                 data dimensions PALEOboxes.NamedDimension[] allocating 5    variables (hostdep=nothing)
-┌ Info: create_solver_view:
+┌ Info: SolverView:
 │     host-dependent Variables:
 │     ------------------------------------------------------------------------------------------------------------------------------
 │     Domain                  operatorID  VF_StateExplicit  VF_Total          VF_Constraint     VF_State          VF_Undefined
@@ -1201,7 +1201,7 @@ display(plot(run.output, [&quot;Box1.A_delta&quot;, &quot;Box1.decay_flux.v_delt
 │   including all host-dependent non-state Variables
 └   host-dependent non-state Variables (:vfunction PB.VF_Undefined): Any[]
 [ Info: ================================================================================
-[ Info: initialize_reactiondata!
+[ Info: initialize_reactiondata! (modeldata arrays_indices=1:1)
 [ Info: ================================================================================
 [ Info: prepare_do_transfer: ReactionMethod Box2.transfer_fluxBoxes.do_transfer
 [ Info:   active fluxes:
@@ -1233,13 +1233,13 @@ integrate, ODE
 │ integrate:  ODEProblem using algorithm: Sundials.CVODE_BDF{:Newton, :Dense, Nothing, Nothing}(0, 0, 0, false, 10, 5, 7, 3, 10, nothing, nothing, 0) Jacobian NoJacobian
 │     using BLAS with 1 threads
 └ ================================================================================
-  0.712295 seconds (1.15 M allocations: 63.943 MiB, 6.10% gc time, 99.84% compilation time)
+  0.880796 seconds (1.04 M allocations: 57.998 MiB, 99.77% compilation time)
 ┌ Info: ================================================================================
 │ print_sol_stats:
 │   retcode=Success
 │   nsteps 67
 │   alg=Sundials.CVODE_BDF{:Newton, :Dense, Nothing, Nothing}(0, 0, 0, false, 10, 5, 7, 3, 10, nothing, nothing, 0)
-│   DiffEqBase.DEStats
+│   DiffEqBase.Stats
 │ Number of function 1 evaluations:                  80
 │ Number of function 2 evaluations:                  0
 │ Number of W matrix evaluations:                    20
@@ -1255,4 +1255,4 @@ integrate, ODE
 └ ================================================================================
 [ Info: ODE.calc_output_sol!: 67 records
 [ Info: ODE.calc_output_sol!: done
-  1.029807 seconds (1.47 M allocations: 83.284 MiB, 4.22% gc time, 99.23% compilation time)</code></pre><p><img src="../ex5_plot1.svg" alt/> <img src="../ex5_plot2.svg" alt/> <img src="../ex5_plot3.svg" alt/></p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../../ExampleInstallConfig/">« Installation and initial configuration</a><a class="docs-footer-nextpage" href="../../solvers/README/">ODE solvers »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Sunday 25 September 2022 10:06">Sunday 25 September 2022</span>. Using Julia version 1.8.1.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+  1.318839 seconds (1.37 M allocations: 77.663 MiB, 99.09% compilation time)</code></pre><p><img src="../ex5_plot1.svg" alt/> <img src="../ex5_plot2.svg" alt/> <img src="../ex5_plot3.svg" alt/></p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../../ExampleInstallConfig/">« Installation and initial configuration</a><a class="docs-footer-nextpage" href="../../solvers/README/">ODE solvers »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.24 on <span class="colophon-date" title="Thursday 6 April 2023 09:28">Thursday 6 April 2023</span>. Using Julia version 1.8.5.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
