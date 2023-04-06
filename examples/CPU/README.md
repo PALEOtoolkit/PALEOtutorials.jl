@@ -21,7 +21,7 @@ In `VS code`, right click on `PALEOtutorials/examples` or any subfolder in the f
  
 ## To run the CPU example with a default 3e18 mol C perturbation
    
-    julia> include("CPU.jl")
+    julia> include("CPU_examples.jl")
 
 This will run and plot output (NB: the first run will be slow as Julia JIT compiles the code).
 

@@ -16,7 +16,7 @@ include("CPU_modular_reactions.jl")
 include("CPU_modular_expts.jl")
 
 # baseline steady-state
-# model = CPU_expts([])
+# model = CPU_modular_expts([])
 
 # LIP CO2 input
 model = CPU_modular_expts([("LIP", 3e18)])

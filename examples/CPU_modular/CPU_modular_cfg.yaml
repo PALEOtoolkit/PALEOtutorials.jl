@@ -1,0 +1,233 @@
+########################################################
+# Carbon, Phosphorus, Uranian model from Clarkson etal (2018), Zhang etal (2020)
+# This effectively a stripped-down version of COPSE, 
+# omitting oxygen, sulphur, all sedimentary reservoirs,
+# and models for land and marine biota
+#
+# Modular version, with `atm` and `ocean` Domains
+########################################################
+CPU_Zhang2020:
+    parameters:
+        # model-wide Parameters
+        # These will be read by any Reaction Parameter that has 'external=true',
+        # or can be used to set any Reaction Parameter explicitly as eg 'external%CIsotope'
+        CIsotope: IsotopeLinear       
+        UIsotope: IsotopeLinear
+    domains:
+        fluxAtoLand:
+            
+            reactions:               
+                target:
+                    class: ReactionFluxTarget
+                    parameters:
+                        fluxlist: ["CO2::CIsotope"]                   
+
+        fluxRtoOcean:
+            
+            reactions:
+                target:
+                    class: ReactionFluxTarget                   
+                    parameters:                        
+                        fluxlist: ["DIC::CIsotope", "TAlk", "P", "U::UIsotope"]                 
+
+        global:
+            # scalar domain
+            
+            reactions:
+                
+                force_E:                    
+                    class: ReactionForceInterp
+                    parameters:
+                        force_times: [-1e30, 1e30]
+                        force_values: [1.0, 1.0]
+                    variable_links:
+                        F: E
+
+                force_W:                    
+                    class: ReactionForceInterp
+                    parameters:
+                        force_times: [-1e30, 1e30]
+                        force_values: [1.0, 1.0]
+                    variable_links:
+                        F: W
+
+                force_V:                    
+                    class: ReactionForceInterp
+                    parameters:
+                        force_times: [-1e30, 1e30]
+                        force_values: [1.0, 1.0]
+                    variable_links:
+                        F: V
+
+                force_D:                    
+                    class: ReactionForceInterp
+                    parameters:
+                        force_times: [-1e30, 1e30]
+                        force_values: [1.0, 1.0]
+                    variable_links:
+                        F: D                 
+
+                # set a constant time for (implicit) solar forcing in temp_global
+                tforce_solar:
+                    class: ReactionScalarConst
+                    parameters:
+                        constnames: ["tforce_solar"]
+                    variable_attributes:
+                        tforce_solar%initial_value: 0.0 # -250e6
+                    variable_links:
+                
+                temp_global:
+                    class: ReactionGlobalTemperatureBerner
+        
+                    parameters:                        
+                        k_c:                    4.0   # k_CO2 in Zhang (2020)
+                        k_l:                    7.4   # k_SL in Zhang (2020)
+                    variable_links:
+                        pCO2PAL:       atm.pCO2PAL   
+                        tforce: tforce_solar  # assume solar forcing at tforce_solar constant time
+
+                F_LIP:                    
+                    class: ReactionFluxPerturb
+                    parameters:
+                        field_data: external%CIsotope
+                        perturb_times: [-1e30, 1e30]
+                        perturb_totals: [0.0, 0.0]
+                        perturb_deltas: [0.0, 0.0]
+                    variable_links:
+                        F: atmocean.A_sms           # apply perturbation to the A reservoir
+                        FApplied: F_LIP    # save output for plotting etc
+
+        atm:
+            reactions:
+                force_pO2PAL:
+                    class: ReactionForceInterp
+                    parameters:
+                        force_times: [-1e30, 1e30]
+                        force_values: [1.0, 1.0]
+                    variable_links:
+                        F: pO2PAL
+
+                transfer_AtoLand:
+                    class: ReactionFluxTransfer
+                    parameters:
+                        input_fluxes:         fluxAtoLand.flux_$fluxname$
+                        output_fluxes:        $fluxname$_sms
+                        transfer_multiplier:  -1.0
+                    variable_links:
+                        output_CO2:           atmocean.A_sms  # no CO2 reservoir, so wire up to A
+ 
+
+        land:
+            reactions:
+                land_CPU:
+                    class: ReactionLandCPU
+
+                    parameters:
+                        # Carbon  cycle
+                        # A0 see ReactionReservoirScalar A 
+                        # k_d:         8.0e12       # degassing
+                        # k_w:         8.0e12       # silicate weathering
+                        # k_ox:        9.0e12       # oxidative weathering
+                        # k_carb:      16e12        # carbonate weathering/burial
+                        # k_torg:      4.5e12       # terrestrial organic C burial
+
+                        # Carbon isotopes
+                        # delta_LIP see ReactionFluxInterp LIP forcing
+                        # delta_in:    -5.0         # composition of other inputs
+                        # Delta:       16.0         # organic fractionation factor 25.0 - 9.0 **relative to atmospheric CO2**
+
+                        # Phosphorus cycle
+                        # P0 see ReactionReservoirScalar P
+                        # k_Pw:        72e9         # phosphorus weathering
+                    
+                        # Uranium isotopes
+                        # U0 see ReactionReservoirScalar U
+                        # k_riv:        40e6        # river input
+                        # delta_riv:   -0.26        # Composition of river input
+
+        atmocean:
+            reactions:
+                reservoir_A:
+                    class: ReactionAtmOcean_A
+                    parameters:                        
+                        f_atfrac:   quadratic
+                        delta_atm_ocean: true # provide fractionation for atm pCO2, ocean DIC
+                        fix_cisotopefrac_T: true # calculate fractionation for fixed 15C temperature
+                    
+                    variable_attributes:
+                        A:norm_value:           3.2e18
+                        A:initial_value:        3.2e18
+                        A:initial_delta:        1.8206  # per mil
+
+                    variable_links:
+                        # TEMP:                   global.TEMP
+                        pCO2*:                  atm.pCO2*
+                        D_atmCO2_A:             atm.D_atmCO2_A
+                        CO2_delta:              atm.CO2_delta
+                        D_oceanDIC_A:           ocean.D_oceanDIC_A
+                        DIC_delta:              ocean.DIC_delta
+
+        ocean:
+            reactions:
+                reservoir_P:
+                    class: ReactionReservoirScalar
+                    
+                    variable_links:
+                        R*: P*
+                    variable_attributes:
+                        R:norm_value:           3.1e15
+                        R:initial_value:        3.1e15
+
+                reservoir_U:
+                    class: ReactionReservoirScalar
+                    parameters:
+                        field_data: external%UIsotope
+                    
+                    variable_links:
+                        R*: U*
+                    variable_attributes:
+                        R:norm_value:           1.9e13
+                        R:initial_value:        1.9e13
+                        R:initial_delta:        -0.36  # per mil
+
+                ocean_CPU:
+                    class: ReactionOceanCPU
+
+                    parameters:
+                        # f_anoxic0:   0.0025     # ocean anoxia present day anoxic fraction
+                        # k_anox:      12.0       # ocean anoxia sharpness of transition
+                        # k_u:         0.5        # ocean anoxia nutrient utilization efficiency
+
+                        # Carbon  cycle
+                        # A0 see ReactionReservoirScalar A 
+                        # k_morg:      4.5e12       # marine organic C burial
+
+                        # Carbon isotopes
+                        # Delta:       25.0         # organic fractionation factor **relative to DIC**
+
+                        # Phosphorus cycle
+                        # P0 see ReactionReservoirScalar P
+                        # k_OrgP:      18e9         # organic P burial
+                        # k_FeP:       18e9         # Iron-sorbed P burial
+                        # k_CaP:       36e9         # Ca-bound P burial
+                        # CPoxic:      250.0        # oxic (C/Porg) burial ratio
+                        # CPanoxic:    1000.0       # anoxic (C/Porg) burial ratio
+
+                        # Uranium isotopes
+                        # U0 see ReactionReservoirScalar U
+                        # k_anoxic:     6e6         # anoxic sink
+                        # k_other:      34e6        # other sinks combined
+                        # Delta_anoxic: 0.6         # Anoxic sink fractionation
+                        # Delta_other:  0.005       # Other sinks fractionation
+
+                    variable_links:
+                        DIC_sms:    atmocean.A_sms   # no DIC reservoir, so wire up to atmocean A instead
+                    
+     
+                transfer_RtoOcean:
+                    class: ReactionFluxTransfer
+                    parameters:
+                        input_fluxes:         fluxRtoOcean.flux_$fluxname$
+                        output_fluxes:        $fluxname$_sms                       
+                    variable_links:                        
+                        output_DIC:           atmocean.A_sms # no DIC reservoir, so wire up to A
