@@ -25,10 +25,19 @@ function PB.register_methods!(rj::ReactionExample1)
     # Variables are labelled as state Variables and derivatives by setting the 
     # :vfunction attribute to VF_StateExplicit and VF_Deriv.
     # also need to set :field_data
-    A = PB.VarDepScalar("A",            "mol",      "reservoir for species A",
-                    attributes=(:vfunction=>PB.VF_StateExplicit, :field_data=>PB.ScalarData))
-    A_sms = PB.VarContribScalar("A_sms",    "mol yr-1", "reservoir A source - sink",
+    
+    A = PB.VarStateExplicitScalar("A",  "mol",      "reservoir for species A",
+                    attributes=(:field_data=>PB.ScalarData,))
+    # this is equivalent to VarDepScalar with attribute :vfunction=>PB.VF_Deriv
+    # A = PB.VarDepScalar("A",            "mol",      "reservoir for species A",
+    #                 attributes=(:vfunction=>PB.VF_StateExplicit, :field_data=>PB.ScalarData))
+    
+    A_sms = PB.VarDerivScalar("A_sms",    "mol yr-1", "reservoir A source - sink",
                     attributes=(:vfunction=>PB.VF_Deriv, :field_data=>PB.ScalarData))
+    # this is equivalent to VarContribScalar with attribute :vfunction=>PB.VF_Deriv
+    # A_sms = PB.VarContribScalar("A_sms",    "mol yr-1", "reservoir A source - sink",
+    #                attributes=(:vfunction=>PB.VF_Deriv, :field_data=>PB.ScalarData))
+    
     # Provide a Property decay_flux as diagnostic output
     decay_flux = PB.VarPropScalar("decay_flux",  "mol yr-1", "decay flux from reservoir A")
 
@@ -68,7 +77,6 @@ end
 
 # do method, called each main loop timestep
 function do_example1(m::PB.ReactionMethod, pars, (varsdata, ), cellrange::PB.AbstractCellRange, deltat)
-    rj = m.reaction
 
     # mol yr-1                yr-1           mol
     varsdata.decay_flux[] = pars.kappa[] * varsdata.A[]

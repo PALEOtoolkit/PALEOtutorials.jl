@@ -45,7 +45,7 @@ end
 
 # do method, called each main loop timestep
 function do_example5(m::PB.ReactionMethod, pars, (varsdata, ), cellrange::PB.AbstractCellRange, deltat)
-    rj = m.reaction
+
     (IsotopeType, ) = m.p
 
     # mol yr-1                   yr-1           mol

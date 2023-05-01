@@ -29,12 +29,12 @@ println("initial_deriv: ", initial_deriv)
 ##################################################################
 
 # create a Run object to hold model and output
-run = PALEOmodel.Run(model=model, output = PALEOmodel.OutputWriters.OutputMemory())
+paleorun = PALEOmodel.Run(model=model, output = PALEOmodel.OutputWriters.OutputMemory())
 
 println("integrate, ODE")
 # first run is slow as it includes JIT time
 @time PALEOmodel.ODE.integrate(
-    run, initial_state, modeldata, (0.0, 10.0), 
+    paleorun, initial_state, modeldata, (0.0, 10.0), 
     solvekwargs=(
         reltol=1e-5,
         # saveat=0.1, # save output every 0.1 yr see https://diffeq.sciml.ai/dev/basics/common_solver_opts/
@@ -45,5 +45,5 @@ println("integrate, ODE")
 # Plot output
 ########################################
 
-display(plot(run.output, "global.A"))
-display(plot(run.output, "global.decay_flux"))
+display(plot(paleorun.output, "global.A"))
+display(plot(paleorun.output, "global.decay_flux"))

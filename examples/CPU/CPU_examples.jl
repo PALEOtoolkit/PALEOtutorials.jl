@@ -34,12 +34,12 @@ PALEOmodel.ODE.ModelODE(modeldata)(initial_deriv, initial_state , nothing, 0.0)
 println("initial_state", initial_state)
 println("initial_deriv", initial_deriv)
 
-run = PALEOmodel.Run(model=model, output = PALEOmodel.OutputWriters.OutputMemory())
+paleorun = PALEOmodel.Run(model=model, output = PALEOmodel.OutputWriters.OutputMemory())
 
 println("integrate, ODE")
 # first run is slow as it includes JIT time
 @time PALEOmodel.ODE.integrate(
-    run, initial_state, modeldata, (0.0, 1e6), 
+    paleorun, initial_state, modeldata, (0.0, 1e6), 
     solvekwargs=(
         reltol=1e-5,
         # saveat=1e6, # save output every 1e6 yr see https://diffeq.sciml.ai/dev/basics/common_solver_opts/
@@ -58,7 +58,7 @@ println("integrate, ODE")
 gr(size=(1200, 900)) # gr backend (plotly merges captions with multiple panels)
 pager=PALEOmodel.PlotPager(6, (legend_background_color=nothing, ))
 
-plot_CPU_modular(run.output; pager=pager)
+plot_CPU_modular(paleorun.output; pager=pager)
 
 
 @info "End $(@__FILE__)"

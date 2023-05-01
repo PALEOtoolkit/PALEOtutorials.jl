@@ -32,7 +32,6 @@ end
 
 # do method, called each main loop timestep
 function do_example2(m::PB.ReactionMethod, pars, (varsdata, ), cellrange::PB.AbstractCellRange, deltat)
-    rj = m.reaction
 
     # mol yr-1                   yr-1           mol
     varsdata.decay_flux[] = pars.kappa[] * varsdata.A[]

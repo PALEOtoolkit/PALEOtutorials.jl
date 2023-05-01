@@ -22,7 +22,7 @@ Markdown.parse(str)
 And produces output (solid lines, dashed lines show accurate output from CVODE solver):
 ```@setup solvers
 include("../../../../examples/reservoirs/run_ex5.jl")
-output_cvode = run.output
+output_cvode = paleorun.output
 include("../../../../examples/solvers/run_ex5_naive_euler.jl")
 ```
 ```@example solvers
@@ -89,7 +89,7 @@ Markdown.parse(str)
 As expected the output using Tsit5 (solid lines) and CVODE_BDF (dashed lines) is indistinguishable as both solvers will maintain relative accuracy within the specified `reltol=1e-5`:
 ```@setup solvers
 include("../../../../examples/solvers/run_ex5_Tsit5.jl")
-output_tsit5 = run.output
+output_tsit5 = paleorun.output
 ```
 ```@example solvers
 plot(output_tsit5,  ["Box1.A", "Box2.B", "global.E_total"]; ylabel="reservoir (mol)") # hide

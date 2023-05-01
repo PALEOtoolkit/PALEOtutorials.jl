@@ -67,7 +67,7 @@ end
 ###########################
 
 # vscodedisplay(
-#     PB.get_table(run.output, ["Box1.A", "Box2.B", "global.E_total", "Box1.decay_flux", "fluxBoxes.flux_B"]),
+#     PB.get_table(output_euler, ["Box1.A", "Box2.B", "global.E_total", "Box1.decay_flux", "fluxBoxes.flux_B"]),
 #     "Example 5"
 # )
 
