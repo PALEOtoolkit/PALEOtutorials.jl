@@ -29,12 +29,12 @@ println("initial_deriv: ", initial_deriv)
 ##################################################################
 
 # create a Run object to hold model and output
-run = PALEOmodel.Run(model=model, output = PALEOmodel.OutputWriters.OutputMemory())
+paleorun = PALEOmodel.Run(model=model, output = PALEOmodel.OutputWriters.OutputMemory())
 
 println("integrate, ODE")
 # first run is slow as it includes JIT time
 @time PALEOmodel.ODE.integrate(
-    run, initial_state, modeldata, (0.0, 10.0), 
+    paleorun, initial_state, modeldata, (0.0, 10.0), 
     solvekwargs=(
         reltol=1e-5,
         # saveat=0.1, # save output every 0.1 yr see https://diffeq.sciml.ai/dev/basics/common_solver_opts/
@@ -46,7 +46,7 @@ println("integrate, ODE")
 ###########################
 
 # vscodedisplay(
-#    PB.get_table(run.output, ["Box1.A", "Box2.B", "global.E_total", "Box1.decay_flux", "fluxBoxes.flux_B"]),
+#    PB.get_table(paleorun.output, ["Box1.A", "Box2.B", "global.E_total", "Box1.decay_flux", "fluxBoxes.flux_B"]),
 #    "Example 4"
 # )
 
@@ -54,6 +54,6 @@ println("integrate, ODE")
 # Plot output
 ########################################
 
-display(plot(run.output, ["Box1.A", "Box2.B", "global.E_total"]; ylabel="reservoir (mol)"))
-display(plot(run.output, ["Box1.decay_flux", "fluxBoxes.flux_B"]; ylabel="flux (mol yr-1)"))
+display(plot(paleorun.output, ["Box1.A", "Box2.B", "global.E_total"]; ylabel="reservoir (mol)"))
+display(plot(paleorun.output, ["Box1.decay_flux", "fluxBoxes.flux_B"]; ylabel="flux (mol yr-1)"))
 
