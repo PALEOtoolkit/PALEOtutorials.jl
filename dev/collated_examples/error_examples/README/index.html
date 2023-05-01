@@ -159,7 +159,7 @@ example5_reservoir_A_missing:
 [ Info: generated Reaction catalog with 26 Reactions
 [ Info: creating domain &#39;global&#39; ID=1
 ┌ Warning: create_domain_from_config Domain &#39;global&#39; empty &#39;reactions:&#39; key in .yaml file
-└ @ PALEOboxes ~/.julia/packages/PALEOboxes/PIhh3/src/Domain.jl:315
+└ @ PALEOboxes ~/.julia/packages/PALEOboxes/hCJFP/src/Domain.jl:315
 [ Info: creating domain &#39;fluxBoxes&#39; ID=2
 [ Info:   creating reaction fluxBoxes.reactions.flux classname ReactionFluxTarget
 [ Info:     set parameters: [config.yaml]  fluxlist            =[&quot;B::EIsotope&quot;]
@@ -210,24 +210,23 @@ example5_reservoir_A_missing:
 [ Info: Domain Box1                 data dimensions PALEOboxes.NamedDimension[] allocating 4    variables (hostdep=nothing)
 [ Info:     set :field_data=PALEOboxes.ScalarData for host-dependent Variable Box1.A_delta
 ┌ Warning: check_ready: unexpected host-dependent Variable Box1.A_sms (usually an unlinked Variable due to eg a missing renaming in the :variable_links sections in the .yaml file, a spelling mistake either in a Variable default name in the code or renaming in the .yaml file, or a missing Reaction)
-│ 	PALEOboxes.VariableDomContribTarget Box1.A_sms links:
-│ 		target:	nothing
-│ 		contributor:	Box1.Adecay.do_example5.input_particle_sms
-└ @ PALEOboxes ~/.julia/packages/PALEOboxes/PIhh3/src/Model.jl:398
+│ 	PALEOboxes.VariableDomContribTarget &quot;Box1.A_sms&quot; links:
+│ 		target:		nothing
+│ 		contributors:	[&quot;Box1.Adecay.do_example5.input_particle_sms&quot;]
+│ 		dependencies:	String[]
+└ @ PALEOboxes ~/.julia/packages/PALEOboxes/hCJFP/src/Model.jl:398
 ┌ Warning: check_ready: unexpected host-dependent Variable Box1.A (usually an unlinked Variable due to eg a missing renaming in the :variable_links sections in the .yaml file, a spelling mistake either in a Variable default name in the code or renaming in the .yaml file, or a missing Reaction)
-│ 	PALEOboxes.VariableDomPropDep Box1.A links:
+│ 	PALEOboxes.VariableDomPropDep &quot;Box1.A&quot; links:
 │ 		property:	nothing
-│ 		property_setup:	nothing
-│ 		dependency:	Box1.Adecay.do_example5.input_particle
-└ @ PALEOboxes ~/.julia/packages/PALEOboxes/PIhh3/src/Model.jl:398
+│ 		dependencies:	[&quot;Box1.Adecay.do_example5.input_particle&quot;]
+└ @ PALEOboxes ~/.julia/packages/PALEOboxes/hCJFP/src/Model.jl:398
 ┌ Warning: check_ready: unexpected host-dependent Variable Box1.A_delta (usually an unlinked Variable due to eg a missing renaming in the :variable_links sections in the .yaml file, a spelling mistake either in a Variable default name in the code or renaming in the .yaml file, or a missing Reaction)
-│ 	PALEOboxes.VariableDomPropDep Box1.A_delta links:
+│ 	PALEOboxes.VariableDomPropDep &quot;Box1.A_delta&quot; links:
 │ 		property:	nothing
-│ 		property_setup:	nothing
-│ 		dependency:	Box1.Adecay.do_example5.input_particle_delta
-└ @ PALEOboxes ~/.julia/packages/PALEOboxes/PIhh3/src/Model.jl:398
+│ 		dependencies:	[&quot;Box1.Adecay.do_example5.input_particle_delta&quot;]
+└ @ PALEOboxes ~/.julia/packages/PALEOboxes/hCJFP/src/Model.jl:398
 ┌ Error: check_ready failed
-└ @ PALEOboxes ~/.julia/packages/PALEOboxes/PIhh3/src/Model.jl:406
+└ @ PALEOboxes ~/.julia/packages/PALEOboxes/hCJFP/src/Model.jl:406
 ERROR: LoadError: check_ready failed
 in expression starting at /home/runner/work/PALEOtutorials.jl/PALEOtutorials.jl/examples/error_examples/run_ex5_reservoir_A_missing.jl:20</code></pre><h2 id="A-duplicated-Variable-or-a-name-collision"><a class="docs-heading-anchor" href="#A-duplicated-Variable-or-a-name-collision">A duplicated Variable or a name collision</a><a id="A-duplicated-Variable-or-a-name-collision-1"></a><a class="docs-heading-anchor-permalink" href="#A-duplicated-Variable-or-a-name-collision" title="Permalink"></a></h2><p>The model configuration (file <code>examples/error_examples/config_ex5_reservoir_A_duplicate.yaml</code>) contains two copies of a <code>ReactionReservoirScalar</code>, both attempting to create the same VariableDomains</p><pre><code class="language-julia hljs">##################################################################
 # ../reservoirs/config_ex5.yaml with common configuration errors
@@ -358,9 +357,9 @@ example5_reservoir_A_duplicate:
 [ Info: link_variables first pass
 ERROR: LoadError: Duplicate variable name: Linking VariableReactProperty Box1.reservoir_A.do_reactionreservoirscalar.R_norm --&gt; Box1.A_norm
     Variable Box1.A_norm already exists and has a property Variable, links:
-	PALEOboxes.VariableDomPropDep Box1.A_norm links:
-		property:	Box1.reservoir_Adup.do_reactionreservoirscalar.R_norm
-		property_setup:	nothing
+	PALEOboxes.VariableDomPropDep &quot;Box1.A_norm&quot; links:
+		property:	&quot;Box1.reservoir_Adup.do_reactionreservoirscalar.R_norm&quot;
+		dependencies:	String[]
 
 in expression starting at /home/runner/work/PALEOtutorials.jl/PALEOtutorials.jl/examples/error_examples/run_ex5_reservoir_A_duplicate.jl:11</code></pre><h2 id="Mismatch-in-:field_data-Type-(eg-isotopes)-(Reservoir)"><a class="docs-heading-anchor" href="#Mismatch-in-:field_data-Type-(eg-isotopes)-(Reservoir)">Mismatch in :field_data Type (eg isotopes) (Reservoir)</a><a id="Mismatch-in-:field_data-Type-(eg-isotopes)-(Reservoir)-1"></a><a class="docs-heading-anchor-permalink" href="#Mismatch-in-:field_data-Type-(eg-isotopes)-(Reservoir)" title="Permalink"></a></h2><p>The model configuration (file <code>examples/error_examples/config_ex5_reservoir_A_noisotope.yaml</code>)  contains one <code>ReactionReservoirScalar</code> with <code>:field_data=ScalarData</code> where this species should have  <code>:field_data=IsotopeLinear</code>:</p><pre><code class="language-julia hljs">##################################################################
 # ../reservoirs/config_ex5.yaml with common configuration errors
@@ -646,9 +645,9 @@ example5_flux_noisotope:
 [ Info: initialize_reactiondata! (modeldata arrays_indices=1:1)
 [ Info: ================================================================================
 ┌ Warning: create_accessor: VariableReaction Box1.Adecay.do_example5.output_flux  -&gt;  fluxBoxes.flux_B:  invalid :field_data combination - attempting to link a Variable with :field_data=PALEOboxes.IsotopeLinear to a Variable with :field_data=PALEOboxes.ScalarData
-└ @ PALEOboxes ~/.julia/packages/PALEOboxes/PIhh3/src/VariableReaction.jl:634
+└ @ PALEOboxes ~/.julia/packages/PALEOboxes/hCJFP/src/VariableReaction.jl:725
 ERROR: LoadError: MethodError: no method matching create_accessor(::Type{PALEOboxes.IsotopeLinear}, ::PALEOboxes.Field{PALEOboxes.ScalarData, PALEOboxes.CellSpace, Vector{Float64}, 0, Nothing}, ::Nothing; forceview=false, components=false)
 Closest candidates are:
-  create_accessor(::Union{Type{D}, Type{PALEOboxes.UndefinedData}}, !Matched::PALEOboxes.Field{D, S, V, N, M}, ::Union{Nothing, PALEOboxes.AbstractSubdomain}; forceview, components) where {D, S, V, N, M} at ~/.julia/packages/PALEOboxes/PIhh3/src/Fields.jl:440
-  create_accessor(!Matched::Type{PALEOboxes.ScalarData}, !Matched::PALEOboxes.Field{PALEOboxes.IsotopeLinear, S, V, W, M}, ::Union{Nothing, PALEOboxes.AbstractSubdomain}; forceview, components) where {S, V, W, M} at ~/.julia/packages/PALEOboxes/PIhh3/src/data/IsotopeData.jl:380
-in expression starting at /home/runner/work/PALEOtutorials.jl/PALEOtutorials.jl/examples/error_examples/run_ex5_flux_noisotope.jl:20</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../solvers/README/">« ODE solvers</a><a class="docs-footer-nextpage" href="../../CPU/README/">CPU (Carbon, Phosphorus, Uranium) model »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.24 on <span class="colophon-date" title="Thursday 6 April 2023 09:28">Thursday 6 April 2023</span>. Using Julia version 1.8.5.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+  create_accessor(::Union{Type{D}, Type{PALEOboxes.UndefinedData}}, !Matched::PALEOboxes.Field{D, S, V, N, M}, ::Union{Nothing, PALEOboxes.AbstractSubdomain}; forceview, components) where {D, S, V, N, M} at ~/.julia/packages/PALEOboxes/hCJFP/src/Fields.jl:440
+  create_accessor(!Matched::Type{PALEOboxes.ScalarData}, !Matched::PALEOboxes.Field{PALEOboxes.IsotopeLinear, S, V, W, M}, ::Union{Nothing, PALEOboxes.AbstractSubdomain}; forceview, components) where {S, V, W, M} at ~/.julia/packages/PALEOboxes/hCJFP/src/data/IsotopeData.jl:380
+in expression starting at /home/runner/work/PALEOtutorials.jl/PALEOtutorials.jl/examples/error_examples/run_ex5_flux_noisotope.jl:20</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../solvers/README/">« ODE solvers</a><a class="docs-footer-nextpage" href="../../CPU/README/">CPU (Carbon, Phosphorus, Uranium) model »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.24 on <span class="colophon-date" title="Monday 1 May 2023 17:38">Monday 1 May 2023</span>. Using Julia version 1.8.5.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
