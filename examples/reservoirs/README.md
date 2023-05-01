@@ -292,6 +292,21 @@ This shows that we now have four Domains:
 - `fluxBoxes` containing a Variable `flux_B` created by the `ReactionFluxTarget`
 - `global` containing `E_total` to check conservation.
 
+### An aside on ordering of ReactionMethods
+!!! info
+    It is rarely necessary or useful to look at this - shown here just to illustrate how PALEO works
+
+PALEO orders ReactionMethods based on the dependency information defined by the linked Variables
+(a method defining a Property must run before all methods that link to it as Dependencies, a method
+defining a Target must run after all methods that link to it as Contributors).
+
+The order in which ReactionMethods are called during each timestep is stored in `model.sorted_methods_do` (a `struct PB.MethodSort`) and can be displayed using:
+```@example ex4
+model.sorted_methods_do
+```
+Each group of methods has no internal dependencies, but depends on methods
+in previous groups.  Here there is only one dependency, method `Box2.transfer_fluxBoxes.do_transfer`
+must run after the decay flux is calculated by `Box1.reservoir_A.do_reactionreservoirscalar`.
 
 ## Example 5 Isotopes and Rayleigh fractionation
 
