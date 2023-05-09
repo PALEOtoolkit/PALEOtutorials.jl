@@ -43,7 +43,7 @@ Minimal_Alk_pH:
                     class: ReactionReservoir
                    
                     variable_links:
-                        R*: TA*
+                        R*: TAlk*
                     variable_attributes:
                         R:initial_value:  0.0                  
                         R:norm_value:     2.4e0                
@@ -63,19 +63,19 @@ Minimal_Alk_pH:
 
                 solve_Alk_pH:
 
-                    class: Reaction_Alk_pH_01
+                    class: Reaction_Alk_pH
                     
                     parameters:
 
-                        kappa:           1.0                                 
-                        density:         1027.0                              
-                        TA_conc_change:  10.0e-7                             
+                        kappa:             1.0                                 
+                        density:           1027.0                              
+                        TAlk_conc_change:  10.0e-7                             
 
-                        K_1:             1.4e-6                              
-                        K_2:             1.2e-9                             
-                        K_w:             6.0e-14                            
-                        K_B:             2.5e-9                              
-                        B_total:         4.2e-4                    
+                        K_1:               1.4e-6                              
+                        K_2:               1.2e-9                             
+                        K_w:               6.0e-14                            
+                        K_B:               2.5e-9                              
+                        B_total:           4.2e-4                    
 
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
