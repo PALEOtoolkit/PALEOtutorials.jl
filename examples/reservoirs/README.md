@@ -419,7 +419,7 @@ str = """```julia
 import Markdown
 Markdown.parse(str)
 ```
-and produces output showing the transfer between two Reservoirs:
+and produces output showing the change, if `TAlk_conc` increase, how the carbonic acid and pH change in ocean and CO2 change in the air:
 ```@example ex6
 include("../../../../examples/reservoirs/run_ex6.jl") # hide
 plot(paleorun.output, "ocean.TAlk_conc",                                                               xlims=(0, 150.0),  (cell=1,)) # hide
