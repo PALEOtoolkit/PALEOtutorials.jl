@@ -14,7 +14,7 @@ Minimal example, TA_conc is first order decay of a variable.
 
 
 """
-Base.@kwdef mutable struct Reaction_Alk_pH_01{P} <: PB.AbstractReaction
+Base.@kwdef mutable struct Reaction_Alk_pH{P} <: PB.AbstractReaction
     base::PB.ReactionBase
 
     pars::P = PB.ParametersTuple(
@@ -32,7 +32,7 @@ Base.@kwdef mutable struct Reaction_Alk_pH_01{P} <: PB.AbstractReaction
 
 end
 
-function PB.register_methods!(rj::Reaction_Alk_pH_01)
+function PB.register_methods!(rj::Reaction_Alk_pH)
     vars = [
 
         PB.VarDep("DIC",                 "mol",           "reservoir for species DIC"),
@@ -54,7 +54,7 @@ function PB.register_methods!(rj::Reaction_Alk_pH_01)
 
     ]
 
-    PB.add_method_do!(rj, do_Min_Alk_pH_01,  (PB.VarList_namedtuple(vars), ) )
+    PB.add_method_do!(rj, do_Min_Alk_pH,  (PB.VarList_namedtuple(vars), ) )
 
     PB.add_method_setup!(rj, setup_carbchem, (PB.VarList_namedtuple(vars), ),)
 
@@ -78,7 +78,7 @@ end
 
 # do method, called each main loop timestep
 
-function do_Min_Alk_pH_01(m::PB.ReactionMethod, pars, (varsdata, ), cellrange::PB.AbstractCellRange, deltat)
+function do_Min_Alk_pH(m::PB.ReactionMethod, pars, (varsdata, ), cellrange::PB.AbstractCellRange, deltat)
     
     rj = m.reaction
     

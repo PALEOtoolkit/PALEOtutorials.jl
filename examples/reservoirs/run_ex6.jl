@@ -4,13 +4,12 @@ import PALEOcopse
 using Plots
 import PALEOreactions
 
-include("Reaction_min_Alk_pH.jl")
-include("Reaction_min_AirSeaExchange.jl")                                                        
+include("reactions_ex6_Alk_pH.jl")
+include("reactions_ex6_AirSeaExchange.jl")                                                        
 #####################################################
 # Create model
 
-model = PB.create_model_from_config(joinpath(@__DIR__, "Min_Alk_pH.yaml"), "Minimal_Alk_pH")
-
+model = PB.create_model_from_config(joinpath(@__DIR__, "config_ex6.yaml"), "Minimal_Alk_pH")
 
 #########################################################
 # Initialize

@@ -372,3 +372,69 @@ show(PB.show_variables(model), allcols=true, allrows=true) # display in REPL
 ```
 The variable names are as in [Example 4 Transfer between Domains](@ref), however `field_data`
 is now `IsotopeLinear` and not `ScalarData` for the reservoir and flux variables.
+
+## Example 6 Minimal Alk-pH model
+
+Generalizing the Reaction to establish a minimal Alk-pH model.
+
+### Additional code files
+The Reaction code (file `examples/reservoirs/reactions_ex6_Alk_pH.jl`) now produces calculation of different carbonic acid  `HCO3_conc`, `CO3_conc`, `CO2_aq_conc`, and coeval concentrations change of `BOH4_conc`, `H_conc`, `OH_conc`, `DIC_conc` and `TAlk_conc`:
+```@eval
+str = read("../../../../examples/reservoirs/reactions_ex6_Alk_pH.jl", String)
+str = """```julia
+      $str
+      ```"""
+import Markdown
+Markdown.parse(str)
+```
+
+In order to evaluate the CO2 flux change between air and sea, we add a file (file `examples/reservoirs/reactions_ex6_AirSeaExchange.jl`) to achieve air-sea CO2 exchange following Henry's Law.
+```@eval
+str = read("../../../../examples/reservoirs/reactions_ex6_AirSeaExchange.jl", String)
+str = """```julia
+      $str
+      ```"""
+import Markdown
+Markdown.parse(str)
+```
+
+### yaml configuration file
+The model configuration (file `examples/reservoirs/config_ex6.yaml`) contains three Reservoirs `DIC`, `TAlk` and `CO2`. Following `ReactionExample4`, we use `ReactionFluxTarget` and `ReactionFluxTransfer` to transfer `CO2_airsea_exchange` between `DIC` reservoir and `CO2` reservoir:
+```@eval
+str = read("../../../../examples/reservoirs/config_ex6.yaml", String)
+str = """```julia
+      $str
+      ```"""
+import Markdown
+Markdown.parse(str)
+```
+
+### Run script
+The script to run the model (file `examples/reservoirs/run_ex3.jl`) contains:
+```@eval
+str = read("../../../../examples/reservoirs/run_ex3.jl", String)
+str = """```julia
+      $str
+      ```"""
+import Markdown
+Markdown.parse(str)
+```
+and produces output showing the transfer between two Reservoirs:
+```@example ex3
+include("../../../../examples/reservoirs/run_ex3.jl") # hide
+plot(paleorun.output, ["global.A", "global.B"]; ylabel="reservoir (mol)") # hide
+savefig("ex3_plot1.svg")  # hide
+plot(paleorun.output, "global.decay_flux")  # hide
+savefig("ex3_plot2.svg"); nothing # hide
+```
+![](ex3_plot1.svg)
+![](ex3_plot2.svg)
+
+### Displaying model structure and variables
+
+All metadata for model variables can be displayed with `PB.show_variables`:
+```@example ex3
+show(PB.show_variables(model), allcols=true, allrows=true) # display in REPL
+# vscodedisplay(PB.show_variables(model)) # more convenient when using VS code
+```
+We now have additional Variables corresponding to the `B` reservoir.
