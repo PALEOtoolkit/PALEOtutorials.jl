@@ -1,0 +1,195 @@
+Minimal_Alk_pH:
+
+    domains:
+
+
+        global:
+
+            reactions:
+
+                sum_E:
+
+                    class: ReactionSum
+
+                    parameters:
+
+                        vars_to_add: ["ocean.DIC", "atm.CO2"]
+
+                    variable_links:
+
+                        sum: C_total
+
+
+
+ # --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------       
+
+        ocean:
+
+            reactions:
+
+                oceantrasport:
+
+                    class: ReactionOceanNoTransport
+
+                    parameters:
+
+                        area:  [3.6e14]               
+                        depth: [3688.0]               
+
+
+
+                reservoir_TA:
+
+                    class: ReactionReservoir
+                   
+                    variable_links:
+                        R*: TAlk*
+                    variable_attributes:
+                        R:initial_value:  0.0                  
+                        R:norm_value:     2.4e0                
+
+
+
+                reservoir_DIC:
+                    class: ReactionReservoir
+                   
+                    variable_links:
+                        R*: DIC*
+                    variable_attributes:
+                        R:initial_value:  2.0e0   
+                        R:norm_value:     2.0e0   
+
+
+
+                solve_Alk_pH:
+
+                    class: Reaction_Alk_pH
+                    
+                    parameters:
+
+                        kappa:             1.0                                 
+                        density:           1027.0                              
+                        TAlk_conc_change:  10.0e-7                             
+
+                        K_1:               1.4e-6                              
+                        K_2:               1.2e-9                             
+                        K_w:               6.0e-14                            
+                        K_B:               2.5e-9                              
+                        B_total:           4.2e-4                    
+
+# --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+        oceansurface:
+
+            # air-sea exchange reactions
+
+            reactions:
+
+                # apply air-sea flux to ocean surface
+
+                transfer_fluxAtmtoOceansurface:
+
+                    class: ReactionFluxTransfer
+
+                    parameters:
+
+                        transfer_matrix:      Identity
+                        input_fluxes:         fluxAtmtoOceansurface.flux_$fluxname$
+                        output_fluxes:        ocean.oceansurface.$fluxname$_sms  
+
+                    variable_links:                        
+
+                        output_CO2:           ocean.oceansurface.DIC_sms 
+
+# --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+        oceanfloor:
+
+# --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+        atm:
+            
+
+            reactions:
+
+                reservoir_CO2_atm:
+
+                    class: ReactionReservoirAtm
+
+                    parameters:
+
+                        moles1atm:          1.77e20       
+
+
+                    variable_links:
+
+                        R*: CO2*
+                        pRatm: pCO2atm
+                        pRnorm: pCO2PAL
+
+                    variable_attributes:
+
+                        R:norm_value:       4.956e16     
+                        R:initial_value:    4.956e16      
+
+
+                solve_AirSea_Exchange:
+
+                    class: Reaction_Min_AirSeaExchange
+                    
+                    parameters:
+
+                        K_0:                    3.4e-5              
+                        vpiston:                1138.8             
+                    
+                    variable_links:  
+
+
+                        CO2_aq_conc: ocean.CO2_aq_conc         
+
+                        area: ocean.Abox                             
+
+                        CO2_airsea_exchange: fluxAtmtoOceansurface.flux_CO2
+
+
+
+
+                transfer_AtmtoOceansurface:
+
+                    class: ReactionFluxTransfer
+
+                    parameters:
+                    
+                        transfer_matrix:      Distribute                                               
+                        transfer_multiplier:  -1.0                                                     
+                        input_fluxes:         fluxAtmtoOceansurface.flux_$fluxname$                
+                        output_fluxes:        $fluxname$_sms                                           
+                    
+                    variable_links:           
+
+                        output_CO2:           atm.CO2_sms 
+
+
+
+                        
+
+# --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+        fluxAtmtoOceansurface:    
+
+            reactions:
+
+                fluxtarget:
+
+                    class: ReactionFluxTarget      
+
+                    parameters:
+
+                        flux_totals: true                            
+
+                        fluxlist: ["CO2"]                        
+
+
+
+
+

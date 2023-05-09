@@ -372,3 +372,94 @@ show(PB.show_variables(model), allcols=true, allrows=true) # display in REPL
 ```
 The variable names are as in [Example 4 Transfer between Domains](@ref), however `field_data`
 is now `IsotopeLinear` and not `ScalarData` for the reservoir and flux variables.
+
+## Example 6 Minimal Alk-pH model
+
+Generalizing the Reaction to establish a minimal Alk-pH model. Math equations are from Richard E. Zeebe's book(2001).
+
+### Additional code files
+The Reaction code (file `examples/reservoirs/reactions_ex6_Alk_pH.jl`) now produces calculation of different carbonic acid  `HCO3_conc`, `CO3_conc`, `CO2_aq_conc`, and coeval concentrations change of `BOH4_conc`, `H_conc`, `OH_conc`, `DIC_conc` and `TAlk_conc`:
+```@eval
+str = read("../../../../examples/reservoirs/reactions_ex6_Alk_pH.jl", String)
+str = """```julia
+      $str
+      ```"""
+import Markdown
+Markdown.parse(str)
+```
+
+In order to evaluate the CO2 flux change between air and sea, we add a file (file `examples/reservoirs/reactions_ex6_AirSeaExchange.jl`) to achieve air-sea CO2 exchange following Henry's Law.
+```@eval
+str = read("../../../../examples/reservoirs/reactions_ex6_AirSeaExchange.jl", String)
+str = """```julia
+      $str
+      ```"""
+import Markdown
+Markdown.parse(str)
+```
+
+### yaml configuration file
+The model configuration (file `examples/reservoirs/config_ex6.yaml`) contains three Reservoirs `DIC`, `TAlk` and `CO2`. Following `ReactionExample4`, we use `ReactionFluxTarget` and `ReactionFluxTransfer` to transfer `CO2_airsea_exchange` between `DIC` reservoir and `CO2` reservoir:
+```@eval
+str = read("../../../../examples/reservoirs/config_ex6.yaml", String)
+str = """```julia
+      $str
+      ```"""
+import Markdown
+Markdown.parse(str)
+```
+
+### Run script
+The script to run the model (file `examples/reservoirs/run_ex6.jl`) contains:
+```@eval
+str = read("../../../../examples/reservoirs/run_ex6.jl", String)
+str = """```julia
+      $str
+      ```"""
+import Markdown
+Markdown.parse(str)
+```
+and produces output showing the change, if `TAlk_conc` increase, how the carbonic acid and pH change in ocean and CO2 change in the air:
+```@example ex6
+include("../../../../examples/reservoirs/run_ex6.jl") # hide
+plot(paleorun.output, "ocean.TAlk_conc",                                                               xlims=(0, 150.0),  (cell=1,)) # hide
+savefig("ex6_plot1.svg")  # hide
+plot(paleorun.output, ["ocean.TAlk","ocean.TAlk_sms"],                                                 xlims=(0, 150.0),  (cell=1,))  # hide
+savefig("ex6_plot2.svg")  # hide
+display(plot(paleorun.output, ["ocean.DIC_conc", "ocean.HCO3_conc", "ocean.CO3_conc", "ocean.CO2_aq_conc"],    xlims=(0, 150.0),  (cell=1,))) # hide
+savefig("ex6_plot3.svg")  # hide
+display(plot(paleorun.output, "ocean.pH",                                                                      xlims=(0, 150.0),  (cell=1,))) # hide
+savefig("ex6_plot4.svg")  # hide
+display(plot(paleorun.output, "atm.CO2",                                                                       xlims=(0, 150.0),           )) # hide  
+savefig("ex6_plot5.svg")  # hide
+display(plot(paleorun.output, "atm.CO2_sms",                                                                   xlims=(0, 150.0),           )) # hide
+savefig("ex6_plot6.svg")  # hide
+display(plot(paleorun.output, "fluxAtmtoOceansurface.flux_CO2",                                                xlims=(0, 150.0),  (cell=1,))) # hide
+savefig("ex6_plot7.svg")  # hide
+display(plot(paleorun.output, "ocean.DIC",                                                                     xlims=(0, 150.0),  (cell=1,))) # hide
+savefig("ex6_plot8.svg")  # hide
+display(plot(paleorun.output, "atm.CO2",                                                                       xlims=(0, 150.0),           )) # hide
+savefig("ex6_plot9.svg")  # hide
+display(plot(paleorun.output, "global.C_total",                                                                xlims=(0, 150.0),           )) # hide
+savefig("ex6_plot10.svg"); nothing # hide
+```
+![](ex6_plot1.svg)
+![](ex6_plot2.svg)
+![](ex6_plot3.svg)
+![](ex6_plot4.svg)
+![](ex6_plot5.svg)
+![](ex6_plot6.svg)
+![](ex6_plot7.svg)
+![](ex6_plot8.svg)
+![](ex6_plot9.svg)
+![](ex6_plot10.svg)
+
+### Displaying model structure and variables
+
+All metadata for model variables can be displayed with `PB.show_variables`:
+```@example ex6
+show(PB.show_variables(model), allcols=true, allrows=true) # display in REPL
+# vscodedisplay(PB.show_variables(model)) # more convenient when using VS code
+```
+
+For more information and cooperation, please communicate with us!
