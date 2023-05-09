@@ -443,16 +443,16 @@ savefig("ex6_plot9.svg")  # hide
 display(plot(paleorun.output, "global.C_total",                                                                xlims=(0, 150.0),           )) # hide
 savefig("ex6_plot10.svg"); nothing # hide
 ```
-![](ex3_plot1.svg)
-![](ex3_plot2.svg)
-![](ex3_plot3.svg)
-![](ex3_plot4.svg)
-![](ex3_plot5.svg)
-![](ex3_plot6.svg)
-![](ex3_plot7.svg)
-![](ex3_plot8.svg)
-![](ex3_plot9.svg)
-![](ex3_plot10.svg)
+![](ex6_plot1.svg)
+![](ex6_plot2.svg)
+![](ex6_plot3.svg)
+![](ex6_plot4.svg)
+![](ex6_plot5.svg)
+![](ex6_plot6.svg)
+![](ex6_plot7.svg)
+![](ex6_plot8.svg)
+![](ex6_plot9.svg)
+![](ex6_plot10.svg)
 
 ### Displaying model structure and variables
 
