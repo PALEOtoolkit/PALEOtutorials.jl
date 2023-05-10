@@ -424,25 +424,26 @@ and produces output showing the change, if `TAlk_conc` increase, how the carboni
 include("../../../../examples/reservoirs/run_ex6.jl") # hide
 plot(paleorun.output, "ocean.TAlk_conc",                                                               xlims=(0, 150.0),  (cell=1,)) # hide
 savefig("ex6_plot1.svg")  # hide
-plot(paleorun.output, ["ocean.TAlk","ocean.TAlk_sms"],                                                 xlims=(0, 150.0),  (cell=1,))  # hide
-savefig("ex6_plot2.svg")  # hide
-display(plot(paleorun.output, ["ocean.DIC_conc", "ocean.HCO3_conc", "ocean.CO3_conc", "ocean.CO2_aq_conc"],    xlims=(0, 150.0),  (cell=1,))) # hide
-savefig("ex6_plot3.svg")  # hide
-display(plot(paleorun.output, "ocean.pH",                                                                      xlims=(0, 150.0),  (cell=1,))) # hide
-savefig("ex6_plot4.svg")  # hide
-display(plot(paleorun.output, "atm.CO2",                                                                       xlims=(0, 150.0),           )) # hide  
-savefig("ex6_plot5.svg")  # hide
-display(plot(paleorun.output, "atm.CO2_sms",                                                                   xlims=(0, 150.0),           )) # hide
-savefig("ex6_plot6.svg")  # hide
-display(plot(paleorun.output, "fluxAtmtoOceansurface.flux_CO2",                                                xlims=(0, 150.0),  (cell=1,))) # hide
-savefig("ex6_plot7.svg")  # hide
-display(plot(paleorun.output, "ocean.DIC",                                                                     xlims=(0, 150.0),  (cell=1,))) # hide
-savefig("ex6_plot8.svg")  # hide
-display(plot(paleorun.output, "atm.CO2",                                                                       xlims=(0, 150.0),           )) # hide
-savefig("ex6_plot9.svg")  # hide
-display(plot(paleorun.output, "global.C_total",                                                                xlims=(0, 150.0),           )) # hide
+plot(paleorun.output, ["ocean.TAlk","ocean.TAlk_sms"],                                                 xlims=(0, 150.0),  (cell=1,)) # hide
+savefig("ex6_plot2.svg"); nothing # hide
+plot(paleorun.output, ["ocean.DIC_conc", "ocean.HCO3_conc", "ocean.CO3_conc", "ocean.CO2_aq_conc"],    xlims=(0, 150.0),  (cell=1,)) # hide
+savefig("ex6_plot3.svg"); nothing # hide
+plot(paleorun.output, "ocean.pH",                                                                      xlims=(0, 150.0),  (cell=1,)) # hide
+savefig("ex6_plot4.svg"); nothing # hide
+plot(paleorun.output, "atm.CO2",                                                                       xlims=(0, 150.0),           ) # hide  
+savefig("ex6_plot5.svg"); nothing # hide
+plot(paleorun.output, "atm.CO2_sms",                                                                   xlims=(0, 150.0),           ) # hide
+savefig("ex6_plot6.svg"); nothing # hide
+plot(paleorun.output, "fluxAtmtoOceansurface.flux_CO2",                                                xlims=(0, 150.0),  (cell=1,)) # hide
+savefig("ex6_plot7.svg"); nothing # hide
+plot(paleorun.output, "ocean.DIC",                                                                     xlims=(0, 150.0),  (cell=1,)) # hide
+savefig("ex6_plot8.svg"); nothing # hide
+plot(paleorun.output, "atm.CO2",                                                                       xlims=(0, 150.0),           ) # hide
+savefig("ex6_plot9.svg"); nothing # hide
+plot(paleorun.output, "global.C_total",                                                                xlims=(0, 150.0),           ) # hide
 savefig("ex6_plot10.svg"); nothing # hide
 ```
+
 ![](ex6_plot1.svg)
 ![](ex6_plot2.svg)
 ![](ex6_plot3.svg)
