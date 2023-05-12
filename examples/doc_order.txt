@@ -2,3 +2,5 @@ reservoirs
 solvers
 error_examples
 CPU
+ocean_chemistry
+
