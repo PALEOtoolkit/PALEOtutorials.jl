@@ -1,0 +1,83 @@
+Minimal_Alk_pH:
+
+    domains:
+
+        global:
+           
+            reactions:
+                add_Alk:
+                    # from PALEOboxes reaction catalog:  constant input flux of Alk
+                    class: ReactionFluxPerturb
+                    parameters:
+                        # linear interpolation for input flux - set to constant
+                        perturb_times: [-1e30, 1e30]
+                        # ocean volume = 3.6e14 * 3688.0 = 1.33e18 m^3
+                        # DIC in ocean = 2 * 1.33e18 = 2.66e18 mol
+                        # set Alk flux so Alk = DIC after 100 yr-1 = 2.66e18/100 = 2.66e16 mol yr-1
+                        perturb_totals: [2.66e16, 2.66e16] 
+                    variable_links:
+                        F: ocean.TAlk_sms  # add flux to TAlk reservoir NB: works for single-box ocean only !!
+ # --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------       
+
+        ocean:
+
+            reactions:
+
+                oceantrasport:
+
+                    class: ReactionOceanNoTransport
+
+                    parameters:
+
+                        area:  [3.6e14]               
+                        depth: [3688.0]               
+
+
+
+                reservoir_TA:
+
+                    class: ReactionReservoir
+                   
+                    variable_links:
+                        R*: TAlk*
+                    variable_attributes:
+                        R:initial_value:  0.0                  
+                        R:norm_value:     2.4e0                
+
+
+
+                reservoir_DIC:
+                    class: ReactionReservoir
+                   
+                    variable_links:
+                        R*: DIC*
+                    variable_attributes:
+                        R:initial_value:  2.0e0   
+                        R:norm_value:     2.0e0   
+
+
+                solve_Alk_pH:
+
+                    class: Reaction_Alk_pH
+                    
+                    parameters:
+
+                        # kappa:             1.0                                 
+                        # density:           1027.0                              
+                        # TAlk_conc_change:  10.0e-7                             
+
+                        K_1:               1.4e-6                              
+                        K_2:               1.2e-9                             
+                        K_w:               6.0e-14                            
+                        K_B:               2.5e-9                              
+                        B_total:           4.2e-4       
+
+                    variable_links:
+                        density: rho_ref   # OceanNoTransport provides density as rho_ref             
+
+
+        oceanfloor:
+            # unused here, set up by ReactionOceanNoTransport
+
+        oceansurface:
+            # unused here, set up by ReactionOceanNoTransport

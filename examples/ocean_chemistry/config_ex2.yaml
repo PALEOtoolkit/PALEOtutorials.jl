@@ -1,4 +1,4 @@
-Minimal_Alk_pH:
+Minimal_Alk_pH_AirSea:
 
     domains:
 
@@ -7,17 +7,30 @@ Minimal_Alk_pH:
 
             reactions:
 
-                sum_E:
+                sum_C:
 
                     class: ReactionSum
 
                     parameters:
 
-                        vars_to_add: ["ocean.DIC", "atm.CO2"]
+                        vars_to_add: ["ocean.DIC_total", "atm.CO2"]
 
                     variable_links:
 
                         sum: C_total
+
+                add_Alk:
+                    # from PALEOboxes reaction catalog:  constant input flux of Alk
+                    class: ReactionFluxPerturb
+                    parameters:
+                        # linear interpolation for input flux - set to constant
+                        perturb_times: [-1e30, 1e30]
+                        # ocean volume = 3.6e14 * 3688.0 = 1.33e18 m^3
+                        # DIC in ocean = 2 * 1.33e18 = 2.66e18 mol
+                        # set Alk flux so Alk = DIC after 100 yr-1 = 2.66e18/100 = 2.66e16 mol yr-1
+                        perturb_totals: [2.66e16, 2.66e16] 
+                    variable_links:
+                        F: ocean.TAlk_sms  # add flux to TAlk reservoir NB: works for single-box ocean only !!
 
 
 
@@ -40,7 +53,7 @@ Minimal_Alk_pH:
 
                 reservoir_TA:
 
-                    class: ReactionReservoir
+                    class: ReactionReservoirTotal
                    
                     variable_links:
                         R*: TAlk*
@@ -51,7 +64,7 @@ Minimal_Alk_pH:
 
 
                 reservoir_DIC:
-                    class: ReactionReservoir
+                    class: ReactionReservoirTotal
                    
                     variable_links:
                         R*: DIC*
@@ -60,22 +73,25 @@ Minimal_Alk_pH:
                         R:norm_value:     2.0e0   
 
 
-
                 solve_Alk_pH:
 
                     class: Reaction_Alk_pH
                     
                     parameters:
 
-                        kappa:             1.0                                 
-                        density:           1027.0                              
-                        TAlk_conc_change:  10.0e-7                             
+                        # kappa:             1.0                                 
+                        # density:           1027.0                              
+                        # TAlk_conc_change:  10.0e-7                             
 
                         K_1:               1.4e-6                              
                         K_2:               1.2e-9                             
                         K_w:               6.0e-14                            
                         K_B:               2.5e-9                              
-                        B_total:           4.2e-4                    
+                        B_total:           4.2e-4       
+
+                    variable_links:
+                        density: rho_ref   # OceanNoTransport provides density as rho_ref             
+
 
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -84,9 +100,27 @@ Minimal_Alk_pH:
             # air-sea exchange reactions
 
             reactions:
+                # calculate air-sea exchange flux
+                solve_AirSea_Exchange:
+
+                    class: Reaction_Min_AirSeaExchange
+                    
+                    parameters:
+
+                        K_0:                    3.4e1 # (mol m-3 atm-1) = 3.4e-2 (mol L-1 atm-1) * 1e3 (L m-3)
+                        vpiston:                1138.8             
+                    
+                    variable_links:  
+
+                        pCO2atm:    atm.pCO2atm
+                        CO2_aq_conc: ocean.oceansurface.CO2_aq_conc         
+
+                        area:       Asurf  # ocean surface area
+
+                        CO2_airsea_exchange: fluxAtmtoOceansurface.flux_CO2
+
 
                 # apply air-sea flux to ocean surface
-
                 transfer_fluxAtmtoOceansurface:
 
                     class: ReactionFluxTransfer
@@ -129,30 +163,8 @@ Minimal_Alk_pH:
 
                     variable_attributes:
 
-                        R:norm_value:       4.956e16     
+                        R:norm_value:       4.956e16     # 280e-6 ppm
                         R:initial_value:    4.956e16      
-
-
-                solve_AirSea_Exchange:
-
-                    class: Reaction_Min_AirSeaExchange
-                    
-                    parameters:
-
-                        K_0:                    3.4e-5              
-                        vpiston:                1138.8             
-                    
-                    variable_links:  
-
-
-                        CO2_aq_conc: ocean.CO2_aq_conc         
-
-                        area: ocean.Abox                             
-
-                        CO2_airsea_exchange: fluxAtmtoOceansurface.flux_CO2
-
-
-
 
                 transfer_AtmtoOceansurface:
 

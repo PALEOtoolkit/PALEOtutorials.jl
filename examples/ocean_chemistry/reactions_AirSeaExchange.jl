@@ -1,12 +1,6 @@
 module Min_AirSeaExchange
 
 import PALEOboxes as PB
-import PALEOmodel
-import PALEOcopse
-
-
-using SimpleNonlinearSolve, StaticArrays
-using NonlinearSolve
 
 """
     Min_AirSeaExchange
@@ -22,7 +16,7 @@ Base.@kwdef mutable struct Reaction_Min_AirSeaExchange{P} <: PB.AbstractReaction
 
     pars::P = PB.ParametersTuple(
         
-        PB.ParDouble("K_0",              3.4e-5,     units="mol m-3 atm-1",      description="Henry Law coefficient"),
+        PB.ParDouble("K_0",              3.4e-2*1e3, units="mol m-3 atm-1",      description="Henry Law coefficient"),
         PB.ParDouble("vpiston",          1138.8,     units="m yr-1",             description="piston value for a whole year, 365 days"),
 
     )
@@ -35,7 +29,7 @@ function PB.register_methods!(rj::Reaction_Min_AirSeaExchange)
 
         PB.VarDep(             "CO2_aq_conc",               "mol m-3",              "CO2_aq concentration per cell"),
         PB.VarDepScalar(       "pCO2atm",                   "atm",                  "atmospheric pCO2, unit is atm"),
-        PB.VarDepScalar(       "pCO2PAL",                   "",                     "atmospheric pCO2 normalized to present day"),
+        # PB.VarDepScalar(       "pCO2PAL",                   "",                     "atmospheric pCO2 normalized to present day"),
         PB.VarContrib(         "CO2_airsea_exchange",       "mol yr-1",             "it is the calcalation for CO2_airsea_exchange"),
         PB.VarDep(             "area",                      "m2",                   "surface area"),
 
