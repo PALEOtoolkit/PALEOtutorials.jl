@@ -55,22 +55,23 @@ Minimal_Alk_pH:
                         R:initial_value:  2.0e0   
                         R:norm_value:     2.0e0   
 
+                constant_B:
+                    class: ReactionReservoirConst
+                    variable_links:
+                        R*: B
+                    variable_attributes:
+                        R_conc:initial_value: 0.427 # mol m-3 contemporary value
 
                 solve_Alk_pH:
 
                     class: Reaction_Alk_pH
                     
-                    parameters:
-
-                        # kappa:             1.0                                 
-                        # density:           1027.0                              
-                        # TAlk_conc_change:  10.0e-7                             
+                    parameters:                
 
                         K_1:               1.4e-6                              
                         K_2:               1.2e-9                             
                         K_w:               6.0e-14                            
                         K_B:               2.5e-9                              
-                        B_total:           4.2e-4       
 
                     variable_links:
                         density: rho_ref   # OceanNoTransport provides density as rho_ref             

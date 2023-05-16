@@ -51,6 +51,21 @@ display(plot(paleorun.output, ["ocean.TAlk_conc", "ocean.DIC_conc"],            
     ylabel="TAlk, DIC conc (mol m-3)"))
 # display(plot(paleorun.output, ["ocean.TAlk","ocean.TAlk_sms"],                                                 (cell=1,)))
 display(plot(paleorun.output, "ocean.pH",                                                                      (cell=1,)))
+display(plot(paleorun.output, ["ocean.H_conc", "ocean.OH_conc"],                                               (cell=1,);
+    ylabel="H2O species (mol m-3)", ylim=(0, Inf)))
+display(plot(paleorun.output, ["ocean.B_conc", "ocean.BOH4_conc", "ocean.BOH3_conc"],                          (cell=1,);
+    ylabel="B species (mol m-3)", ylim=(0, Inf)))
 display(plot(paleorun.output, ["ocean.DIC_conc", "ocean.HCO3_conc", "ocean.CO3_conc", "ocean.CO2_aq_conc"],    (cell=1,);
-    ylabel="DIC species (mol m-3)"))
-# display(plot(paleorun.output, "ocean.DIC",                                                                     xlims=(0, 150.0),  (cell=1,)))
+    ylabel="DIC species (mol m-3)", ylim=(0, Inf)))
+display(
+    plot(
+        paleorun.output, 
+        ["ocean.HCO3_conc", "ocean.CO3_conc", "ocean.CO2_aq_conc", "ocean.BOH4_conc", "ocean.BOH3_conc",  "ocean.H_conc", "ocean.OH_conc",],
+        (cell=1, tmodel=(1.0, 1e12)); # omit first point (pH 8 starting condition)
+        coords=["tmodel"=>("ocean.pH",),], # plot against pH instead of tmodel
+        ylabel="H2O, B, DIC species (mol m-3)", ylim=(0.5e-3, 0.5e1), yscale=:log10,
+        legend_background_color=nothing,
+        legend=:bottom,
+    )
+)
+
