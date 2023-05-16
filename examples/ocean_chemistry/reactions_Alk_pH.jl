@@ -1,51 +1,52 @@
 module Min_Alk_pH
 
 import PALEOboxes as PB
+using PALEOboxes.DocStrings # for $(PARS) and $(METHODS_DO)
 
 """
-    Min_Alk_pH
+    Reaction_Alk_pH
 
-Minimal example, TAlk_conc is first order decay of a variable.
+Minimal example for aqueous carbonate system.
 
+Solves for carbon, boron and water species given `pH`, calculates difference `TAlk_error` from
+required alkalinity.
 
+Use in conjunction with a DAE solver, where this Reaction provides an algebraic constraint `TAlk_error` on `pH`.
+
+# Parameters
+$(PARS)
+
+# Methods and Variables
+$(METHODS_DO)
 """
 Base.@kwdef mutable struct Reaction_Alk_pH{P} <: PB.AbstractReaction
     base::PB.ReactionBase
 
     pars::P = PB.ParametersTuple(
         
-        # PB.ParDouble("kappa",            1.0,        units="yr-1",          description="first order decay constant"),
-        # PB.ParDouble("TAlk_conc_change",   10.0e-6,    units="mol kg-1",      description="TA concentration change every kappa"),
-        # PB.ParDouble("density",          1027.0,     units="kg m-3",        description="current seawater density"),
         PB.ParDouble("K_1",              1.4e-6,     units="mol kg-1",      description="equilibrium constant of CO2_aq and HCO3-"),
         PB.ParDouble("K_2",              1.2e-9,     units="mol kg-1",      description="equilibrium constant of HCO3- and CO32-"),
-        PB.ParDouble("K_w",              6.0e-14,    units="mol2 kg-2",     description="equilibrium constant of water at S=35, T=25°C"),
-        PB.ParDouble("K_B",              2.5e-9,     units="mol kg-1",      description="equilibrium constant of B(OH)4-"),
-        PB.ParDouble("B_total",          4.2e-4,     units="mol kg-1",      description="total concentrations of B(OH)4- and B(OH)3"),
-        
+        PB.ParDouble("K_w",              6.0e-14,    units="mol^2 kg-2",     description="equilibrium constant of water at S=35, T=25°C"),
+        PB.ParDouble("K_B",              2.5e-9,     units="mol kg-1",      description="equilibrium constant of B(OH)4-"),       
     )
 
 end
 
 function PB.register_methods!(rj::Reaction_Alk_pH)
     vars = [
-        # PB.VarDep("DIC",                 "mol",           "reservoir for species DIC"),
         PB.VarDep("DIC_conc",            "mol m-3",       "DIC concentration"),                  
-        # PB.VarContrib("DIC_sms",         "mol yr-1",      "reservoir DIC source - sink"),
-        # PB.VarDep("TAlk",                "mol",           "reservoir for species TA"),
-        PB.VarDep("TAlk_conc",           "mol m-3",       "TA concentration"),                    
-        # PB.VarContrib("TAlk_sms",        "mol yr-1",      "reservoir TA source - sink"),
-        # PB.VarProp("TAlk_decay_flux",    "mol yr-1",      "decay flux from reservoir TA"),        
+        PB.VarDep("TAlk_conc",           "mol m-3",       "TA concentration"),
+        PB.VarDep("B_conc",              "mol m-3",       "total Boron concentration"),               
         PB.VarConstraint("TAlk_error",   "mol m-3",       "in order to solve TA, we set it"),
         PB.VarProp("HCO3_conc",          "mol m-3",       "HCO3- concentration"),                 
         PB.VarProp("CO3_conc",           "mol m-3",       "CO32- concentration"),
         PB.VarProp("CO2_aq_conc",        "mol m-3",       "CO2_aq concentration"),
+        PB.VarProp("BOH3_conc",          "mol m-3",       "BOH3 concentration"),
         PB.VarProp("BOH4_conc",          "mol m-3",       "BOH4- concentration"),
         PB.VarProp("H_conc",             "mol m-3",       "concentration of H+"),
         PB.VarProp("OH_conc",            "mol m-3",       "concentration of OH-"),
         PB.VarState("pH",                "",              "it is the calcalation for pH"),          
-        # PB.VarDep("volume",              "m3",            "ocean volume"),
-        PB.VarDep("density",              "kg m-3",            "ocean density"),                  
+        PB.VarDep("density",             "kg m-3",        "ocean density"),                  
     ]
 
     PB.add_method_do!(rj, do_Min_Alk_pH,  (PB.VarList_namedtuple(vars), ) )
@@ -55,6 +56,8 @@ function PB.register_methods!(rj::Reaction_Alk_pH)
     return nothing
 end
 
+# called at model start
+# provide an initial value for pH (exact value is not important, just needs to be in a reasonable range)
 function setup_carbchem(  m::PB.ReactionMethod, pars, (vars, ), cellrange::PB.AbstractCellRange, attribute_name )
     
     attribute_name in (:initial_value, :norm_value) || return
@@ -79,22 +82,10 @@ function do_Min_Alk_pH(m::PB.ReactionMethod, pars, (varsdata, ), cellrange::PB.A
     for i in cellrange.indices
         density = varsdata.density[i]
 
-        #                mol yr-1           yr-1                mol kg-1           kg m-3                   m3
-        # varsdata.TAlk_decay_flux[i] = pars.kappa[] * pars.TAlk_conc_change[] * density * varsdata.volume[i]      
-
-        #         mol yr-1                    mol yr-1            
-        # varsdata.TAlk_sms[i] = varsdata.TAlk_decay_flux[i] 
-
         #  mol kg-1                mol m-3           kg m-3
-        DIC_conc_kg = varsdata.DIC_conc[i] / density 
-        
+        DIC_conc_kg = varsdata.DIC_conc[i] / density         
+        B_total_kg = varsdata.B_conc[i] / density
 
-        # mol kg-1               mol m-3           kg m-3
-        # TAlk_conc_kg = varsdata.TAlk_conc[i] / density
-
-        # mol kg-1    =             mol kg-1
-        # H_conc_kg     = 10^( -varsdata.pH[i] )
-        # SD units ...
         # mol kg-1    = mol L-1                / kg m-3  * L m-3
         H_conc_kg     = 10^( -varsdata.pH[i] ) / density * 1000.0
 
@@ -106,9 +97,11 @@ function do_Min_Alk_pH(m::PB.ReactionMethod, pars, (varsdata, ), cellrange::PB.A
 
         #  mol kg-1      mol kg-1          mol kg-1   mol kg-1      mol kg-1        mol kg-1   mol kg-1
         CO3_conc_kg = DIC_conc_kg / ( 1 + H_conc_kg/pars.K_2[] + ((H_conc_kg)^2)/(pars.K_1[]*pars.K_2[]) )
-
+       
         #   mol kg-1          mol kg-1          mol kg-1   mol kg-1  
-        BOH4_conc_kg =  pars.B_total[] / ( 1 + H_conc_kg/pars.K_B[] )
+        BOH4_conc_kg =  B_total_kg / ( 1 + H_conc_kg/pars.K_B[] )
+
+        BOH3_conc_kg = B_total_kg - BOH4_conc_kg
 
         # mol kg-1    mol2 kg-2    mol kg-1     
         OH_conc_kg = pars.K_w[] / H_conc_kg
@@ -118,21 +111,12 @@ function do_Min_Alk_pH(m::PB.ReactionMethod, pars, (varsdata, ), cellrange::PB.A
 
         #          mol m-3         kg m-3      mol kg-1
         varsdata.H_conc[i] = density * H_conc_kg
-
-        #           mol m-3          kg m-3      mol kg-1
         varsdata.OH_conc[i] = density * OH_conc_kg     
-
-        #             mol m-3           kg m-3       mol kg-1
         varsdata.HCO3_conc[i] = density * HCO3_conc_kg        
-
-        #            mol m-3           kg m-3      mol kg-1
         varsdata.CO3_conc[i] = density * CO3_conc_kg     
-
-        #               mol m-3           kg m-3         mol kg-1
         varsdata.CO2_aq_conc[i] = density * CO2_aq_conc_kg  
-
-        #             mol m-3           kg m-3       mol kg-1
-        varsdata.BOH4_conc[i] = density * BOH4_conc_kg                                           
+        varsdata.BOH4_conc[i] = density * BOH4_conc_kg
+        varsdata.BOH3_conc[i] = density * BOH3_conc_kg                                          
 
         #            mol m-3               mol m-3           mol kg-1          kg m-3                  
         varsdata.TAlk_error[i] = varsdata.TAlk_conc[i] - TAlk_conc_kg_calcu * density

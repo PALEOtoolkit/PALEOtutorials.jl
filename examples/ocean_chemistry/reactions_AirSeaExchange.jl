@@ -1,14 +1,24 @@
 module Min_AirSeaExchange
 
 import PALEOboxes as PB
+using PALEOboxes.DocStrings # for $(PARS) and $(METHODS_DO)
 
 """
-    Min_AirSeaExchange
+    Reaction_Min_AirSeaExchange
 
 Minimal example, just make a easy way to illustrate Air-Sea exchange.
 
-Current this file only consider CO2 exchange between Air and Sea.
+This implements exchange between Air and Sea for a generic gas `X` with fixed Henry law coefficient `K_0`
+and piston velocity `vpiston`.
 
+The Reaction-local Variables `X_aq_conc`, `pXatm`, `X_airsea_exchange` should be linked to the appropriate variables using the
+`variable_links:` section in the .yaml file.
+
+# Parameters
+$(PARS)
+
+# Methods and Variables
+$(METHODS_DO)
 """
 Base.@kwdef mutable struct Reaction_Min_AirSeaExchange{P} <: PB.AbstractReaction
 
@@ -27,11 +37,10 @@ function PB.register_methods!(rj::Reaction_Min_AirSeaExchange)
 
     vars = [
 
-        PB.VarDep(             "CO2_aq_conc",               "mol m-3",              "CO2_aq concentration per cell"),
-        PB.VarDepScalar(       "pCO2atm",                   "atm",                  "atmospheric pCO2, unit is atm"),
-        # PB.VarDepScalar(       "pCO2PAL",                   "",                     "atmospheric pCO2 normalized to present day"),
-        PB.VarContrib(         "CO2_airsea_exchange",       "mol yr-1",             "it is the calcalation for CO2_airsea_exchange"),
-        PB.VarDep(             "area",                      "m2",                   "surface area"),
+        PB.VarDep(             "X_aq_conc",               "mol m-3",              "ocean concentration per cell"),
+        PB.VarDepScalar(       "pXatm",                   "atm",                  "atmospheric partial pressure, unit is atm"),
+        PB.VarContrib(         "X_airsea_exchange",       "mol yr-1",             "calculated airsea exchange flux for gas X"),
+        PB.VarDep(             "area",                    "m2",                   "surface area"),
 
     ]
 
@@ -43,18 +52,16 @@ end
 # do method, called each main loop timestep
 function do_Min_AirSeaExchange(m::PB.ReactionMethod, pars, (varsdata, ), cellrange::PB.AbstractCellRange, deltat)
 
-    rj = m.reaction
-
-    #       mol m-3     mol m-3 atm-1                  atm     
-    CO2_aq_conc_eqb  =     pars.K_0[] * varsdata.pCO2atm[]   
+    #       mol m-3     mol m-3 atm-1            atm     
+    X_aq_conc_eqb  =     pars.K_0[] * varsdata.pXatm[]   
 
     for i in cellrange.indices
         
           #   mol m-3                mol m-3                                    
-          CO2_aq_conc = varsdata.CO2_aq_conc[i]                 
+          X_aq_conc = varsdata.X_aq_conc[i]                 
 
-          #                   mol yr-1            mol m-3          mol m-3          m yr-1                m2
-          varsdata.CO2_airsea_exchange[i] -= (CO2_aq_conc - CO2_aq_conc_eqb) * pars.vpiston[] * varsdata.area[i]
+          #                   mol yr-1      mol m-3          mol m-3          m yr-1                m2
+          varsdata.X_airsea_exchange[i] -= (X_aq_conc - X_aq_conc_eqb) * pars.vpiston[] * varsdata.area[i]
 
     end    
 
