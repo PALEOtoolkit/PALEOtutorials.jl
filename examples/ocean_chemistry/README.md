@@ -174,10 +174,10 @@ show(PB.show_variables(model), allcols=true, allrows=true) # display in REPL
 
 This example shows how ocean(TAlk-DIC)-air(CO2) exchange in modern state [Example 3 Minimal modern earth ocean-air](@ref).
 
-This configuration is the same as `Example 2 Air-sea exchange`. What is different is that we set `TAlk` and `K_0` to be modern state value[Sarmiento2006](@cite) at S=35, T=25℃.
+This configuration is the same as `Example 2 Air-sea exchange`. What is different is that we set `TAlk` and `K_0` to be modern state value [Sarmiento2006](@cite) at S=35, T=25℃.
 
 ### yaml configuration file
-The model configuration (file `examples/ocean_chemistry/config_ex2.yaml`) contains three Reservoirs `DIC`, `TAlk` and `CO2`. Following `reservoirs` [Example 4 Transfer between Domains](@ref), we use `ReactionFluxTarget` and `ReactionFluxTransfer` to transfer `CO2_airsea_exchange` between `DIC` reservoir and `CO2` reservoir:
+The model configuration (file `examples/ocean_chemistry/config_ex3.yaml`) contains three Reservoirs `DIC`, `TAlk` and `CO2`. Following `reservoirs` [Example 4 Transfer between Domains](@ref), we use `ReactionFluxTarget` and `ReactionFluxTransfer` to transfer `CO2_airsea_exchange` between `DIC` reservoir and `CO2` reservoir:
 ```@eval
 str = read("../../../../examples/ocean_chemistry/config_ex3.yaml", String)
 str = """```julia
