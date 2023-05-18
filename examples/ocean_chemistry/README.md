@@ -170,4 +170,60 @@ show(PB.show_variables(model), allcols=true, allrows=true) # display in REPL
 # vscodedisplay(PB.show_variables(model)) # more convenient when using VS code
 ```
 
+## Example 3 Minimal modern earth ocean-air 
+
+This example shows how ocean(TAlk-DIC)-air(CO2) exchange in modern state [Example 3 Minimal modern earth ocean-air](@ref).
+
+This configuration is the same as `Example 2 Air-sea exchange`. What is different is that we set `TAlk` and `K_0` to be modern state value [Sarmiento2006](@cite) at S=35, T=25℃.
+
+### yaml configuration file
+The model configuration (file `examples/ocean_chemistry/config_ex3.yaml`) contains three Reservoirs `DIC`, `TAlk` and `CO2`. Following `reservoirs` [Example 4 Transfer between Domains](@ref), we use `ReactionFluxTarget` and `ReactionFluxTransfer` to transfer `CO2_airsea_exchange` between `DIC` reservoir and `CO2` reservoir:
+```@eval
+str = read("../../../../examples/ocean_chemistry/config_ex3.yaml", String)
+str = """```julia
+      $str
+      ```"""
+import Markdown
+Markdown.parse(str)
+```
+
+### Run script
+The script to run the model (file `examples/ocean_chemistry/run_ex3.jl`) contains:
+```@eval
+str = read("../../../../examples/ocean_chemistry/run_ex3.jl", String)
+str = """```julia
+      $str
+      ```"""
+import Markdown
+Markdown.parse(str)
+```
+and produces output showing the change, if `TAlk_conc` increase, how the carbonic acid and pH change in ocean and CO2 change in the air:
+```@example ex3
+include("../../../../examples/ocean_chemistry/run_ex3.jl") # hide
+plot(paleorun.output, ["ocean.TAlk_conc", "ocean.DIC_conc"],                                           (cell=1,); ylabel="TAlk, DIC conc (mol m-3)") # hide
+savefig("ex3_plot1.svg"); nothing  # hide
+plot(paleorun.output, "ocean.pH",                                                                      (cell=1,)) # hide
+savefig("ex3_plot2.svg"); nothing  # hide
+plot(paleorun.output, ["ocean.DIC_conc", "ocean.HCO3_conc", "ocean.CO3_conc", "ocean.CO2_aq_conc"],    (cell=1,); ylabel="DIC species (mol m-3)") # hide
+savefig("ex3_plot3.svg"); nothing  # hide
+display(plot(paleorun.output, "atm.pCO2atm",                                                                   ))  # hide
+savefig("ex3_plot4.svg"); nothing  # hide
+display(plot(paleorun.output, ["global.C_total", "atm.CO2", "ocean.DIC_total"]                                  ; ylabel="atm-ocean carbon (mol)"))
+savefig("ex3_plot5.svg"); nothing  # hide
+```
+
+![](ex3_plot1.svg)
+![](ex3_plot2.svg)
+![](ex3_plot3.svg)
+![](ex3_plot4.svg)
+![](ex3_plot5.svg)
+
+### Displaying model structure and variables
+
+All metadata for model variables can be displayed with `PB.show_variables`:
+```@example ex3
+show(PB.show_variables(model), allcols=true, allrows=true) # display in REPL
+# vscodedisplay(PB.show_variables(model)) # more convenient when using VS code
+```
+
 For more information and cooperation, please communicate with us!
