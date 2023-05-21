@@ -174,18 +174,10 @@ show(PB.show_variables(model), allcols=true, allrows=true) # display in REPL
 
 This example shows how ocean(TAlk-DIC)-air(CO2) exchange in modern state [Example 3 Minimal modern earth ocean-air](@ref).
 
-This configuration is the same as `Example 2 Air-sea exchange`. What is different is that we set `TAlk` and `K_0` to be modern state value [Sarmiento2006](@cite) at S=35, T=25℃.
+This configuration .yaml file is the same as `Example 2 Air-sea exchange`. What is different is that we set `TAlk`, `DIC` and `K_0` to be modern state value (from [SarmientoGruber2006](@cite)) using [`PB.set_parameter_value!`](https://paleotoolkit.github.io/PALEOboxes.jl/stable/Solver%20API/#PALEOboxes.set_parameter_value!) and [`PB.set_variable_attribute!`](https://paleotoolkit.github.io/PALEOboxes.jl/stable/Solver%20API/#PALEOboxes.set_variable_attribute!)
 
-### yaml configuration file
-The model configuration (file `examples/ocean_chemistry/config_ex3.yaml`) contains three Reservoirs `DIC`, `TAlk` and `CO2`. Following `reservoirs` [Example 4 Transfer between Domains](@ref), we use `ReactionFluxTarget` and `ReactionFluxTransfer` to transfer `CO2_airsea_exchange` between `DIC` reservoir and `CO2` reservoir:
-```@eval
-str = read("../../../../examples/ocean_chemistry/config_ex3.yaml", String)
-str = """```julia
-      $str
-      ```"""
-import Markdown
-Markdown.parse(str)
-```
+NB: this is not an accurate model for the modern system ! See [PALEOocean.jl](https://github.com/PALEOtoolkit/PALEOocean.jl) for more complete models,
+including representations of ocean spatial structure and circulation, and more detailed parameterisations of carbonate chemistry ([ReactionCO2SYS](https://paleotoolkit.github.io/PALEOaqchem.jl/dev/PALEOaqchem%20Reactions/#PALEOaqchem.CarbChem.ReactionCO2SYS)) and air-sea exchange ([ReactionAirSeaCO2](https://paleotoolkit.github.io/PALEOocean.jl/dev/PALEOocean_Reactions/#PALEOocean.Oceansurface.AirSeaExchange.ReactionAirSeaCO2))
 
 ### Run script
 The script to run the model (file `examples/ocean_chemistry/run_ex3.jl`) contains:
@@ -197,7 +189,7 @@ str = """```julia
 import Markdown
 Markdown.parse(str)
 ```
-and produces output showing the change, if `TAlk_conc` increase, how the carbonic acid and pH change in ocean and CO2 change in the air:
+and produces output showing an approximate modern steady state:
 ```@example ex3
 include("../../../../examples/ocean_chemistry/run_ex3.jl") # hide
 plot(paleorun.output, ["ocean.TAlk_conc", "ocean.DIC_conc"],                                           (cell=1,); ylabel="TAlk, DIC conc (mol m-3)") # hide
@@ -218,12 +210,5 @@ savefig("ex3_plot5.svg"); nothing  # hide
 ![](ex3_plot4.svg)
 ![](ex3_plot5.svg)
 
-### Displaying model structure and variables
-
-All metadata for model variables can be displayed with `PB.show_variables`:
-```@example ex3
-show(PB.show_variables(model), allcols=true, allrows=true) # display in REPL
-# vscodedisplay(PB.show_variables(model)) # more convenient when using VS code
-```
 
 For more information and cooperation, please communicate with us!

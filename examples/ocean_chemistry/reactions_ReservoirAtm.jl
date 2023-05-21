@@ -51,12 +51,30 @@ function PB.register_methods!(rj::ReactionReservoirAtm)
     @info "register_methods! ReactionReservoirAtm $(PB.fullname(rj)) field_data=$(rj.pars.field_data[])"
     PB.setfrozen!(rj.pars.field_data)
 
+    # callback function to store Variable norm during setup
+    function setup_callback(m, attribute_value, v, vdata)
+        v.localname == "R" || error("setup_callback unexpected Variable $(PB.fullname(v))")
+        if attribute_value == :norm_value
+            m.reaction.norm_value = PB.value_ad(PB.get_total(vdata[]))
+        end
+        return nothing
+    end
+    
+
     if rj.pars.const[]
         R = PB.VarPropScalar(      "R", "mol", "scalar constant reservoir", attributes=(:field_data=>rj.pars.field_data[],))
         R_sms = PB.VarTarget(     "R_sms", "mol yr-1", "constant reservoir source-sinks", attributes=(:field_data=>rj.pars.field_data[],))
+        PB.add_method_setup_initialvalue_vars_default!(
+            rj, 
+            [R],
+            filterfn = v->true,  # set filterfn to force setup even if R is constant, not a state Variable
+            force_initial_norm_value=true, # setup :norm_value, :initial_value to get norm_value callback, even though R is not a state Variable
+            setup_callback=setup_callback
+        )  
     else
         R = PB.VarStateExplicitScalar("R", "mol", "scalar reservoir", attributes=(:field_data=>rj.pars.field_data[],))
         R_sms = PB.VarDerivScalar(     "R_sms", "mol yr-1", "scalar reservoir source-sinks", attributes=(:field_data=>rj.pars.field_data[],))
+        PB.add_method_setup_initialvalue_vars_default!(rj, [R], setup_callback=setup_callback)
     end
     PB.setfrozen!(rj.pars.const)
 
@@ -74,16 +92,7 @@ function PB.register_methods!(rj::ReactionReservoirAtm)
             PB.VarPropScalar(     "R_delta", "per mil", "scalar atmosphere reservoir isotope delta"))
     end
 
-    # callback function to store Variable norm during setup
-    function setup_callback(m, attribute_value, v, vdata)
-        v.localname == "R" || error("setup_callback unexpected Variable $(PB.fullname(v))")
-        if attribute_value == :norm_value
-            m.reaction.norm_value = PB.value_ad(PB.get_total(vdata[]))
-        end
-        return nothing
-    end
-    # set filterfn to force setup even if R is constant, not a state Variable
-    PB.add_method_setup_initialvalue_vars_default!(rj, [R], filterfn = v->true, setup_callback=setup_callback)  
+    
 
     PB.add_method_do!(
         rj,

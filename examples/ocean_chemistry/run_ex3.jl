@@ -11,7 +11,18 @@ include(joinpath(@__DIR__,"reactions_ReservoirAtm.jl")) # @__DIR__ so still runs
 #####################################################
 # Create model
 
-model = PB.create_model_from_config(joinpath(@__DIR__, "config_ex3.yaml"), "Minimal_modern_AirSea")
+model = PB.create_model_from_config(joinpath(@__DIR__, "config_ex2.yaml"), "Minimal_Alk_pH_AirSea")
+
+# set to ~modern (1990s) values from Sarmiento 2006 for global mean ocean surface
+
+# K0 (NB: Table A.3 gives global mean ocean surface temperature  17.88 C)
+PB.set_parameter_value!(model, "oceansurface", "solve_AirSea_Exchange", "K_0", 38.3) # mol m-3 atm-1, Table 3.2.3 at S=35. T=15℃
+# PB.set_parameter_value!(model, "oceansurface", "solve_AirSea_Exchange", "K_0", 33.11) # mol m-3 atm-1, Table 3.2.3 at S=35. T=20℃
+# PB.set_parameter_value!(model, "oceansurface", "solve_AirSea_Exchange", "K_0", 29.6) # mol m-3 atm-1, from Sarmiento 2006, at S=35. T=25℃
+
+PB.set_parameter_value!(model, "global", "add_Alk", "perturb_totals", [0.0, 0.0]) # don't add any Alk
+PB.set_variable_attribute!(model, "ocean.TAlk", :initial_value, 2.308)  # mol m-3 ~ modern value global mean ocean surface (Table A.3)
+PB.set_variable_attribute!(model, "ocean.DIC", :initial_value, 2.026)  # mol m-3 ~ modern value global mean ocean surface  (Table A.3)
 
 #########################################################
 # Initialize
