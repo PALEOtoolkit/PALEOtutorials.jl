@@ -12,18 +12,18 @@ using a fixed timestep of 0.5 yr.  This can be useful for testing, but for conve
 
 The script to run the model (file `examples/reservoirs/run_ex5.yaml`) contains:
 ```@eval
-str = read("../../../../examples/solvers/run_ex5_naive_euler.jl", String)
-str = """```julia
-      $str
-      ```"""
 import Markdown
-Markdown.parse(str)
+Markdown.parse(
+    """```julia
+    $(read(joinpath(ENV["PALEO_EXAMPLES"], "solvers/run_ex5_naive_euler.jl"), String))
+    ```"""
+)
 ```
 And produces output (solid lines, dashed lines show accurate output from CVODE solver):
 ```@setup solvers
-include("../../../../examples/reservoirs/run_ex5.jl")
+include(joinpath(ENV["PALEO_EXAMPLES"], "reservoirs/run_ex5.jl"))
 output_cvode = paleorun.output
-include("../../../../examples/solvers/run_ex5_naive_euler.jl")
+include(joinpath(ENV["PALEO_EXAMPLES"], "solvers/run_ex5_naive_euler.jl"))
 ```
 ```@example solvers
 plot(output_euler,  ["Box1.A", "Box2.B", "global.E_total"]; ylabel="reservoir (mol)") # hide
@@ -52,12 +52,12 @@ Options `solvekwargs` are passed through to the SciML `solve` method, see <https
 
 The script to run the model (file `examples/reservoirs/run_ex5.jl`) contains:
 ```@eval
-str = read("../../../../examples/reservoirs/run_ex5.jl", String)
-str = """```julia
-      $str
-      ```"""
 import Markdown
-Markdown.parse(str)
+Markdown.parse(
+    """```julia
+    $(read(joinpath(ENV["PALEO_EXAMPLES"], "reservoirs/run_ex5.jl"), String))
+    ```"""
+)
 ```
 and produces output showing Rayleigh fractionation:
 ```@example solvers
@@ -79,16 +79,16 @@ Recommended SciML solvers are documented at <https://diffeq.sciml.ai/stable/>. A
 
 The script to run the model (file `examples/reservoirs/run_ex5.yaml`) with this solver contains:
 ```@eval
-str = read("../../../../examples/solvers/run_ex5_Tsit5.jl", String)
-str = """```julia
-      $str
-      ```"""
 import Markdown
-Markdown.parse(str)
+Markdown.parse(
+    """```julia
+    $(read(joinpath(ENV["PALEO_EXAMPLES"], "solvers/run_ex5_Tsit5.jl"), String))
+    ```"""
+)
 ```
 As expected the output using Tsit5 (solid lines) and CVODE_BDF (dashed lines) is indistinguishable as both solvers will maintain relative accuracy within the specified `reltol=1e-5`:
 ```@setup solvers
-include("../../../../examples/solvers/run_ex5_Tsit5.jl")
+include(joinpath(ENV["PALEO_EXAMPLES"], "solvers/run_ex5_Tsit5.jl"))
 output_tsit5 = paleorun.output
 ```
 ```@example solvers
