@@ -72,6 +72,8 @@ function initialize_example1(m::PB.ReactionMethod, (varsdata, ), cellrange::PB.A
 
     varsdata.A_sms[] = 0.0
 
+    #varsdata.A[] = 100.0
+
     return nothing
 end
 
