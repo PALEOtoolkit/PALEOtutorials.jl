@@ -4,7 +4,10 @@ using DocumenterCitations
 
 import PALEOboxes as PB
 
-bib = CitationBibliography(joinpath(@__DIR__, "src/paleo_references.bib"))
+bib = CitationBibliography(
+    joinpath(@__DIR__, "src/paleo_references.bib");
+    citationstyle=:authoryear,
+)
 
 # Collate all markdown files and images folders from PALEOexamples/src/ into a tree of pages
 ENV["PALEO_EXAMPLES"] = normpath(@__DIR__, "../examples") # make ENV["PALEO_EXAMPLES"] available in README.md etc
@@ -21,8 +24,8 @@ examples_pages, examples_includes = PB.collate_markdown(
 # include files that load modules etc from PALEOexamples folders
 include.(examples_includes)
 
-makedocs(bib, sitename="PALEOtutorials Documentation", 
-# makedocs(sitename="PALEO Documentation", 
+makedocs(;
+    sitename = "PALEOtutorials Documentation",
     pages = [
         "index.md",
         "Examples and Tutorials" => vcat(
@@ -44,6 +47,7 @@ makedocs(bib, sitename="PALEOtutorials Documentation",
     format = Documenter.HTML(
         prettyurls = get(ENV, "CI", nothing) == "true"
     ),
+    plugins = [bib],
 )
 
 @info "Local html documentation is available at $(joinpath(@__DIR__, "build/index.html"))"
