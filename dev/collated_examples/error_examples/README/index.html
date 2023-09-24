@@ -74,9 +74,11 @@ example5_syntax_error:
                         output_fluxes: $fluxname$_sms</code></pre><p>This results in an error when the file is parsed (note that the informative message indicating that there is a problem with the YAML parsing is near the top of the stack trace):</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt;       include(joinpath(ENV[&quot;PALEO_EXAMPLES&quot;], &quot;error_examples/run_ex5_syntax_error.jl&quot;))</code><code class="nohighlight hljs ansi" style="display:block;">WARNING: using StaticArrays.setindex in module FiniteDiff conflicts with an existing identifier.
 ┌ Warning: Replacing docs for `SciMLBase.sol :: Union{Tuple, Tuple{D}, Tuple{S}, Tuple{N}, Tuple{T}} where {T, N, S, D}` in module `SciMLBase`
 └ @ Base.Docs docs/Docs.jl:240
-[ Info: ================================================================================
-[ Info: create_model_from_config file(s) [&quot;/home/runner/work/PALEOtutorials.jl/PALEOtutorials.jl/examples/error_examples/config_ex5_syntax_error.yaml&quot;] configmodel example5_syntax_error
-[ Info: ================================================================================
+┌ Info: 
+│ ================================================================================
+│ create_model_from_config: configmodel example5_syntax_error
+│     config_file: /home/runner/work/PALEOtutorials.jl/PALEOtutorials.jl/examples/error_examples/config_ex5_syntax_error.yaml
+└ ================================================================================
 ERROR: LoadError: YAML.ParserError while reading .yaml config file(s) [&quot;/home/runner/work/PALEOtutorials.jl/PALEOtutorials.jl/examples/error_examples/config_ex5_syntax_error.yaml&quot;].
 If the error isn&#39;t obvious by looking at the file(s) (often this is a whitespace issue), try an online YAML validator eg http://www.yamllint.com
 in expression starting at /home/runner/work/PALEOtutorials.jl/PALEOtutorials.jl/examples/error_examples/run_ex5_syntax_error.jl:11</code></pre><h2 id="Missing-/-unlinked-Variables"><a class="docs-heading-anchor" href="#Missing-/-unlinked-Variables">Missing / unlinked Variables</a><a id="Missing-/-unlinked-Variables-1"></a><a class="docs-heading-anchor-permalink" href="#Missing-/-unlinked-Variables" title="Permalink"></a></h2><p>The model configuration (file <code>examples/error_examples/config_ex5_reservoir_A_missing.yaml</code>) omits a <code>ReactionReservoirScalar</code>, resulting in Variable Dependencies and Contributors with no corresponding Properties and Targets.</p><pre><code class="language-julia hljs">##################################################################
@@ -151,58 +153,107 @@ example5_reservoir_A_missing:
                     class: ReactionFluxTransfer
                     parameters:
                         input_fluxes: fluxBoxes.flux_$fluxname$
-                        output_fluxes: $fluxname$_sms</code></pre><p>This results in an error when the Variables are linked:</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt;       include(joinpath(ENV[&quot;PALEO_EXAMPLES&quot;], &quot;error_examples/run_ex5_reservoir_A_missing.jl&quot;))</code><code class="nohighlight hljs ansi" style="display:block;">[ Info: ================================================================================
-[ Info: create_model_from_config file(s) [&quot;/home/runner/work/PALEOtutorials.jl/PALEOtutorials.jl/examples/error_examples/config_ex5_reservoir_A_missing.yaml&quot;] configmodel example5_reservoir_A_missing
-[ Info: ================================================================================
-[ Info:     Model parameter: EIsotope             = IsotopeLinear
+                        output_fluxes: $fluxname$_sms</code></pre><p>This results in an error when the Variables are linked:</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt;       include(joinpath(ENV[&quot;PALEO_EXAMPLES&quot;], &quot;error_examples/run_ex5_reservoir_A_missing.jl&quot;))</code><code class="nohighlight hljs ansi" style="display:block;">┌ Info: 
+│ ================================================================================
+│ create_model_from_config: configmodel example5_reservoir_A_missing
+│     config_file: /home/runner/work/PALEOtutorials.jl/PALEOtutorials.jl/examples/error_examples/config_ex5_reservoir_A_missing.yaml
+└ ================================================================================
+┌ Info: Model.parameters:
+└     EIsotope             = IsotopeLinear
+┌ Info: 
+│ ================================================================================
+│ creating Domains
+└ ================================================================================
 [ Info: generated Reaction catalog with 29 Reactions
-[ Info: creating domain &#39;global&#39; ID=1
+┌ Info: 
+│ ================================================================================
+│ creating domain &#39;global&#39; ID=1
+└ ================================================================================
 ┌ Warning: create_domain_from_config Domain &#39;global&#39; empty &#39;reactions:&#39; key in .yaml file
-└ @ PALEOboxes ~/.julia/packages/PALEOboxes/kPOmB/src/Domain.jl:315
-[ Info: creating domain &#39;fluxBoxes&#39; ID=2
-[ Info:   creating reaction fluxBoxes.reactions.flux classname ReactionFluxTarget
-[ Info:     set parameters: [config.yaml]  fluxlist            =[&quot;B::EIsotope&quot;]
-[ Info:     set parameters: [config.yaml]  target_prefix       =flux_
-[ Info:     set parameters: [Default]      flux_totals         =false
-[ Info:     set parameters: [Default]      const_stub          =false
-[ Info: creating domain &#39;Box2&#39; ID=3
-[ Info:   creating reaction Box2.reactions.reservoir_B classname ReactionReservoirScalar
-[ Info:     set parameters: [config.yaml]  field_data          =external%EIsotope
-[ Info:       expandvalue: external%EIsotope -&gt; IsotopeLinear
-[ Info:       after substitution field_data=IsotopeLinear
-[ Info:     set parameters: [Default]      const               =false
-[ Info:   creating reaction Box2.reactions.transfer_fluxBoxes classname ReactionFluxTransfer
-[ Info:     set parameters: [config.yaml]  input_fluxes        =fluxBoxes.flux_$fluxname$
-[ Info:     set parameters: [config.yaml]  output_fluxes       =$fluxname$_sms
-[ Info:     set parameters: [Default]      transfer_multiplier =1.0
-[ Info:     set parameters: [Default]      transfer_matrix     =Identity
-[ Info: creating domain &#39;Box1&#39; ID=4
-[ Info:   creating reaction Box1.reactions.Adecay classname ReactionExample5
-[ Info:     set parameters: [config.yaml]  kappa               =0.5
-[ Info:     set parameters: [config.yaml]  field_data          =external%EIsotope
-[ Info:       expandvalue: external%EIsotope -&gt; IsotopeLinear
-[ Info:       after substitution field_data=IsotopeLinear
-[ Info:     set parameters: [Default]      Delta               =-10.0
-[ Info: link_variables first pass
-[ Info: link_variables initialize dynamic variables
-[ Info: _configure_variables: ReactionReservoirScalar Box2.reservoir_B
-[ Info:     set variable_links: R                    -&gt; B
-[ Info:     set variable_links: R_sms                -&gt; B_sms
-[ Info:     set variable_links: R_norm               -&gt; B_norm
-[ Info:     set variable_links: R_delta              -&gt; B_delta
-[ Info:     set attribute: R                    :norm_value           = 10.0                 
-[ Info:     set attribute: R                    :initial_value        = 0.0                  
-[ Info:     set attribute: R                    :initial_delta        = 0.0                  
-[ Info: _configure_variables: ReactionExample5 Box1.Adecay
-[ Info:     set variable_links: input_particle       -&gt; A
-[ Info:     set variable_links: input_particle_sms   -&gt; A_sms
-[ Info:     set variable_links: input_particle_delta -&gt; A_delta
-[ Info:     set variable_links: output_flux          -&gt; fluxBoxes.flux_B
-[ Info: link_variables second pass:
-[ Info: link_variables unlinked variables:
-[ Info: ================================================================================
-[ Info: allocate_variables! (modeldata arrays_idx=1)
-[ Info: ================================================================================
+└ @ PALEOboxes ~/.julia/packages/PALEOboxes/vf34f/src/Domain.jl:314
+┌ Info: 
+│ ================================================================================
+│ creating domain &#39;fluxBoxes&#39; ID=2
+└ ================================================================================
+┌ Info: create_reaction_from_config: fluxBoxes.flux classname ReactionFluxTarget
+│     set parameters: [config.yaml]  fluxlist            =[&quot;B::EIsotope&quot;]
+│     set parameters: [config.yaml]  target_prefix       =flux_
+│     set parameters: [Default]      flux_totals         =false
+└     set parameters: [Default]      const_stub          =false
+┌ Info: 
+│ ================================================================================
+│ creating domain &#39;Box2&#39; ID=3
+└ ================================================================================
+┌ Info: create_reaction_from_config: Box2.reservoir_B classname ReactionReservoirScalar
+│     set parameters: [config.yaml]  field_data          =external%EIsotope
+│       expandvalue: external%EIsotope -&gt; IsotopeLinear
+│       after substitution field_data=IsotopeLinear
+└     set parameters: [Default]      const               =false
+┌ Info: create_reaction_from_config: Box2.transfer_fluxBoxes classname ReactionFluxTransfer
+│     set parameters: [config.yaml]  input_fluxes        =fluxBoxes.flux_$fluxname$
+│     set parameters: [config.yaml]  output_fluxes       =$fluxname$_sms
+│     set parameters: [Default]      transfer_multiplier =1.0
+└     set parameters: [Default]      transfer_matrix     =Identity
+┌ Info: 
+│ ================================================================================
+│ creating domain &#39;Box1&#39; ID=4
+└ ================================================================================
+┌ Info: create_reaction_from_config: Box1.Adecay classname ReactionExample5
+│     set parameters: [config.yaml]  kappa               =0.5
+│     set parameters: [config.yaml]  field_data          =external%EIsotope
+│       expandvalue: external%EIsotope -&gt; IsotopeLinear
+│       after substitution field_data=IsotopeLinear
+└     set parameters: [Default]      Delta               =-10.0
+┌ Info: 
+│ ================================================================================
+│ set_model_geometry
+└ ================================================================================
+┌ Info: 
+│ ================================================================================
+│ register_reaction_methods!
+└ ================================================================================
+┌ Info: 
+│ ================================================================================
+│ link_variables: first pass
+└ ================================================================================
+┌ Info: 
+│ ================================================================================
+│ link_variables: register_reaction_dynamic_methods and configure variables
+└ ================================================================================
+┌ Info: _configure_variables: ReactionReservoirScalar Box2.reservoir_B variable_links:
+│     set variable_links: R                    -&gt; B
+│     set variable_links: R_sms                -&gt; B_sms
+│     set variable_links: R_norm               -&gt; B_norm
+│     set variable_links: R_delta              -&gt; B_delta
+│ _configure_variables: ReactionReservoirScalar Box2.reservoir_B variable_attributes:
+│     set attribute: R                    :norm_value           = 10.0                 
+│     set attribute: R                    :initial_value        = 0.0                  
+└     set attribute: R                    :initial_delta        = 0.0                  
+┌ Info: _configure_variables: ReactionExample5 Box1.Adecay variable_links:
+│     set variable_links: input_particle       -&gt; A
+│     set variable_links: input_particle_sms   -&gt; A_sms
+│     set variable_links: input_particle_delta -&gt; A_delta
+└     set variable_links: output_flux          -&gt; fluxBoxes.flux_B
+┌ Info: 
+│ ================================================================================
+│ link_variables: second pass:
+└ ================================================================================
+┌ Info: 
+│ ================================================================================
+│ link_variables! unlinked variables:
+└ ================================================================================
+┌ Info: 
+│ ================================================================================
+│ create_model_from_config: done
+└ ================================================================================
+┌ Info: 
+│ ================================================================================
+│ PALEOmodel.initialize! start
+└ ================================================================================
+┌ Info: 
+│ ================================================================================
+│ allocate_variables! (modeldata arrays_idx=1)
+└ ================================================================================
 [ Info: Domain global               data dimensions PALEOboxes.NamedDimension[] allocating 0    variables (hostdep=nothing)
 [ Info: Domain fluxBoxes            data dimensions PALEOboxes.NamedDimension[] allocating 1    variables (hostdep=nothing)
 [ Info: Domain Box2                 data dimensions PALEOboxes.NamedDimension[] allocating 4    variables (hostdep=nothing)
@@ -213,19 +264,19 @@ example5_reservoir_A_missing:
 │ 		target:		nothing
 │ 		contributors:	[&quot;Box1.Adecay.do_example5.input_particle_sms&quot;]
 │ 		dependencies:	String[]
-└ @ PALEOboxes ~/.julia/packages/PALEOboxes/kPOmB/src/Model.jl:398
+└ @ PALEOboxes ~/.julia/packages/PALEOboxes/vf34f/src/Model.jl:446
 ┌ Warning: check_ready: unexpected host-dependent Variable Box1.A (usually an unlinked Variable due to eg a missing renaming in the :variable_links sections in the .yaml file, a spelling mistake either in a Variable default name in the code or renaming in the .yaml file, or a missing Reaction)
 │ 	PALEOboxes.VariableDomPropDep &quot;Box1.A&quot; links:
 │ 		property:	nothing
 │ 		dependencies:	[&quot;Box1.Adecay.do_example5.input_particle&quot;]
-└ @ PALEOboxes ~/.julia/packages/PALEOboxes/kPOmB/src/Model.jl:398
+└ @ PALEOboxes ~/.julia/packages/PALEOboxes/vf34f/src/Model.jl:446
 ┌ Warning: check_ready: unexpected host-dependent Variable Box1.A_delta (usually an unlinked Variable due to eg a missing renaming in the :variable_links sections in the .yaml file, a spelling mistake either in a Variable default name in the code or renaming in the .yaml file, or a missing Reaction)
 │ 	PALEOboxes.VariableDomPropDep &quot;Box1.A_delta&quot; links:
 │ 		property:	nothing
 │ 		dependencies:	[&quot;Box1.Adecay.do_example5.input_particle_delta&quot;]
-└ @ PALEOboxes ~/.julia/packages/PALEOboxes/kPOmB/src/Model.jl:398
+└ @ PALEOboxes ~/.julia/packages/PALEOboxes/vf34f/src/Model.jl:446
 ┌ Error: check_ready failed
-└ @ PALEOboxes ~/.julia/packages/PALEOboxes/kPOmB/src/Model.jl:406
+└ @ PALEOboxes ~/.julia/packages/PALEOboxes/vf34f/src/Model.jl:454
 ERROR: LoadError: check_ready failed
 in expression starting at /home/runner/work/PALEOtutorials.jl/PALEOtutorials.jl/examples/error_examples/run_ex5_reservoir_A_missing.jl:20</code></pre><h2 id="A-duplicated-Variable-or-a-name-collision"><a class="docs-heading-anchor" href="#A-duplicated-Variable-or-a-name-collision">A duplicated Variable or a name collision</a><a id="A-duplicated-Variable-or-a-name-collision-1"></a><a class="docs-heading-anchor-permalink" href="#A-duplicated-Variable-or-a-name-collision" title="Permalink"></a></h2><p>The model configuration (file <code>examples/error_examples/config_ex5_reservoir_A_duplicate.yaml</code>) contains two copies of a <code>ReactionReservoirScalar</code>, both attempting to create the same VariableDomains</p><pre><code class="language-julia hljs">##################################################################
 # ../reservoirs/config_ex5.yaml with common configuration errors
@@ -306,54 +357,85 @@ example5_reservoir_A_duplicate:
                     class: ReactionFluxTransfer
                     parameters:
                         input_fluxes: fluxBoxes.flux_$fluxname$
-                        output_fluxes: $fluxname$_sms</code></pre><p>This results in an error when the Variables are linked:</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt;       include(joinpath(ENV[&quot;PALEO_EXAMPLES&quot;], &quot;error_examples/run_ex5_reservoir_A_duplicate.jl&quot;))</code><code class="nohighlight hljs ansi" style="display:block;">[ Info: ================================================================================
-[ Info: create_model_from_config file(s) [&quot;/home/runner/work/PALEOtutorials.jl/PALEOtutorials.jl/examples/error_examples/config_ex5_reservoir_A_duplicate.yaml&quot;] configmodel example5_reservoir_A_duplicate
-[ Info: ================================================================================
-[ Info:     Model parameter: EIsotope             = IsotopeLinear
+                        output_fluxes: $fluxname$_sms</code></pre><p>This results in an error when the Variables are linked:</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt;       include(joinpath(ENV[&quot;PALEO_EXAMPLES&quot;], &quot;error_examples/run_ex5_reservoir_A_duplicate.jl&quot;))</code><code class="nohighlight hljs ansi" style="display:block;">┌ Info: 
+│ ================================================================================
+│ create_model_from_config: configmodel example5_reservoir_A_duplicate
+│     config_file: /home/runner/work/PALEOtutorials.jl/PALEOtutorials.jl/examples/error_examples/config_ex5_reservoir_A_duplicate.yaml
+└ ================================================================================
+┌ Info: Model.parameters:
+└     EIsotope             = IsotopeLinear
+┌ Info: 
+│ ================================================================================
+│ creating Domains
+└ ================================================================================
 [ Info: generated Reaction catalog with 29 Reactions
-[ Info: creating domain &#39;global&#39; ID=1
-[ Info:   creating reaction global.reactions.sum_E classname ReactionSum
-[ Info:     set parameters: [config.yaml]  vars_to_add         =[&quot;Box1.A&quot;, &quot;Box2.B&quot;]
-[ Info:     set parameters: [Default]      vars_prefix         =
-[ Info:     set parameters: [Default]      component_to_add    =0
-[ Info:     set parameters: [Default]      vectorsum           =false
-[ Info: creating domain &#39;fluxBoxes&#39; ID=2
-[ Info:   creating reaction fluxBoxes.reactions.flux classname ReactionFluxTarget
-[ Info:     set parameters: [config.yaml]  fluxlist            =[&quot;B::EIsotope&quot;]
-[ Info:     set parameters: [config.yaml]  target_prefix       =flux_
-[ Info:     set parameters: [Default]      flux_totals         =false
-[ Info:     set parameters: [Default]      const_stub          =false
-[ Info: creating domain &#39;Box2&#39; ID=3
-[ Info:   creating reaction Box2.reactions.reservoir_B classname ReactionReservoirScalar
-[ Info:     set parameters: [config.yaml]  field_data          =external%EIsotope
-[ Info:       expandvalue: external%EIsotope -&gt; IsotopeLinear
-[ Info:       after substitution field_data=IsotopeLinear
-[ Info:     set parameters: [Default]      const               =false
-[ Info:   creating reaction Box2.reactions.transfer_fluxBoxes classname ReactionFluxTransfer
-[ Info:     set parameters: [config.yaml]  input_fluxes        =fluxBoxes.flux_$fluxname$
-[ Info:     set parameters: [config.yaml]  output_fluxes       =$fluxname$_sms
-[ Info:     set parameters: [Default]      transfer_multiplier =1.0
-[ Info:     set parameters: [Default]      transfer_matrix     =Identity
-[ Info: creating domain &#39;Box1&#39; ID=4
-[ Info:   creating reaction Box1.reactions.Adecay classname ReactionExample5
-[ Info:     set parameters: [config.yaml]  kappa               =0.5
-[ Info:     set parameters: [config.yaml]  field_data          =external%EIsotope
-[ Info:       expandvalue: external%EIsotope -&gt; IsotopeLinear
-[ Info:       after substitution field_data=IsotopeLinear
-[ Info:     set parameters: [Default]      Delta               =-10.0
-[ Info:   creating reaction Box1.reactions.reservoir_Adup classname ReactionReservoirScalar
-[ Info:     set parameters: [config.yaml]  field_data          =external%EIsotope
-[ Info:       expandvalue: external%EIsotope -&gt; IsotopeLinear
-[ Info:       after substitution field_data=IsotopeLinear
-[ Info:     set parameters: [Default]      const               =false
-[ Info:   creating reaction Box1.reactions.reservoir_A classname ReactionReservoirScalar
-[ Info:     set parameters: [config.yaml]  field_data          =external%EIsotope
-[ Info:       expandvalue: external%EIsotope -&gt; IsotopeLinear
-[ Info:       after substitution field_data=IsotopeLinear
-[ Info:     set parameters: [Default]      const               =false
-[ Info: reaction global.sum_E add 1.0 * Box1.A
-[ Info: reaction global.sum_E add 1.0 * Box2.B
-[ Info: link_variables first pass
+┌ Info: 
+│ ================================================================================
+│ creating domain &#39;global&#39; ID=1
+└ ================================================================================
+┌ Info: create_reaction_from_config: global.sum_E classname ReactionSum
+│     set parameters: [config.yaml]  vars_to_add         =[&quot;Box1.A&quot;, &quot;Box2.B&quot;]
+│     set parameters: [Default]      vars_prefix         =
+│     set parameters: [Default]      component_to_add    =0
+└     set parameters: [Default]      vectorsum           =false
+┌ Info: 
+│ ================================================================================
+│ creating domain &#39;fluxBoxes&#39; ID=2
+└ ================================================================================
+┌ Info: create_reaction_from_config: fluxBoxes.flux classname ReactionFluxTarget
+│     set parameters: [config.yaml]  fluxlist            =[&quot;B::EIsotope&quot;]
+│     set parameters: [config.yaml]  target_prefix       =flux_
+│     set parameters: [Default]      flux_totals         =false
+└     set parameters: [Default]      const_stub          =false
+┌ Info: 
+│ ================================================================================
+│ creating domain &#39;Box2&#39; ID=3
+└ ================================================================================
+┌ Info: create_reaction_from_config: Box2.reservoir_B classname ReactionReservoirScalar
+│     set parameters: [config.yaml]  field_data          =external%EIsotope
+│       expandvalue: external%EIsotope -&gt; IsotopeLinear
+│       after substitution field_data=IsotopeLinear
+└     set parameters: [Default]      const               =false
+┌ Info: create_reaction_from_config: Box2.transfer_fluxBoxes classname ReactionFluxTransfer
+│     set parameters: [config.yaml]  input_fluxes        =fluxBoxes.flux_$fluxname$
+│     set parameters: [config.yaml]  output_fluxes       =$fluxname$_sms
+│     set parameters: [Default]      transfer_multiplier =1.0
+└     set parameters: [Default]      transfer_matrix     =Identity
+┌ Info: 
+│ ================================================================================
+│ creating domain &#39;Box1&#39; ID=4
+└ ================================================================================
+┌ Info: create_reaction_from_config: Box1.Adecay classname ReactionExample5
+│     set parameters: [config.yaml]  kappa               =0.5
+│     set parameters: [config.yaml]  field_data          =external%EIsotope
+│       expandvalue: external%EIsotope -&gt; IsotopeLinear
+│       after substitution field_data=IsotopeLinear
+└     set parameters: [Default]      Delta               =-10.0
+┌ Info: create_reaction_from_config: Box1.reservoir_Adup classname ReactionReservoirScalar
+│     set parameters: [config.yaml]  field_data          =external%EIsotope
+│       expandvalue: external%EIsotope -&gt; IsotopeLinear
+│       after substitution field_data=IsotopeLinear
+└     set parameters: [Default]      const               =false
+┌ Info: create_reaction_from_config: Box1.reservoir_A classname ReactionReservoirScalar
+│     set parameters: [config.yaml]  field_data          =external%EIsotope
+│       expandvalue: external%EIsotope -&gt; IsotopeLinear
+│       after substitution field_data=IsotopeLinear
+└     set parameters: [Default]      const               =false
+┌ Info: 
+│ ================================================================================
+│ set_model_geometry
+└ ================================================================================
+┌ Info: 
+│ ================================================================================
+│ register_reaction_methods!
+└ ================================================================================
+┌ Info: register_methods: global.sum_E PALEOboxes.VariableStats.ReactionSum
+│     add 1.0 * Box1.A
+└     add 1.0 * Box2.B
+┌ Info: 
+│ ================================================================================
+│ link_variables: first pass
+└ ================================================================================
 ERROR: LoadError: Duplicate variable name: Linking VariableReactProperty Box1.reservoir_A.do_reactionreservoirscalar.R_norm --&gt; Box1.A_norm
     Variable Box1.A_norm already exists and has a property Variable, links:
 	PALEOboxes.VariableDomPropDep &quot;Box1.A_norm&quot; links:
@@ -431,48 +513,82 @@ example5_reservoir_A_noisotope:
                     class: ReactionFluxTransfer
                     parameters:
                         input_fluxes: fluxBoxes.flux_$fluxname$
-                        output_fluxes: $fluxname$_sms</code></pre><p>This results in an error when the Variables are linked:</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt;       include(joinpath(ENV[&quot;PALEO_EXAMPLES&quot;], &quot;error_examples/run_ex5_reservoir_A_noisotope.jl&quot;))</code><code class="nohighlight hljs ansi" style="display:block;">[ Info: ================================================================================
-[ Info: create_model_from_config file(s) [&quot;/home/runner/work/PALEOtutorials.jl/PALEOtutorials.jl/examples/error_examples/config_ex5_reservoir_A_noisotope.yaml&quot;] configmodel example5_reservoir_A_noisotope
-[ Info: ================================================================================
-[ Info:     Model parameter: EIsotope             = IsotopeLinear
+                        output_fluxes: $fluxname$_sms</code></pre><p>This results in an error when the Variables are linked:</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt;       include(joinpath(ENV[&quot;PALEO_EXAMPLES&quot;], &quot;error_examples/run_ex5_reservoir_A_noisotope.jl&quot;))</code><code class="nohighlight hljs ansi" style="display:block;">┌ Info: 
+│ ================================================================================
+│ create_model_from_config: configmodel example5_reservoir_A_noisotope
+│     config_file: /home/runner/work/PALEOtutorials.jl/PALEOtutorials.jl/examples/error_examples/config_ex5_reservoir_A_noisotope.yaml
+└ ================================================================================
+┌ Info: Model.parameters:
+└     EIsotope             = IsotopeLinear
+┌ Info: 
+│ ================================================================================
+│ creating Domains
+└ ================================================================================
 [ Info: generated Reaction catalog with 29 Reactions
-[ Info: creating domain &#39;global&#39; ID=1
-[ Info:   creating reaction global.reactions.sum_E classname ReactionSum
-[ Info:     set parameters: [config.yaml]  vars_to_add         =[&quot;Box1.A&quot;, &quot;Box2.B&quot;]
-[ Info:     set parameters: [Default]      vars_prefix         =
-[ Info:     set parameters: [Default]      component_to_add    =0
-[ Info:     set parameters: [Default]      vectorsum           =false
-[ Info: creating domain &#39;fluxBoxes&#39; ID=2
-[ Info:   creating reaction fluxBoxes.reactions.flux classname ReactionFluxTarget
-[ Info:     set parameters: [config.yaml]  fluxlist            =[&quot;B::EIsotope&quot;]
-[ Info:     set parameters: [config.yaml]  target_prefix       =flux_
-[ Info:     set parameters: [Default]      flux_totals         =false
-[ Info:     set parameters: [Default]      const_stub          =false
-[ Info: creating domain &#39;Box2&#39; ID=3
-[ Info:   creating reaction Box2.reactions.reservoir_B classname ReactionReservoirScalar
-[ Info:     set parameters: [config.yaml]  field_data          =external%EIsotope
-[ Info:       expandvalue: external%EIsotope -&gt; IsotopeLinear
-[ Info:       after substitution field_data=IsotopeLinear
-[ Info:     set parameters: [Default]      const               =false
-[ Info:   creating reaction Box2.reactions.transfer_fluxBoxes classname ReactionFluxTransfer
-[ Info:     set parameters: [config.yaml]  input_fluxes        =fluxBoxes.flux_$fluxname$
-[ Info:     set parameters: [config.yaml]  output_fluxes       =$fluxname$_sms
-[ Info:     set parameters: [Default]      transfer_multiplier =1.0
-[ Info:     set parameters: [Default]      transfer_matrix     =Identity
-[ Info: creating domain &#39;Box1&#39; ID=4
-[ Info:   creating reaction Box1.reactions.Adecay classname ReactionExample5
-[ Info:     set parameters: [config.yaml]  kappa               =0.5
-[ Info:     set parameters: [config.yaml]  field_data          =external%EIsotope
-[ Info:       expandvalue: external%EIsotope -&gt; IsotopeLinear
-[ Info:       after substitution field_data=IsotopeLinear
-[ Info:     set parameters: [Default]      Delta               =-10.0
-[ Info:   creating reaction Box1.reactions.reservoir_A classname ReactionReservoirScalar
-[ Info:     set parameters: [Default]      field_data          =PALEOboxes.ScalarData
-[ Info:     set parameters: [Default]      const               =false
-[ Info: reaction global.sum_E add 1.0 * Box1.A
-[ Info: reaction global.sum_E add 1.0 * Box2.B
-[ Info: link_variables first pass
-[ Info: link_variables initialize dynamic variables
+┌ Info: 
+│ ================================================================================
+│ creating domain &#39;global&#39; ID=1
+└ ================================================================================
+┌ Info: create_reaction_from_config: global.sum_E classname ReactionSum
+│     set parameters: [config.yaml]  vars_to_add         =[&quot;Box1.A&quot;, &quot;Box2.B&quot;]
+│     set parameters: [Default]      vars_prefix         =
+│     set parameters: [Default]      component_to_add    =0
+└     set parameters: [Default]      vectorsum           =false
+┌ Info: 
+│ ================================================================================
+│ creating domain &#39;fluxBoxes&#39; ID=2
+└ ================================================================================
+┌ Info: create_reaction_from_config: fluxBoxes.flux classname ReactionFluxTarget
+│     set parameters: [config.yaml]  fluxlist            =[&quot;B::EIsotope&quot;]
+│     set parameters: [config.yaml]  target_prefix       =flux_
+│     set parameters: [Default]      flux_totals         =false
+└     set parameters: [Default]      const_stub          =false
+┌ Info: 
+│ ================================================================================
+│ creating domain &#39;Box2&#39; ID=3
+└ ================================================================================
+┌ Info: create_reaction_from_config: Box2.reservoir_B classname ReactionReservoirScalar
+│     set parameters: [config.yaml]  field_data          =external%EIsotope
+│       expandvalue: external%EIsotope -&gt; IsotopeLinear
+│       after substitution field_data=IsotopeLinear
+└     set parameters: [Default]      const               =false
+┌ Info: create_reaction_from_config: Box2.transfer_fluxBoxes classname ReactionFluxTransfer
+│     set parameters: [config.yaml]  input_fluxes        =fluxBoxes.flux_$fluxname$
+│     set parameters: [config.yaml]  output_fluxes       =$fluxname$_sms
+│     set parameters: [Default]      transfer_multiplier =1.0
+└     set parameters: [Default]      transfer_matrix     =Identity
+┌ Info: 
+│ ================================================================================
+│ creating domain &#39;Box1&#39; ID=4
+└ ================================================================================
+┌ Info: create_reaction_from_config: Box1.Adecay classname ReactionExample5
+│     set parameters: [config.yaml]  kappa               =0.5
+│     set parameters: [config.yaml]  field_data          =external%EIsotope
+│       expandvalue: external%EIsotope -&gt; IsotopeLinear
+│       after substitution field_data=IsotopeLinear
+└     set parameters: [Default]      Delta               =-10.0
+┌ Info: create_reaction_from_config: Box1.reservoir_A classname ReactionReservoirScalar
+│     set parameters: [Default]      field_data          =PALEOboxes.ScalarData
+└     set parameters: [Default]      const               =false
+┌ Info: 
+│ ================================================================================
+│ set_model_geometry
+└ ================================================================================
+┌ Info: 
+│ ================================================================================
+│ register_reaction_methods!
+└ ================================================================================
+┌ Info: register_methods: global.sum_E PALEOboxes.VariableStats.ReactionSum
+│     add 1.0 * Box1.A
+└     add 1.0 * Box2.B
+┌ Info: 
+│ ================================================================================
+│ link_variables: first pass
+└ ================================================================================
+┌ Info: 
+│ ================================================================================
+│ link_variables: register_reaction_dynamic_methods and configure variables
+└ ================================================================================
 [ Info: Reaction global.sum_E Variable global.E_total adding data=PALEOboxes.ScalarData
 ERROR: LoadError: Reaction global.sum_E not all variables to be summed have the same :field_data Type: Box2.B PALEOboxes.IsotopeLinear != Box1.A PALEOboxes.ScalarData
 in expression starting at /home/runner/work/PALEOtutorials.jl/PALEOtutorials.jl/examples/error_examples/run_ex5_reservoir_A_noisotope.jl:11</code></pre><h2 id="Mismatch-in-:field_data-Type-(eg-isotopes)-(Flux)"><a class="docs-heading-anchor" href="#Mismatch-in-:field_data-Type-(eg-isotopes)-(Flux)">Mismatch in :field_data Type (eg isotopes) (Flux)</a><a id="Mismatch-in-:field_data-Type-(eg-isotopes)-(Flux)-1"></a><a class="docs-heading-anchor-permalink" href="#Mismatch-in-:field_data-Type-(eg-isotopes)-(Flux)" title="Permalink"></a></h2><p>The model configuration (file <code>examples/error_examples/config_ex5_flux_noisotope.yaml</code>)  contains a Variable defined by a <code>ReactionFluxTarget</code> with default <code>:field_data=ScalarData</code> where this species should have  <code>:field_data=IsotopeLinear</code>:</p><pre><code class="language-julia hljs">##################################################################
@@ -548,83 +664,135 @@ example5_flux_noisotope:
                     class: ReactionFluxTransfer
                     parameters:
                         input_fluxes: fluxBoxes.flux_$fluxname$
-                        output_fluxes: $fluxname$_sms</code></pre><p>This results in an error when the Variables are linked:</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt;       include(joinpath(ENV[&quot;PALEO_EXAMPLES&quot;], &quot;error_examples/run_ex5_flux_noisotope.jl&quot;))</code><code class="nohighlight hljs ansi" style="display:block;">[ Info: ================================================================================
-[ Info: create_model_from_config file(s) [&quot;/home/runner/work/PALEOtutorials.jl/PALEOtutorials.jl/examples/error_examples/config_ex5_flux_noisotope.yaml&quot;] configmodel example5_flux_noisotope
-[ Info: ================================================================================
-[ Info:     Model parameter: EIsotope             = IsotopeLinear
+                        output_fluxes: $fluxname$_sms</code></pre><p>This results in an error when the Variables are linked:</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt;       include(joinpath(ENV[&quot;PALEO_EXAMPLES&quot;], &quot;error_examples/run_ex5_flux_noisotope.jl&quot;))</code><code class="nohighlight hljs ansi" style="display:block;">┌ Info: 
+│ ================================================================================
+│ create_model_from_config: configmodel example5_flux_noisotope
+│     config_file: /home/runner/work/PALEOtutorials.jl/PALEOtutorials.jl/examples/error_examples/config_ex5_flux_noisotope.yaml
+└ ================================================================================
+┌ Info: Model.parameters:
+└     EIsotope             = IsotopeLinear
+┌ Info: 
+│ ================================================================================
+│ creating Domains
+└ ================================================================================
 [ Info: generated Reaction catalog with 29 Reactions
-[ Info: creating domain &#39;global&#39; ID=1
-[ Info:   creating reaction global.reactions.sum_E classname ReactionSum
-[ Info:     set parameters: [config.yaml]  vars_to_add         =[&quot;Box1.A&quot;, &quot;Box2.B&quot;]
-[ Info:     set parameters: [Default]      vars_prefix         =
-[ Info:     set parameters: [Default]      component_to_add    =0
-[ Info:     set parameters: [Default]      vectorsum           =false
-[ Info: creating domain &#39;fluxBoxes&#39; ID=2
-[ Info:   creating reaction fluxBoxes.reactions.flux classname ReactionFluxTarget
-[ Info:     set parameters: [config.yaml]  fluxlist            =[&quot;B&quot;]
-[ Info:     set parameters: [config.yaml]  target_prefix       =flux_
-[ Info:     set parameters: [Default]      flux_totals         =false
-[ Info:     set parameters: [Default]      const_stub          =false
-[ Info: creating domain &#39;Box2&#39; ID=3
-[ Info:   creating reaction Box2.reactions.reservoir_B classname ReactionReservoirScalar
-[ Info:     set parameters: [config.yaml]  field_data          =external%EIsotope
-[ Info:       expandvalue: external%EIsotope -&gt; IsotopeLinear
-[ Info:       after substitution field_data=IsotopeLinear
-[ Info:     set parameters: [Default]      const               =false
-[ Info:   creating reaction Box2.reactions.transfer_fluxBoxes classname ReactionFluxTransfer
-[ Info:     set parameters: [config.yaml]  input_fluxes        =fluxBoxes.flux_$fluxname$
-[ Info:     set parameters: [config.yaml]  output_fluxes       =$fluxname$_sms
-[ Info:     set parameters: [Default]      transfer_multiplier =1.0
-[ Info:     set parameters: [Default]      transfer_matrix     =Identity
-[ Info: creating domain &#39;Box1&#39; ID=4
-[ Info:   creating reaction Box1.reactions.Adecay classname ReactionExample5
-[ Info:     set parameters: [config.yaml]  kappa               =0.5
-[ Info:     set parameters: [config.yaml]  field_data          =external%EIsotope
-[ Info:       expandvalue: external%EIsotope -&gt; IsotopeLinear
-[ Info:       after substitution field_data=IsotopeLinear
-[ Info:     set parameters: [Default]      Delta               =-10.0
-[ Info:   creating reaction Box1.reactions.reservoir_A classname ReactionReservoirScalar
-[ Info:     set parameters: [config.yaml]  field_data          =external%EIsotope
-[ Info:       expandvalue: external%EIsotope -&gt; IsotopeLinear
-[ Info:       after substitution field_data=IsotopeLinear
-[ Info:     set parameters: [Default]      const               =false
-[ Info: reaction global.sum_E add 1.0 * Box1.A
-[ Info: reaction global.sum_E add 1.0 * Box2.B
-[ Info: link_variables first pass
-[ Info: link_variables initialize dynamic variables
+┌ Info: 
+│ ================================================================================
+│ creating domain &#39;global&#39; ID=1
+└ ================================================================================
+┌ Info: create_reaction_from_config: global.sum_E classname ReactionSum
+│     set parameters: [config.yaml]  vars_to_add         =[&quot;Box1.A&quot;, &quot;Box2.B&quot;]
+│     set parameters: [Default]      vars_prefix         =
+│     set parameters: [Default]      component_to_add    =0
+└     set parameters: [Default]      vectorsum           =false
+┌ Info: 
+│ ================================================================================
+│ creating domain &#39;fluxBoxes&#39; ID=2
+└ ================================================================================
+┌ Info: create_reaction_from_config: fluxBoxes.flux classname ReactionFluxTarget
+│     set parameters: [config.yaml]  fluxlist            =[&quot;B&quot;]
+│     set parameters: [config.yaml]  target_prefix       =flux_
+│     set parameters: [Default]      flux_totals         =false
+└     set parameters: [Default]      const_stub          =false
+┌ Info: 
+│ ================================================================================
+│ creating domain &#39;Box2&#39; ID=3
+└ ================================================================================
+┌ Info: create_reaction_from_config: Box2.reservoir_B classname ReactionReservoirScalar
+│     set parameters: [config.yaml]  field_data          =external%EIsotope
+│       expandvalue: external%EIsotope -&gt; IsotopeLinear
+│       after substitution field_data=IsotopeLinear
+└     set parameters: [Default]      const               =false
+┌ Info: create_reaction_from_config: Box2.transfer_fluxBoxes classname ReactionFluxTransfer
+│     set parameters: [config.yaml]  input_fluxes        =fluxBoxes.flux_$fluxname$
+│     set parameters: [config.yaml]  output_fluxes       =$fluxname$_sms
+│     set parameters: [Default]      transfer_multiplier =1.0
+└     set parameters: [Default]      transfer_matrix     =Identity
+┌ Info: 
+│ ================================================================================
+│ creating domain &#39;Box1&#39; ID=4
+└ ================================================================================
+┌ Info: create_reaction_from_config: Box1.Adecay classname ReactionExample5
+│     set parameters: [config.yaml]  kappa               =0.5
+│     set parameters: [config.yaml]  field_data          =external%EIsotope
+│       expandvalue: external%EIsotope -&gt; IsotopeLinear
+│       after substitution field_data=IsotopeLinear
+└     set parameters: [Default]      Delta               =-10.0
+┌ Info: create_reaction_from_config: Box1.reservoir_A classname ReactionReservoirScalar
+│     set parameters: [config.yaml]  field_data          =external%EIsotope
+│       expandvalue: external%EIsotope -&gt; IsotopeLinear
+│       after substitution field_data=IsotopeLinear
+└     set parameters: [Default]      const               =false
+┌ Info: 
+│ ================================================================================
+│ set_model_geometry
+└ ================================================================================
+┌ Info: 
+│ ================================================================================
+│ register_reaction_methods!
+└ ================================================================================
+┌ Info: register_methods: global.sum_E PALEOboxes.VariableStats.ReactionSum
+│     add 1.0 * Box1.A
+└     add 1.0 * Box2.B
+┌ Info: 
+│ ================================================================================
+│ link_variables: first pass
+└ ================================================================================
+┌ Info: 
+│ ================================================================================
+│ link_variables: register_reaction_dynamic_methods and configure variables
+└ ================================================================================
 [ Info: Reaction global.sum_E Variable global.E_total adding data=PALEOboxes.IsotopeLinear
-[ Info: _configure_variables: ReactionSum global.sum_E
-[ Info:     set variable_links: sum                  -&gt; E_total
-[ Info: _configure_variables: ReactionReservoirScalar Box2.reservoir_B
-[ Info:     set variable_links: R                    -&gt; B
-[ Info:     set variable_links: R_sms                -&gt; B_sms
-[ Info:     set variable_links: R_norm               -&gt; B_norm
-[ Info:     set variable_links: R_delta              -&gt; B_delta
-[ Info:     set attribute: R                    :norm_value           = 10.0                 
-[ Info:     set attribute: R                    :initial_value        = 0.0                  
-[ Info:     set attribute: R                    :initial_delta        = 0.0                  
-[ Info: _configure_variables: ReactionExample5 Box1.Adecay
-[ Info:     set variable_links: input_particle       -&gt; A
-[ Info:     set variable_links: input_particle_sms   -&gt; A_sms
-[ Info:     set variable_links: input_particle_delta -&gt; A_delta
-[ Info:     set variable_links: output_flux          -&gt; fluxBoxes.flux_B
-[ Info: _configure_variables: ReactionReservoirScalar Box1.reservoir_A
-[ Info:     set variable_links: R                    -&gt; A
-[ Info:     set variable_links: R_sms                -&gt; A_sms
-[ Info:     set variable_links: R_norm               -&gt; A_norm
-[ Info:     set variable_links: R_delta              -&gt; A_delta
-[ Info:     set attribute: R                    :norm_value           = 10.0                 
-[ Info:     set attribute: R                    :initial_value        = 10.0                 
-[ Info:     set attribute: R                    :initial_delta        = -10.0                
-[ Info: link_variables second pass:
-[ Info: link_variables unlinked variables:
-[ Info: ================================================================================
-[ Info: allocate_variables! (modeldata arrays_idx=1)
-[ Info: ================================================================================
+┌ Info: _configure_variables: ReactionSum global.sum_E variable_links:
+└     set variable_links: sum                  -&gt; E_total
+┌ Info: _configure_variables: ReactionReservoirScalar Box2.reservoir_B variable_links:
+│     set variable_links: R                    -&gt; B
+│     set variable_links: R_sms                -&gt; B_sms
+│     set variable_links: R_norm               -&gt; B_norm
+│     set variable_links: R_delta              -&gt; B_delta
+│ _configure_variables: ReactionReservoirScalar Box2.reservoir_B variable_attributes:
+│     set attribute: R                    :norm_value           = 10.0                 
+│     set attribute: R                    :initial_value        = 0.0                  
+└     set attribute: R                    :initial_delta        = 0.0                  
+┌ Info: _configure_variables: ReactionExample5 Box1.Adecay variable_links:
+│     set variable_links: input_particle       -&gt; A
+│     set variable_links: input_particle_sms   -&gt; A_sms
+│     set variable_links: input_particle_delta -&gt; A_delta
+└     set variable_links: output_flux          -&gt; fluxBoxes.flux_B
+┌ Info: _configure_variables: ReactionReservoirScalar Box1.reservoir_A variable_links:
+│     set variable_links: R                    -&gt; A
+│     set variable_links: R_sms                -&gt; A_sms
+│     set variable_links: R_norm               -&gt; A_norm
+│     set variable_links: R_delta              -&gt; A_delta
+│ _configure_variables: ReactionReservoirScalar Box1.reservoir_A variable_attributes:
+│     set attribute: R                    :norm_value           = 10.0                 
+│     set attribute: R                    :initial_value        = 10.0                 
+└     set attribute: R                    :initial_delta        = -10.0                
+┌ Info: 
+│ ================================================================================
+│ link_variables: second pass:
+└ ================================================================================
+┌ Info: 
+│ ================================================================================
+│ link_variables! unlinked variables:
+└ ================================================================================
+┌ Info: 
+│ ================================================================================
+│ create_model_from_config: done
+└ ================================================================================
+┌ Info: 
+│ ================================================================================
+│ PALEOmodel.initialize! start
+└ ================================================================================
+┌ Info: 
+│ ================================================================================
+│ allocate_variables! (modeldata arrays_idx=1)
+└ ================================================================================
 [ Info: Domain global               data dimensions PALEOboxes.NamedDimension[] allocating 1    variables (hostdep=nothing)
 [ Info: Domain fluxBoxes            data dimensions PALEOboxes.NamedDimension[] allocating 1    variables (hostdep=nothing)
 [ Info: Domain Box2                 data dimensions PALEOboxes.NamedDimension[] allocating 4    variables (hostdep=nothing)
 [ Info: Domain Box1                 data dimensions PALEOboxes.NamedDimension[] allocating 5    variables (hostdep=nothing)
+[ Info: set_default_solver_view:
 ┌ Info: SolverView:
 │     host-dependent Variables:
 │     ------------------------------------------------------------------------------------------------------------------------------
@@ -640,13 +808,14 @@ example5_flux_noisotope:
 │   n_equations 2  (stateexplicit 2 + total 0 + constraint 0)
 │   including all host-dependent non-state Variables
 └   host-dependent non-state Variables (:vfunction PB.VF_Undefined): Any[]
-[ Info: ================================================================================
-[ Info: initialize_reactiondata! (modeldata arrays_indices=1:1)
-[ Info: ================================================================================
+┌ Info: 
+│ ================================================================================
+│ initialize_reactiondata! (modeldata arrays_indices=1:1)
+└ ================================================================================
 ┌ Warning: create_accessor: VariableReaction Box1.Adecay.do_example5.output_flux  -&gt;  fluxBoxes.flux_B:  invalid :field_data combination - attempting to link a Variable with :field_data=PALEOboxes.IsotopeLinear to a Variable with :field_data=PALEOboxes.ScalarData
-└ @ PALEOboxes ~/.julia/packages/PALEOboxes/kPOmB/src/VariableReaction.jl:741
+└ @ PALEOboxes ~/.julia/packages/PALEOboxes/vf34f/src/VariableReaction.jl:741
 ERROR: LoadError: MethodError: no method matching create_accessor(::Type{PALEOboxes.IsotopeLinear}, ::PALEOboxes.Field{PALEOboxes.ScalarData, PALEOboxes.CellSpace, Vector{Float64}, 0, Nothing}, ::Nothing; forceview=false, components=false)
 Closest candidates are:
-  create_accessor(::Union{Type{D}, Type{PALEOboxes.UndefinedData}}, !Matched::PALEOboxes.Field{D, S, V, N, M}, ::Union{Nothing, PALEOboxes.AbstractSubdomain}; forceview, components) where {D, S, V, N, M} at ~/.julia/packages/PALEOboxes/kPOmB/src/Fields.jl:440
-  create_accessor(!Matched::Type{PALEOboxes.ScalarData}, !Matched::PALEOboxes.Field{PALEOboxes.IsotopeLinear, S, V, W, M}, ::Union{Nothing, PALEOboxes.AbstractSubdomain}; forceview, components) where {S, V, W, M} at ~/.julia/packages/PALEOboxes/kPOmB/src/data/IsotopeData.jl:380
-in expression starting at /home/runner/work/PALEOtutorials.jl/PALEOtutorials.jl/examples/error_examples/run_ex5_flux_noisotope.jl:20</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../solvers/README/">« ODE solvers</a><a class="docs-footer-nextpage" href="../../CPU/README/">CPU (Carbon, Phosphorus, Uranium) model »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.25 on <span class="colophon-date" title="Thursday 24 August 2023 13:12">Thursday 24 August 2023</span>. Using Julia version 1.8.5.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+  create_accessor(::Union{Type{D}, Type{PALEOboxes.UndefinedData}}, !Matched::PALEOboxes.Field{D, S, V, N, M}, ::Union{Nothing, PALEOboxes.AbstractSubdomain}; forceview, components) where {D, S, V, N, M} at ~/.julia/packages/PALEOboxes/vf34f/src/Fields.jl:440
+  create_accessor(!Matched::Type{PALEOboxes.ScalarData}, !Matched::PALEOboxes.Field{PALEOboxes.IsotopeLinear, S, V, W, M}, ::Union{Nothing, PALEOboxes.AbstractSubdomain}; forceview, components) where {S, V, W, M} at ~/.julia/packages/PALEOboxes/vf34f/src/data/IsotopeData.jl:380
+in expression starting at /home/runner/work/PALEOtutorials.jl/PALEOtutorials.jl/examples/error_examples/run_ex5_flux_noisotope.jl:20</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../solvers/README/">« ODE solvers</a><a class="docs-footer-nextpage" href="../../CPU/README/">CPU (Carbon, Phosphorus, Uranium) model »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.25 on <span class="colophon-date" title="Sunday 24 September 2023 15:18">Sunday 24 September 2023</span>. Using Julia version 1.8.5.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
