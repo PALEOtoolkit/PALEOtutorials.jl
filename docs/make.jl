@@ -6,7 +6,7 @@ import PALEOboxes as PB
 
 bib = CitationBibliography(
     joinpath(@__DIR__, "src/paleo_references.bib");
-    citationstyle=:authoryear,
+    style=:authoryear,
 )
 
 # Collate all markdown files and images folders from PALEOexamples/src/ into a tree of pages
