@@ -4,4 +4,5 @@ error_examples
 CPU
 CPU_modular
 ocean_chemistry
+configurable_chemistry
 
