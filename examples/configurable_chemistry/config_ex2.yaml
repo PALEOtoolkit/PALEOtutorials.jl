@@ -1,0 +1,137 @@
+Minimal_Alk_pH:
+
+    domains:
+
+        global:
+           
+            reactions:
+                add_Alk:
+                    # from PALEOboxes reaction catalog:  constant input flux of Alk
+                    class: ReactionFluxPerturb
+                    parameters:
+                        # linear interpolation for input flux - set to constant
+                        perturb_times: [-1e30, 1e30]
+                        # ocean volume = 3.6e14 * 3688.0 = 1.33e18 m^3
+                        # DIC in ocean = 2 * 1.33e18 = 2.66e18 mol
+                        # set Alk flux so Alk = DIC after 100 yr-1 = 2.66e18/100 = 2.66e16 mol yr-1
+                        perturb_totals: [2.66e16, 2.66e16] 
+                    variable_links:
+                        F: ocean.TAlk_sms  # add flux to TAlk reservoir NB: works for single-box ocean only !!
+ # --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------       
+
+        ocean:
+
+            reactions:
+
+                oceantransport:
+
+                    class: ReactionOceanNoTransport
+
+                    parameters:
+
+                        area:  [3.6e14]               
+                        depth: [3688.0]               
+
+                # TA as total and H (as pH) as primary species
+                TA_total_H_primary:
+                    class: ReactionImplicitReservoir
+                    variable_links:
+                        Primary_pconc: pH
+                        Primary_conc: H_conc
+                        R*: TAlk*
+                    parameters: 
+                        primary_total_stoich: -1.0
+                        primary_variable: p_concentration # provide solver with -log10(H_conc)
+                        total_variable: concentration # provide solver with TAlk_conc
+                    variable_attributes:
+                        Primary_pconc%initial_value: 4.28  # value tuned to give TAlk ~ 0.0 initially
+                        Primary_pconc%norm_value: 1.0
+                        R_conc%norm_value: 1.0
+
+                # DIC as total and CO2_aq as primary species
+                DIC_total_CO2_aq_primary:
+                    class: ReactionImplicitReservoir
+                    variable_links:
+                        R*: DIC*
+                        Primary*: CO2_aq*
+                    parameters: 
+                        primary_total_stoich: 1.0  # add CO2 to DIC, no contribution to TAlk
+                        primary_variable: concentration  # provide solver with CO2_aq_conc (mol m-3)
+                        total_variable: concentration # provide solver with DIC_conc (mol m-3)
+                    variable_attributes:
+                        Primary_conc%initial_value: 1.94 # This value has been tuned to produce initial DIC_conc = 2.0
+                        Primary_conc%norm_value: 1.0
+                        R_conc%norm_value: 1.0
+
+                # B as total and BOH3 as primary species
+                B_total_BOH3_primary:
+                    class: ReactionImplicitReservoir
+                    variable_links:
+                        R*: B*
+                        Primary*: BOH3*
+                    parameters: 
+                        primary_total_stoich: 1.0  # add BOH3 to B, no contribution to TAlk
+                        primary_variable: concentration  # provide solver with BOH3_conc (mol m-3)
+                        total_variable: concentration # provide solver with B_conc (mol m-3)
+                    variable_attributes:
+                        Primary_conc%initial_value: 0.427 # This produces initial B_conc ~ 0.427 (as initial BOH4_conc is very small)
+                        Primary_conc%norm_value: 1.0
+                        R_conc%norm_value: 1.0
+
+                ##########################################################################
+                # H2O speciation
+                ########################################################################
+            
+                # Define OH_conc and add to TAlk
+                #   OH-  + H+  <--> H2O,   [OH] = K_w / [H]
+                OH_conc: { class: ReactionAqEqb, parameters: { K_power: 1.0,  # we need K_eqb in numerator
+                        K_eqb:              6.0e-14,    # K_w 6.0e-14 (mol^2 kg-2) equilibrium constant of water at S=35, T=25°C,
+                        K_density_power:    2.0,        # K_eqb*rho_ref^2 to convert to (mol^2 m-6)
+                        Reactants: ["OH_conc", "H_conc"],       Products: [],
+                        N_components: ["TAlk_calc"],
+                    }
+                }
+              
+                ##########################################################################
+                # Boron speciation
+                ##########################################################################
+
+                # Define BOH4_conc and add to B, TAlk
+                #   B(OH)_4^-  + H+  <--> B(OH)3 + H2O,   [B(OH)_4^-] = K_B [B(OH)3] / [H+]
+                BOH4_conc: { class: ReactionAqEqb, parameters: { K_power: 1.0,  # we need K_eqb in numerator
+                        K_eqb:              2.5e-9,     # (mol kg-1)  K_B equilibrium constant of B(OH)4-
+                        K_density_power:    1.0,        # K_eqb*rho_ref to convert to (mol m-3)
+                        Reactants: ["BOH4_conc", "H_conc"],     Products: ["BOH3_conc"],
+                        N_components: ["B_calc", "TAlk_calc"],
+                    }
+                }
+
+                ##########################################################################
+                # Carbon speciation
+                ##########################################################################
+
+                # Define HCO3_conc and add to DIC, TAlk
+                #   HCO3-  + H+  <--> CO2 + H2O,   [HCO3-] = K_1 [CO2] / [H+]
+                HCO3_conc: { class: ReactionAqEqb, parameters: { K_power: 1.0,  # we need K_eqb in numerator
+                        K_eqb:              1.4e-6,     # (mol kg-1) K_1 equilibrium constant of CO2_aq and HCO3-
+                        K_density_power:    1.0,        # K_eqb*rho_ref to convert to (mol m-3)
+                        Reactants: ["HCO3_conc", "H_conc"],     Products: ["CO2_aq_conc"],
+                        N_components: ["DIC_calc", "TAlk_calc"],
+                    }
+                }
+
+                # Define CO3_conc and add to DIC, TAlk
+                #   CO3--  + H+  <--> HCO3- + H2O,   [CO3--] = K_2 [HCO3-] / [H+]
+                CO3_conc: { class: ReactionAqEqb, parameters: { K_power: 1.0,  # we need K_eqb in numerator
+                        K_eqb:              1.2e-9,     # (mol kg-1) K_2 equilibrium constant of HCO3- and CO32-
+                        K_density_power:    1.0,        # K_eqb*rho_ref to convert to (mol m-3)
+                        Reactants: ["CO3_conc", "H_conc"],      Products: ["HCO3_conc"],
+                        N_components: ["DIC_calc", "2*TAlk_calc"],
+                    }
+                }
+
+        oceanfloor:
+            # unused here, set up by ReactionOceanNoTransport
+
+        oceansurface:
+            # unused here, set up by ReactionOceanNoTransport
