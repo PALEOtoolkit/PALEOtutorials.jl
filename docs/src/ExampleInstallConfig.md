@@ -32,7 +32,7 @@ The recommended environment for using PALEOtutorials.jl is defined by `PALEOtuto
 To activate the correct Julia environment, either:
 - In `VS code`, right click on a file in the `PALEOtutorials\examples` folder and `activate parent environment`.
 
-- Or from the Julia REPL (command line), use the package manager (called `Pkg`, <https://julialang.github.io/Pkg.jl/v1.1/getting-started/>):
+- Or from the Julia REPL (command line), use the package manager (called `Pkg`, <https://pkgdocs.julialang.org/v1/getting-started/>):
 
         julia> cd("PALEOtutorials/examples")
         julia> import Pkg
