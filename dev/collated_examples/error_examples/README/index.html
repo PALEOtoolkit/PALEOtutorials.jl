@@ -161,13 +161,13 @@ example5_reservoir_A_missing:
 │ ================================================================================
 │ creating Domains
 └ ================================================================================
-[ Info: generated Reaction catalog with 87 Reactions
+[ Info: generated Reaction catalog with 70 Reactions
 ┌ Info: 
 │ ================================================================================
 │ creating domain &#39;global&#39; ID=1
 └ ================================================================================
 ┌ Warning: create_domain_from_config Domain &#39;global&#39; empty &#39;reactions:&#39; key in .yaml file
-└ @ PALEOboxes ~/.julia/packages/PALEOboxes/vLeLu/src/Domain.jl:314
+└ @ PALEOboxes ~/.julia/packages/PALEOboxes/702nf/src/Domain.jl:314
 ┌ Info: 
 │ ================================================================================
 │ creating domain &#39;fluxBoxes&#39; ID=2
@@ -185,7 +185,8 @@ example5_reservoir_A_missing:
 │     set parameters: [config.yaml]  field_data          =external%EIsotope
 │       expandvalue: external%EIsotope -&gt; IsotopeLinear
 │       after substitution field_data=IsotopeLinear
-└     set parameters: [Default]      const               =false
+│     set parameters: [Default]      const               =false
+└     set parameters: [Default]      state_norm          =false
 ┌ Info: create_reaction_from_config: Box2.transfer_fluxBoxes classname ReactionFluxTransfer
 │     set parameters: [config.yaml]  input_fluxes        =fluxBoxes.flux_$fluxname$
 │     set parameters: [config.yaml]  output_fluxes       =$fluxname$_sms
@@ -261,19 +262,19 @@ example5_reservoir_A_missing:
 │ 		target:		nothing
 │ 		contributors:	[&quot;Box1.Adecay.do_example5.input_particle_sms&quot;]
 │ 		dependencies:	String[]
-└ @ PALEOboxes ~/.julia/packages/PALEOboxes/vLeLu/src/Model.jl:446
+└ @ PALEOboxes ~/.julia/packages/PALEOboxes/702nf/src/Model.jl:446
 ┌ Warning: check_ready: unexpected host-dependent Variable Box1.A (usually an unlinked Variable due to eg a missing renaming in the :variable_links sections in the .yaml file, a spelling mistake either in a Variable default name in the code or renaming in the .yaml file, or a missing Reaction)
 │ 	PALEOboxes.VariableDomPropDep &quot;Box1.A&quot; links:
 │ 		property:	nothing
 │ 		dependencies:	[&quot;Box1.Adecay.do_example5.input_particle&quot;]
-└ @ PALEOboxes ~/.julia/packages/PALEOboxes/vLeLu/src/Model.jl:446
+└ @ PALEOboxes ~/.julia/packages/PALEOboxes/702nf/src/Model.jl:446
 ┌ Warning: check_ready: unexpected host-dependent Variable Box1.A_delta (usually an unlinked Variable due to eg a missing renaming in the :variable_links sections in the .yaml file, a spelling mistake either in a Variable default name in the code or renaming in the .yaml file, or a missing Reaction)
 │ 	PALEOboxes.VariableDomPropDep &quot;Box1.A_delta&quot; links:
 │ 		property:	nothing
 │ 		dependencies:	[&quot;Box1.Adecay.do_example5.input_particle_delta&quot;]
-└ @ PALEOboxes ~/.julia/packages/PALEOboxes/vLeLu/src/Model.jl:446
+└ @ PALEOboxes ~/.julia/packages/PALEOboxes/702nf/src/Model.jl:446
 ┌ Error: check_ready failed
-└ @ PALEOboxes ~/.julia/packages/PALEOboxes/vLeLu/src/Model.jl:454
+└ @ PALEOboxes ~/.julia/packages/PALEOboxes/702nf/src/Model.jl:454
 ERROR: LoadError: check_ready failed
 in expression starting at /home/runner/work/PALEOtutorials.jl/PALEOtutorials.jl/examples/error_examples/run_ex5_reservoir_A_missing.jl:20</code></pre><h2 id="A-duplicated-Variable-or-a-name-collision"><a class="docs-heading-anchor" href="#A-duplicated-Variable-or-a-name-collision">A duplicated Variable or a name collision</a><a id="A-duplicated-Variable-or-a-name-collision-1"></a><a class="docs-heading-anchor-permalink" href="#A-duplicated-Variable-or-a-name-collision" title="Permalink"></a></h2><p>The model configuration (file <code>examples/error_examples/config_ex5_reservoir_A_duplicate.yaml</code>) contains two copies of a <code>ReactionReservoirScalar</code>, both attempting to create the same VariableDomains</p><pre><code class="language-julia hljs">##################################################################
 # ../reservoirs/config_ex5.yaml with common configuration errors
@@ -365,7 +366,7 @@ example5_reservoir_A_duplicate:
 │ ================================================================================
 │ creating Domains
 └ ================================================================================
-[ Info: generated Reaction catalog with 87 Reactions
+[ Info: generated Reaction catalog with 70 Reactions
 ┌ Info: 
 │ ================================================================================
 │ creating domain &#39;global&#39; ID=1
@@ -392,7 +393,8 @@ example5_reservoir_A_duplicate:
 │     set parameters: [config.yaml]  field_data          =external%EIsotope
 │       expandvalue: external%EIsotope -&gt; IsotopeLinear
 │       after substitution field_data=IsotopeLinear
-└     set parameters: [Default]      const               =false
+│     set parameters: [Default]      const               =false
+└     set parameters: [Default]      state_norm          =false
 ┌ Info: create_reaction_from_config: Box2.transfer_fluxBoxes classname ReactionFluxTransfer
 │     set parameters: [config.yaml]  input_fluxes        =fluxBoxes.flux_$fluxname$
 │     set parameters: [config.yaml]  output_fluxes       =$fluxname$_sms
@@ -412,12 +414,14 @@ example5_reservoir_A_duplicate:
 │     set parameters: [config.yaml]  field_data          =external%EIsotope
 │       expandvalue: external%EIsotope -&gt; IsotopeLinear
 │       after substitution field_data=IsotopeLinear
-└     set parameters: [Default]      const               =false
+│     set parameters: [Default]      const               =false
+└     set parameters: [Default]      state_norm          =false
 ┌ Info: create_reaction_from_config: Box1.reservoir_A classname ReactionReservoirScalar
 │     set parameters: [config.yaml]  field_data          =external%EIsotope
 │       expandvalue: external%EIsotope -&gt; IsotopeLinear
 │       after substitution field_data=IsotopeLinear
-└     set parameters: [Default]      const               =false
+│     set parameters: [Default]      const               =false
+└     set parameters: [Default]      state_norm          =false
 ┌ Info: 
 │ ================================================================================
 │ set_model_geometry
@@ -521,7 +525,7 @@ example5_reservoir_A_noisotope:
 │ ================================================================================
 │ creating Domains
 └ ================================================================================
-[ Info: generated Reaction catalog with 87 Reactions
+[ Info: generated Reaction catalog with 70 Reactions
 ┌ Info: 
 │ ================================================================================
 │ creating domain &#39;global&#39; ID=1
@@ -548,7 +552,8 @@ example5_reservoir_A_noisotope:
 │     set parameters: [config.yaml]  field_data          =external%EIsotope
 │       expandvalue: external%EIsotope -&gt; IsotopeLinear
 │       after substitution field_data=IsotopeLinear
-└     set parameters: [Default]      const               =false
+│     set parameters: [Default]      const               =false
+└     set parameters: [Default]      state_norm          =false
 ┌ Info: create_reaction_from_config: Box2.transfer_fluxBoxes classname ReactionFluxTransfer
 │     set parameters: [config.yaml]  input_fluxes        =fluxBoxes.flux_$fluxname$
 │     set parameters: [config.yaml]  output_fluxes       =$fluxname$_sms
@@ -566,7 +571,8 @@ example5_reservoir_A_noisotope:
 └     set parameters: [Default]      Delta               =-10.0
 ┌ Info: create_reaction_from_config: Box1.reservoir_A classname ReactionReservoirScalar
 │     set parameters: [Default]      field_data          =PALEOboxes.ScalarData
-└     set parameters: [Default]      const               =false
+│     set parameters: [Default]      const               =false
+└     set parameters: [Default]      state_norm          =false
 ┌ Info: 
 │ ================================================================================
 │ set_model_geometry
@@ -672,7 +678,7 @@ example5_flux_noisotope:
 │ ================================================================================
 │ creating Domains
 └ ================================================================================
-[ Info: generated Reaction catalog with 87 Reactions
+[ Info: generated Reaction catalog with 70 Reactions
 ┌ Info: 
 │ ================================================================================
 │ creating domain &#39;global&#39; ID=1
@@ -699,7 +705,8 @@ example5_flux_noisotope:
 │     set parameters: [config.yaml]  field_data          =external%EIsotope
 │       expandvalue: external%EIsotope -&gt; IsotopeLinear
 │       after substitution field_data=IsotopeLinear
-└     set parameters: [Default]      const               =false
+│     set parameters: [Default]      const               =false
+└     set parameters: [Default]      state_norm          =false
 ┌ Info: create_reaction_from_config: Box2.transfer_fluxBoxes classname ReactionFluxTransfer
 │     set parameters: [config.yaml]  input_fluxes        =fluxBoxes.flux_$fluxname$
 │     set parameters: [config.yaml]  output_fluxes       =$fluxname$_sms
@@ -719,7 +726,8 @@ example5_flux_noisotope:
 │     set parameters: [config.yaml]  field_data          =external%EIsotope
 │       expandvalue: external%EIsotope -&gt; IsotopeLinear
 │       after substitution field_data=IsotopeLinear
-└     set parameters: [Default]      const               =false
+│     set parameters: [Default]      const               =false
+└     set parameters: [Default]      state_norm          =false
 ┌ Info: 
 │ ================================================================================
 │ set_model_geometry
@@ -810,9 +818,9 @@ example5_flux_noisotope:
 │ initialize_reactiondata! (modeldata arrays_indices=1:1)
 └ ================================================================================
 ┌ Warning: create_accessor: VariableReaction Box1.Adecay.do_example5.output_flux  -&gt;  fluxBoxes.flux_B:  invalid :field_data combination - attempting to link a Variable with :field_data=PALEOboxes.IsotopeLinear to a Variable with :field_data=PALEOboxes.ScalarData
-└ @ PALEOboxes ~/.julia/packages/PALEOboxes/vLeLu/src/VariableReaction.jl:758
+└ @ PALEOboxes ~/.julia/packages/PALEOboxes/702nf/src/VariableReaction.jl:758
 ERROR: LoadError: MethodError: no method matching create_accessor(::Type{PALEOboxes.IsotopeLinear}, ::PALEOboxes.Field{PALEOboxes.ScalarData, PALEOboxes.CellSpace, Vector{Float64}, 0, Nothing}, ::Nothing; forceview=false, components=false)
 Closest candidates are:
-  create_accessor(::Union{Type{D}, Type{PALEOboxes.UndefinedData}}, <span class="sgr91">::PALEOboxes.Field{D, S, V, N, M}</span>, ::Union{Nothing, PALEOboxes.AbstractSubdomain}; forceview, components) where {D, S, V, N, M} at ~/.julia/packages/PALEOboxes/vLeLu/src/Fields.jl:440
-  create_accessor(<span class="sgr91">::Type{PALEOboxes.ScalarData}</span>, <span class="sgr91">::PALEOboxes.Field{PALEOboxes.IsotopeLinear, S, V, W, M}</span>, ::Union{Nothing, PALEOboxes.AbstractSubdomain}; forceview, components) where {S, V, W, M} at ~/.julia/packages/PALEOboxes/vLeLu/src/data/IsotopeData.jl:380
-in expression starting at /home/runner/work/PALEOtutorials.jl/PALEOtutorials.jl/examples/error_examples/run_ex5_flux_noisotope.jl:20</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../solvers/README/">« ODE solvers</a><a class="docs-footer-nextpage" href="../../CPU/README/">CPU (Carbon, Phosphorus, Uranium) model »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.3.0 on <span class="colophon-date" title="Monday 18 March 2024 19:49">Monday 18 March 2024</span>. Using Julia version 1.8.5.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+  create_accessor(::Union{Type{D}, Type{PALEOboxes.UndefinedData}}, <span class="sgr91">::PALEOboxes.Field{D, S, V, N, M}</span>, ::Union{Nothing, PALEOboxes.AbstractSubdomain}; forceview, components) where {D, S, V, N, M} at ~/.julia/packages/PALEOboxes/702nf/src/Fields.jl:440
+  create_accessor(<span class="sgr91">::Type{PALEOboxes.ScalarData}</span>, <span class="sgr91">::PALEOboxes.Field{PALEOboxes.IsotopeLinear, S, V, W, M}</span>, ::Union{Nothing, PALEOboxes.AbstractSubdomain}; forceview, components) where {S, V, W, M} at ~/.julia/packages/PALEOboxes/702nf/src/data/IsotopeData.jl:380
+in expression starting at /home/runner/work/PALEOtutorials.jl/PALEOtutorials.jl/examples/error_examples/run_ex5_flux_noisotope.jl:20</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../solvers/README/">« ODE solvers</a><a class="docs-footer-nextpage" href="../../CPU/README/">CPU (Carbon, Phosphorus, Uranium) model »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.4.1 on <span class="colophon-date" title="Monday 6 May 2024 17:06">Monday 6 May 2024</span>. Using Julia version 1.8.5.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>

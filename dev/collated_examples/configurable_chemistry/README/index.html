@@ -224,7 +224,7 @@ display(
 │ ================================================================================
 │ creating Domains
 └ ================================================================================
-[ Info: generated Reaction catalog with 87 Reactions
+[ Info: generated Reaction catalog with 70 Reactions
 ┌ Info:
 │ ================================================================================
 │ creating domain &#39;global&#39; ID=1
@@ -233,7 +233,12 @@ display(
 │     set parameters: [Default]      field_data          =PALEOboxes.ScalarData
 │     set parameters: [config.yaml]  perturb_times       =[-1.0e30, 1.0e30]
 │     set parameters: [config.yaml]  perturb_totals      =[2.66e16, 2.66e16]
-└     set parameters: [Default]      perturb_deltas      =[0.0, 0.0]
+│     set parameters: [Default]      perturb_deltas      =[0.0, 0.0]
+│     set parameters: [Default]      extrapolate         =throw
+│     set parameters: [Default]      extrapolate_before  =NaN
+│     set parameters: [Default]      extrapolate_before_delta=NaN
+│     set parameters: [Default]      extrapolate_after   =NaN
+└     set parameters: [Default]      extrapolate_after_delta=NaN
 ┌ Info:
 │ ================================================================================
 │ creating domain &#39;ocean&#39; ID=2
@@ -428,7 +433,6 @@ display(
 │ ================================================================================
 │ dispatch_setup :setup
 └ ================================================================================
-[ Info: global.add_Alk.setup_flux_perturb:
 [ Info: ocean.constant_B.setup_initialvalue_vars_default:
 [ Info: init_values!     :initial_value        ocean.B_conc                   = 0.427
 ┌ Info:
@@ -483,7 +487,7 @@ integrate, DAE
 [ Info: DAEfunction:  using Jacobian NoJacobian
 [ Info: jac_config_dae: jac_ad=NoJacobian
 [ Info: calling get_inconsistent_initial_deriv
-  0.871498 seconds (1.36 M allocations: 72.451 MiB, 99.85% compilation time)
+  0.927490 seconds (1.37 M allocations: 72.704 MiB, 99.86% compilation time)
 ┌ Info:
 │ ================================================================================
 │ print_sol_stats:
@@ -509,7 +513,7 @@ integrate, DAE
 │ ================================================================================
 │ PALEOmodel.ODE.integrateDAE: done
 └ ================================================================================
-  7.396807 seconds (15.00 M allocations: 835.142 MiB, 2.79% gc time, 99.78% compilation time: 10% of which was recompilation)</code></pre><p><img src="../ex1_plot1.svg" alt/> <img src="../ex1_plot2.svg" alt/> <img src="../ex1_plot3.svg" alt/> <img src="../ex1_plot4.svg" alt/></p><h3 id="Displaying-model-structure-and-variables"><a class="docs-heading-anchor" href="#Displaying-model-structure-and-variables">Displaying model structure and variables</a><a id="Displaying-model-structure-and-variables-1"></a><a class="docs-heading-anchor-permalink" href="#Displaying-model-structure-and-variables" title="Permalink"></a></h3><p>All metadata for model variables can be displayed with <code>PB.show_variables</code>:</p><pre><code class="language-julia hljs">show(PB.show_variables(model), allcols=true, allrows=true) # display in REPL
+  7.956229 seconds (15.50 M allocations: 865.512 MiB, 2.33% gc time, 99.72% compilation time: 11% of which was recompilation)</code></pre><p><img src="../ex1_plot1.svg" alt/> <img src="../ex1_plot2.svg" alt/> <img src="../ex1_plot3.svg" alt/> <img src="../ex1_plot4.svg" alt/></p><h3 id="Displaying-model-structure-and-variables"><a class="docs-heading-anchor" href="#Displaying-model-structure-and-variables">Displaying model structure and variables</a><a id="Displaying-model-structure-and-variables-1"></a><a class="docs-heading-anchor-permalink" href="#Displaying-model-structure-and-variables" title="Permalink"></a></h3><p>All metadata for model variables can be displayed with <code>PB.show_variables</code>:</p><pre><code class="language-julia hljs">show(PB.show_variables(model), allcols=true, allrows=true) # display in REPL
 # vscodedisplay(PB.show_variables(model)) # more convenient when using VS code</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">35×8 DataFrame
  Row │ domain        name                  type                      units     vfunction         space        field_data  description
      │ String        String                DataType                  String    Variable…         DataType     DataType    String
@@ -767,7 +771,7 @@ display(
 │ ================================================================================
 │ creating Domains
 └ ================================================================================
-[ Info: generated Reaction catalog with 87 Reactions
+[ Info: generated Reaction catalog with 70 Reactions
 ┌ Info:
 │ ================================================================================
 │ creating domain &#39;global&#39; ID=1
@@ -776,7 +780,12 @@ display(
 │     set parameters: [Default]      field_data          =PALEOboxes.ScalarData
 │     set parameters: [config.yaml]  perturb_times       =[-1.0e30, 1.0e30]
 │     set parameters: [config.yaml]  perturb_totals      =[2.66e16, 2.66e16]
-└     set parameters: [Default]      perturb_deltas      =[0.0, 0.0]
+│     set parameters: [Default]      perturb_deltas      =[0.0, 0.0]
+│     set parameters: [Default]      extrapolate         =throw
+│     set parameters: [Default]      extrapolate_before  =NaN
+│     set parameters: [Default]      extrapolate_before_delta=NaN
+│     set parameters: [Default]      extrapolate_after   =NaN
+└     set parameters: [Default]      extrapolate_after_delta=NaN
 ┌ Info:
 │ ================================================================================
 │ creating domain &#39;ocean&#39; ID=2
@@ -795,7 +804,8 @@ display(
 │     set parameters: [config.yaml]  primary_total_stoich=1.0
 │     set parameters: [Default]      primary_other_components=String[]
 │     set parameters: [config.yaml]  primary_variable    =concentration
-└     set parameters: [config.yaml]  total_variable      =concentration
+│     set parameters: [config.yaml]  total_variable      =concentration
+└     set parameters: [Default]      total               =false
 ┌ Info: create_reaction_from_config: ocean.BOH4_conc classname ReactionAqEqb
 │     set parameters: [config.yaml]  Reactants           =[&quot;BOH4_conc&quot;, &quot;H_conc&quot;]
 │     set parameters: [config.yaml]  Products            =[&quot;BOH3_conc&quot;]
@@ -807,12 +817,14 @@ display(
 │     set parameters: [config.yaml]  primary_total_stoich=-1.0
 │     set parameters: [Default]      primary_other_components=String[]
 │     set parameters: [config.yaml]  primary_variable    =p_concentration
-└     set parameters: [config.yaml]  total_variable      =concentration
+│     set parameters: [config.yaml]  total_variable      =concentration
+└     set parameters: [Default]      total               =false
 ┌ Info: create_reaction_from_config: ocean.B_total_BOH3_primary classname ReactionImplicitReservoir
 │     set parameters: [config.yaml]  primary_total_stoich=1.0
 │     set parameters: [Default]      primary_other_components=String[]
 │     set parameters: [config.yaml]  primary_variable    =concentration
-└     set parameters: [config.yaml]  total_variable      =concentration
+│     set parameters: [config.yaml]  total_variable      =concentration
+└     set parameters: [Default]      total               =false
 ┌ Info: create_reaction_from_config: ocean.HCO3_conc classname ReactionAqEqb
 │     set parameters: [config.yaml]  Reactants           =[&quot;HCO3_conc&quot;, &quot;H_conc&quot;]
 │     set parameters: [config.yaml]  Products            =[&quot;CO2_aq_conc&quot;]
@@ -870,6 +882,7 @@ display(
 │     set variable_links: R_sms                -&gt; DIC_sms
 │     set variable_links: R_conc_sms           -&gt; DIC_conc_sms
 │     set variable_links: R_calc               -&gt; DIC_calc
+│     set variable_links: R                    -&gt; DIC
 │ _configure_variables: ReactionImplicitReservoir ocean.DIC_total_CO2_aq_primary variable_attributes:
 │     set attribute: Primary_conc         :initial_value        = 1.94
 │     set attribute: Primary_conc         :norm_value           = 1.0
@@ -879,6 +892,7 @@ display(
 │     set variable_links: R_sms                -&gt; TAlk_sms
 │     set variable_links: R_conc_sms           -&gt; TAlk_conc_sms
 │     set variable_links: R_calc               -&gt; TAlk_calc
+│     set variable_links: R                    -&gt; TAlk
 │     set variable_links: Primary_conc         -&gt; H_conc
 │     set variable_links: Primary_pconc        -&gt; pH
 │ _configure_variables: ReactionImplicitReservoir ocean.TA_total_H_primary variable_attributes:
@@ -891,6 +905,7 @@ display(
 │     set variable_links: R_sms                -&gt; B_sms
 │     set variable_links: R_conc_sms           -&gt; B_conc_sms
 │     set variable_links: R_calc               -&gt; B_calc
+│     set variable_links: R                    -&gt; B
 │ _configure_variables: ReactionImplicitReservoir ocean.B_total_BOH3_primary variable_attributes:
 │     set attribute: Primary_conc         :initial_value        = 0.427
 │     set attribute: Primary_conc         :norm_value           = 1.0
@@ -917,7 +932,7 @@ display(
 └ ================================================================================
 [ Info: Domain global               data dimensions PALEOboxes.NamedDimension[] allocating 2    variables (hostdep=nothing)
 [ Info:     set :field_data=PALEOboxes.ScalarData for host-dependent Variable global.tforce
-[ Info: Domain ocean                data dimensions PALEOboxes.NamedDimension[] allocating 28   variables (hostdep=nothing)
+[ Info: Domain ocean                data dimensions PALEOboxes.NamedDimension[] allocating 31   variables (hostdep=nothing)
 [ Info: Domain oceansurface         data dimensions PALEOboxes.NamedDimension[] allocating 1    variables (hostdep=nothing)
 [ Info: Domain oceanfloor           data dimensions PALEOboxes.NamedDimension[] allocating 3    variables (hostdep=nothing)
 [ Info: set_default_solver_view:
@@ -944,7 +959,6 @@ display(
 │ ================================================================================
 │ dispatch_setup :setup
 └ ================================================================================
-[ Info: global.add_Alk.setup_flux_perturb:
 ┌ Info:
 │ ================================================================================
 │ dispatch_setup :norm_value
@@ -1004,7 +1018,7 @@ integrate, DAE
 [ Info:     combined jac_prototype nnz=9 num colors=3
 [ Info: add_arrays_data! (arrays_eltype=ForwardDiff.Dual{Nothing, Float64, 3}, arrays_tagname=jac_ad)
 [ Info: calling get_inconsistent_initial_deriv
-  2.150540 seconds (5.45 M allocations: 282.330 MiB, 3.74% gc time, 99.91% compilation time)
+  2.121183 seconds (4.94 M allocations: 257.185 MiB, 2.76% gc time, 99.90% compilation time)
 ┌ Info:
 │ ================================================================================
 │ print_sol_stats:
@@ -1030,42 +1044,45 @@ integrate, DAE
 │ ================================================================================
 │ PALEOmodel.ODE.integrateDAE: done
 └ ================================================================================
-  6.091973 seconds (12.95 M allocations: 684.000 MiB, 2.51% gc time, 98.53% compilation time)</code></pre><p><img src="../ex2_plot1.svg" alt/> <img src="../ex2_plot2.svg" alt/> <img src="../ex2_plot3.svg" alt/> <img src="../ex2_plot4.svg" alt/></p><h3 id="Displaying-model-structure-and-variables-2"><a class="docs-heading-anchor" href="#Displaying-model-structure-and-variables-2">Displaying model structure and variables</a><a class="docs-heading-anchor-permalink" href="#Displaying-model-structure-and-variables-2" title="Permalink"></a></h3><p>All metadata for model variables can be displayed with <code>PB.show_variables</code>:</p><pre><code class="language-julia hljs">show(PB.show_variables(model), allcols=true, allrows=true) # display in REPL
-# vscodedisplay(PB.show_variables(model)) # more convenient when using VS code</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">34×8 DataFrame
+  6.280187 seconds (12.05 M allocations: 639.879 MiB, 1.82% gc time, 98.22% compilation time)</code></pre><p><img src="../ex2_plot1.svg" alt/> <img src="../ex2_plot2.svg" alt/> <img src="../ex2_plot3.svg" alt/> <img src="../ex2_plot4.svg" alt/></p><h3 id="Displaying-model-structure-and-variables-2"><a class="docs-heading-anchor" href="#Displaying-model-structure-and-variables-2">Displaying model structure and variables</a><a class="docs-heading-anchor-permalink" href="#Displaying-model-structure-and-variables-2" title="Permalink"></a></h3><p>All metadata for model variables can be displayed with <code>PB.show_variables</code>:</p><pre><code class="language-julia hljs">show(PB.show_variables(model), allcols=true, allrows=true) # display in REPL
+# vscodedisplay(PB.show_variables(model)) # more convenient when using VS code</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">37×8 DataFrame
  Row │ domain        name              type                      units         vfunction      space        field_data  description
      │ String        String            DataType                  String        Variable…      DataType     DataType    String
 ─────┼───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
    1 │ global        add_Alk/FApplied  VariableDomPropDep        mol yr-1      VF_Undefined   ScalarSpace  ScalarData  flux perturbation applied, for d…
    2 │ global        tforce            VariableDomPropDep        yr            VF_Undefined   ScalarSpace  ScalarData  time at which to apply perturbat…
    3 │ ocean         Abox              VariableDomPropDep        m^2           VF_Undefined   CellSpace    ScalarData  horizontal area of box
-   4 │ ocean         BOH3_conc         VariableDomPropDep        mol m-3       VF_StateTotal  CellSpace    ScalarData  concentration of primary species
-   5 │ ocean         BOH4_conc         VariableDomPropDep        mol m-3       VF_Undefined   CellSpace    ScalarData  aqueous concentration or activity
-   6 │ ocean         B_calc            VariableDomContribTarget  m-3           VF_Undefined   CellSpace    ScalarData  contributions to total R_calc_co…
-   7 │ ocean         B_conc            VariableDomContribTarget  mol m-3       VF_Total       CellSpace    ScalarData  total or component R_conc
-   8 │ ocean         B_conc_sms        VariableDomContribTarget  mol m-3 yr-1  VF_Deriv       CellSpace    ScalarData  total or component R_conc source…
-   9 │ ocean         B_sms             VariableDomContribTarget  mol yr-1      VF_Undefined   CellSpace    ScalarData  total or component R source - si…
-  10 │ ocean         CO2_aq_conc       VariableDomPropDep        mol m-3       VF_StateTotal  CellSpace    ScalarData  concentration of primary species
-  11 │ ocean         CO3_conc          VariableDomPropDep        mol m-3       VF_Undefined   CellSpace    ScalarData  aqueous concentration or activity
-  12 │ ocean         DIC_calc          VariableDomContribTarget  m-3           VF_Undefined   CellSpace    ScalarData  contributions to total R_calc_co…
-  13 │ ocean         DIC_conc          VariableDomContribTarget  mol m-3       VF_Total       CellSpace    ScalarData  total or component R_conc
-  14 │ ocean         DIC_conc_sms      VariableDomContribTarget  mol m-3 yr-1  VF_Deriv       CellSpace    ScalarData  total or component R_conc source…
-  15 │ ocean         DIC_sms           VariableDomContribTarget  mol yr-1      VF_Undefined   CellSpace    ScalarData  total or component R source - si…
-  16 │ ocean         HCO3_conc         VariableDomPropDep        mol m-3       VF_Undefined   CellSpace    ScalarData  aqueous concentration or activity
-  17 │ ocean         H_conc            VariableDomPropDep        mol m-3       VF_Undefined   CellSpace    ScalarData  concentration of primary species
-  18 │ ocean         OH_conc           VariableDomPropDep        mol m-3       VF_Undefined   CellSpace    ScalarData  aqueous concentration or activity
-  19 │ ocean         TAlk_calc         VariableDomContribTarget  m-3           VF_Undefined   CellSpace    ScalarData  contributions to total R_calc_co…
-  20 │ ocean         TAlk_conc         VariableDomContribTarget  mol m-3       VF_Total       CellSpace    ScalarData  total or component R_conc
-  21 │ ocean         TAlk_conc_sms     VariableDomContribTarget  mol m-3 yr-1  VF_Deriv       CellSpace    ScalarData  total or component R_conc source…
-  22 │ ocean         TAlk_sms          VariableDomContribTarget  mol yr-1      VF_Undefined   CellSpace    ScalarData  total or component R source - si…
-  23 │ ocean         pH                VariableDomPropDep                      VF_StateTotal  CellSpace    ScalarData  -log10(concentration of primary …
-  24 │ ocean         pressure          VariableDomPropDep        dbar          VF_Undefined   CellSpace    ScalarData  Ocean pressure
-  25 │ ocean         rho_ref           VariableDomPropDep        kg m^-3       VF_Undefined   CellSpace    ScalarData  Ocean transport model density co…
-  26 │ ocean         volume            VariableDomPropDep        m^3           VF_Undefined   CellSpace    ScalarData  volume of ocean cells
-  27 │ ocean         volume_total      VariableDomPropDep        m^3           VF_Undefined   ScalarSpace  ScalarData  total volume of ocean cells
-  28 │ ocean         zlower            VariableDomPropDep        m             VF_Undefined   CellSpace    ScalarData  depth of lower surface of box (m)
-  29 │ ocean         zmid              VariableDomPropDep        m             VF_Undefined   CellSpace    ScalarData  mean depth of box
-  30 │ ocean         zupper            VariableDomPropDep        m             VF_Undefined   CellSpace    ScalarData  depth of upper surface of box (m…
-  31 │ oceanfloor    Afloor            VariableDomPropDep        m^2           VF_Undefined   CellSpace    ScalarData  horizontal area of seafloor at b…
-  32 │ oceanfloor    Afloor_total      VariableDomPropDep        m^2           VF_Undefined   ScalarSpace  ScalarData  total area of seafloor
-  33 │ oceanfloor    zfloor            VariableDomPropDep        m             VF_Undefined   CellSpace    ScalarData  depth of ocean floor (m, -ve)
-  34 │ oceansurface  Asurf             VariableDomPropDep        m^2           VF_Undefined   CellSpace    ScalarData  horizontal area of oceansurface</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../ocean_chemistry/README/">« Ocean chemistry</a><a class="docs-footer-nextpage" href="../../../HOWTOJuliaUsage/">Julia usage »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.3.0 on <span class="colophon-date" title="Monday 18 March 2024 19:49">Monday 18 March 2024</span>. Using Julia version 1.8.5.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+   4 │ ocean         B                 VariableDomPropDep        mol           VF_Undefined   CellSpace    ScalarData  total or component R
+   5 │ ocean         BOH3_conc         VariableDomPropDep        mol m-3       VF_StateTotal  CellSpace    ScalarData  concentration of primary species
+   6 │ ocean         BOH4_conc         VariableDomPropDep        mol m-3       VF_Undefined   CellSpace    ScalarData  aqueous concentration or activity
+   7 │ ocean         B_calc            VariableDomContribTarget  m-3           VF_Undefined   CellSpace    ScalarData  contributions to total R_calc_co…
+   8 │ ocean         B_conc            VariableDomContribTarget  mol m-3       VF_Total       CellSpace    ScalarData  total or component R_conc
+   9 │ ocean         B_conc_sms        VariableDomContribTarget  mol m-3 yr-1  VF_Deriv       CellSpace    ScalarData  total or component R_conc source…
+  10 │ ocean         B_sms             VariableDomContribTarget  mol yr-1      VF_Undefined   CellSpace    ScalarData  total or component R source - si…
+  11 │ ocean         CO2_aq_conc       VariableDomPropDep        mol m-3       VF_StateTotal  CellSpace    ScalarData  concentration of primary species
+  12 │ ocean         CO3_conc          VariableDomPropDep        mol m-3       VF_Undefined   CellSpace    ScalarData  aqueous concentration or activity
+  13 │ ocean         DIC               VariableDomPropDep        mol           VF_Undefined   CellSpace    ScalarData  total or component R
+  14 │ ocean         DIC_calc          VariableDomContribTarget  m-3           VF_Undefined   CellSpace    ScalarData  contributions to total R_calc_co…
+  15 │ ocean         DIC_conc          VariableDomContribTarget  mol m-3       VF_Total       CellSpace    ScalarData  total or component R_conc
+  16 │ ocean         DIC_conc_sms      VariableDomContribTarget  mol m-3 yr-1  VF_Deriv       CellSpace    ScalarData  total or component R_conc source…
+  17 │ ocean         DIC_sms           VariableDomContribTarget  mol yr-1      VF_Undefined   CellSpace    ScalarData  total or component R source - si…
+  18 │ ocean         HCO3_conc         VariableDomPropDep        mol m-3       VF_Undefined   CellSpace    ScalarData  aqueous concentration or activity
+  19 │ ocean         H_conc            VariableDomPropDep        mol m-3       VF_Undefined   CellSpace    ScalarData  concentration of primary species
+  20 │ ocean         OH_conc           VariableDomPropDep        mol m-3       VF_Undefined   CellSpace    ScalarData  aqueous concentration or activity
+  21 │ ocean         TAlk              VariableDomPropDep        mol           VF_Undefined   CellSpace    ScalarData  total or component R
+  22 │ ocean         TAlk_calc         VariableDomContribTarget  m-3           VF_Undefined   CellSpace    ScalarData  contributions to total R_calc_co…
+  23 │ ocean         TAlk_conc         VariableDomContribTarget  mol m-3       VF_Total       CellSpace    ScalarData  total or component R_conc
+  24 │ ocean         TAlk_conc_sms     VariableDomContribTarget  mol m-3 yr-1  VF_Deriv       CellSpace    ScalarData  total or component R_conc source…
+  25 │ ocean         TAlk_sms          VariableDomContribTarget  mol yr-1      VF_Undefined   CellSpace    ScalarData  total or component R source - si…
+  26 │ ocean         pH                VariableDomPropDep                      VF_StateTotal  CellSpace    ScalarData  -log10(concentration of primary …
+  27 │ ocean         pressure          VariableDomPropDep        dbar          VF_Undefined   CellSpace    ScalarData  Ocean pressure
+  28 │ ocean         rho_ref           VariableDomPropDep        kg m^-3       VF_Undefined   CellSpace    ScalarData  Ocean transport model density co…
+  29 │ ocean         volume            VariableDomPropDep        m^3           VF_Undefined   CellSpace    ScalarData  volume of ocean cells
+  30 │ ocean         volume_total      VariableDomPropDep        m^3           VF_Undefined   ScalarSpace  ScalarData  total volume of ocean cells
+  31 │ ocean         zlower            VariableDomPropDep        m             VF_Undefined   CellSpace    ScalarData  depth of lower surface of box (m)
+  32 │ ocean         zmid              VariableDomPropDep        m             VF_Undefined   CellSpace    ScalarData  mean depth of box
+  33 │ ocean         zupper            VariableDomPropDep        m             VF_Undefined   CellSpace    ScalarData  depth of upper surface of box (m…
+  34 │ oceanfloor    Afloor            VariableDomPropDep        m^2           VF_Undefined   CellSpace    ScalarData  horizontal area of seafloor at b…
+  35 │ oceanfloor    Afloor_total      VariableDomPropDep        m^2           VF_Undefined   ScalarSpace  ScalarData  total area of seafloor
+  36 │ oceanfloor    zfloor            VariableDomPropDep        m             VF_Undefined   CellSpace    ScalarData  depth of ocean floor (m, -ve)
+  37 │ oceansurface  Asurf             VariableDomPropDep        m^2           VF_Undefined   CellSpace    ScalarData  horizontal area of oceansurface</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../ocean_chemistry/README/">« Ocean chemistry</a><a class="docs-footer-nextpage" href="../../../HOWTOJuliaUsage/">Julia usage »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.4.1 on <span class="colophon-date" title="Monday 6 May 2024 17:06">Monday 6 May 2024</span>. Using Julia version 1.8.5.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
