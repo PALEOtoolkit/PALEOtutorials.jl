@@ -12,7 +12,7 @@ Follow instructions at <https://github.com/julia-vscode/julia-vscode> to install
 ## Installing and configuring the PALEOtutorials
 
 ### Clone github repository
-This will download <https://github.com/sjdaines/PALEOtutorials.jl> into a new folder `PALEOtutorials`
+This will download <https://github.com/PALEOtoolkit/PALEOtutorials.jl> into a new folder `PALEOtutorials`
 
     git clone https://github.com/PALEOtoolkit/PALEOtutorials.jl PALEOtutorials
 
