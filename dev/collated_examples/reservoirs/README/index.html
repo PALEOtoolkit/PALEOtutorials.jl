@@ -263,7 +263,7 @@ integrate, ODE
 └ ================================================================================
 [ Info: ODEfunction: using Jacobian NoJacobian
 [ Info: jac_config_ode: jac_ad=NoJacobian
-  0.607406 seconds (1.05 M allocations: 57.583 MiB, 99.04% compilation time)
+  0.470802 seconds (453.80 k allocations: 32.102 MiB, 99.91% compilation time)
 ┌ Info:
 │ ================================================================================
 │ print_sol_stats:
@@ -277,6 +277,8 @@ integrate, ODE
 │ Number of Jacobians created:                       2
 │ Number of nonlinear solver iterations:             89
 │ Number of nonlinear solver convergence failures:   0
+│ Number of fixed-point solver iterations:                     0
+│ Number of fixed-point solver convergence failures:           0
 │ Number of rootfind condition calls:                0
 │ Number of accepted steps:                          72
 │ Number of rejected steps:                          2
@@ -289,7 +291,7 @@ integrate, ODE
 │ ================================================================================
 │ PALEOmodel.ODE.integrate: done
 └ ================================================================================
-  1.742724 seconds (3.20 M allocations: 181.505 MiB, 2.11% gc time, 98.96% compilation time)</code></pre><p><img src="../ex1_plot1.svg" alt/> <img src="../ex1_plot2.svg" alt/></p><h3 id="Displaying-model-structure-and-variables"><a class="docs-heading-anchor" href="#Displaying-model-structure-and-variables">Displaying model structure and variables</a><a id="Displaying-model-structure-and-variables-1"></a><a class="docs-heading-anchor-permalink" href="#Displaying-model-structure-and-variables" title="Permalink"></a></h3><p>All metadata for model variables can be displayed with <code>PB.show_variables</code>:</p><pre><code class="language-julia hljs">show(PB.show_variables(model), allcols=true, allrows=true) # display in REPL
+  1.077458 seconds (1.07 M allocations: 74.227 MiB, 1.16% gc time, 99.71% compilation time)</code></pre><p><img src="../ex1_plot1.svg" alt/> <img src="../ex1_plot2.svg" alt/></p><h3 id="Displaying-model-structure-and-variables"><a class="docs-heading-anchor" href="#Displaying-model-structure-and-variables">Displaying model structure and variables</a><a id="Displaying-model-structure-and-variables-1"></a><a class="docs-heading-anchor-permalink" href="#Displaying-model-structure-and-variables" title="Permalink"></a></h3><p>All metadata for model variables can be displayed with <code>PB.show_variables</code>:</p><pre><code class="language-julia hljs">show(PB.show_variables(model), allcols=true, allrows=true) # display in REPL
 # vscodedisplay(PB.show_variables(model)) # more convenient when using VS code</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">3×8 DataFrame
  Row │ domain  name        type                      units     vfunction         space        field_data  description
      │ String  String      DataType                  String    Variable…         DataType     DataType    String
@@ -639,7 +641,7 @@ integrate, ODE
 └ ================================================================================
 [ Info: ODEfunction: using Jacobian NoJacobian
 [ Info: jac_config_ode: jac_ad=NoJacobian
-  0.000199 seconds (1.13 k allocations: 42.953 KiB)
+  0.000170 seconds (825 allocations: 38.312 KiB)
 ┌ Info:
 │ ================================================================================
 │ print_sol_stats:
@@ -653,6 +655,8 @@ integrate, ODE
 │ Number of Jacobians created:                       2
 │ Number of nonlinear solver iterations:             89
 │ Number of nonlinear solver convergence failures:   0
+│ Number of fixed-point solver iterations:                     0
+│ Number of fixed-point solver convergence failures:           0
 │ Number of rootfind condition calls:                0
 │ Number of accepted steps:                          72
 │ Number of rejected steps:                          2
@@ -665,7 +669,7 @@ integrate, ODE
 │ ================================================================================
 │ PALEOmodel.ODE.integrate: done
 └ ================================================================================
-  0.001462 seconds (3.18 k allocations: 167.109 KiB)</code></pre><p><img src="../ex2_plot1.svg" alt/> <img src="../ex2_plot2.svg" alt/></p><h3 id="Displaying-model-structure-and-variables-2"><a class="docs-heading-anchor" href="#Displaying-model-structure-and-variables-2">Displaying model structure and variables</a><a class="docs-heading-anchor-permalink" href="#Displaying-model-structure-and-variables-2" title="Permalink"></a></h3><p>All metadata for model variables can be displayed with <code>PB.show_variables</code>:</p><pre><code class="language-julia hljs">show(PB.show_variables(model), allcols=true, allrows=true) # display in REPL
+  0.001336 seconds (2.67 k allocations: 970.680 KiB)</code></pre><p><img src="../ex2_plot1.svg" alt/> <img src="../ex2_plot2.svg" alt/></p><h3 id="Displaying-model-structure-and-variables-2"><a class="docs-heading-anchor" href="#Displaying-model-structure-and-variables-2">Displaying model structure and variables</a><a class="docs-heading-anchor-permalink" href="#Displaying-model-structure-and-variables-2" title="Permalink"></a></h3><p>All metadata for model variables can be displayed with <code>PB.show_variables</code>:</p><pre><code class="language-julia hljs">show(PB.show_variables(model), allcols=true, allrows=true) # display in REPL
 # vscodedisplay(PB.show_variables(model)) # more convenient when using VS code</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">4×8 DataFrame
  Row │ domain  name        type                      units     vfunction         space        field_data  description
      │ String  String      DataType                  String    Variable…         DataType     DataType    String
@@ -940,7 +944,7 @@ integrate, ODE
 └ ================================================================================
 [ Info: ODEfunction: using Jacobian NoJacobian
 [ Info: jac_config_ode: jac_ad=NoJacobian
-  0.561256 seconds (996.70 k allocations: 54.525 MiB, 99.94% compilation time)
+  0.461767 seconds (451.41 k allocations: 31.985 MiB, 99.94% compilation time)
 ┌ Info:
 │ ================================================================================
 │ print_sol_stats:
@@ -954,6 +958,8 @@ integrate, ODE
 │ Number of Jacobians created:                       2
 │ Number of nonlinear solver iterations:             61
 │ Number of nonlinear solver convergence failures:   0
+│ Number of fixed-point solver iterations:                     0
+│ Number of fixed-point solver convergence failures:           0
 │ Number of rootfind condition calls:                0
 │ Number of accepted steps:                          53
 │ Number of rejected steps:                          1
@@ -966,7 +972,7 @@ integrate, ODE
 │ ================================================================================
 │ PALEOmodel.ODE.integrate: done
 └ ================================================================================
-  0.742105 seconds (1.20 M allocations: 67.481 MiB, 4.61% gc time, 98.87% compilation time)</code></pre><p><img src="../ex3_plot1.svg" alt/> <img src="../ex3_plot2.svg" alt/></p><h3 id="Displaying-model-structure-and-variables-3"><a class="docs-heading-anchor" href="#Displaying-model-structure-and-variables-3">Displaying model structure and variables</a><a class="docs-heading-anchor-permalink" href="#Displaying-model-structure-and-variables-3" title="Permalink"></a></h3><p>All metadata for model variables can be displayed with <code>PB.show_variables</code>:</p><pre><code class="language-julia hljs">show(PB.show_variables(model), allcols=true, allrows=true) # display in REPL
+  0.596406 seconds (585.50 k allocations: 42.260 MiB, 99.52% compilation time)</code></pre><p><img src="../ex3_plot1.svg" alt/> <img src="../ex3_plot2.svg" alt/></p><h3 id="Displaying-model-structure-and-variables-3"><a class="docs-heading-anchor" href="#Displaying-model-structure-and-variables-3">Displaying model structure and variables</a><a class="docs-heading-anchor-permalink" href="#Displaying-model-structure-and-variables-3" title="Permalink"></a></h3><p>All metadata for model variables can be displayed with <code>PB.show_variables</code>:</p><pre><code class="language-julia hljs">show(PB.show_variables(model), allcols=true, allrows=true) # display in REPL
 # vscodedisplay(PB.show_variables(model)) # more convenient when using VS code</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">7×8 DataFrame
  Row │ domain  name        type                      units     vfunction         space        field_data  description
      │ String  String      DataType                  String    Variable…         DataType     DataType    String
@@ -1276,7 +1282,7 @@ integrate, ODE
 └ ================================================================================
 [ Info: ODEfunction: using Jacobian NoJacobian
 [ Info: jac_config_ode: jac_ad=NoJacobian
-  0.000170 seconds (837 allocations: 36.297 KiB)
+  0.000159 seconds (615 allocations: 32.906 KiB)
 ┌ Info:
 │ ================================================================================
 │ print_sol_stats:
@@ -1290,6 +1296,8 @@ integrate, ODE
 │ Number of Jacobians created:                       2
 │ Number of nonlinear solver iterations:             61
 │ Number of nonlinear solver convergence failures:   0
+│ Number of fixed-point solver iterations:                     0
+│ Number of fixed-point solver convergence failures:           0
 │ Number of rootfind condition calls:                0
 │ Number of accepted steps:                          53
 │ Number of rejected steps:                          1
@@ -1302,7 +1310,7 @@ integrate, ODE
 │ ================================================================================
 │ PALEOmodel.ODE.integrate: done
 └ ================================================================================
-  0.021415 seconds (13.85 k allocations: 798.599 KiB, 89.80% compilation time)</code></pre><p><img src="../ex4_plot1.svg" alt/> <img src="../ex4_plot2.svg" alt/></p><h3 id="Displaying-model-structure-and-variables-4"><a class="docs-heading-anchor" href="#Displaying-model-structure-and-variables-4">Displaying model structure and variables</a><a class="docs-heading-anchor-permalink" href="#Displaying-model-structure-and-variables-4" title="Permalink"></a></h3><p>All metadata for model variables can be displayed with <code>PB.show_variables</code>:</p><pre><code class="language-julia hljs">show(PB.show_variables(model), allcols=true, allrows=true) # display in REPL
+  0.007471 seconds (6.07 k allocations: 1.188 MiB, 79.53% compilation time)</code></pre><p><img src="../ex4_plot1.svg" alt/> <img src="../ex4_plot2.svg" alt/></p><h3 id="Displaying-model-structure-and-variables-4"><a class="docs-heading-anchor" href="#Displaying-model-structure-and-variables-4">Displaying model structure and variables</a><a class="docs-heading-anchor-permalink" href="#Displaying-model-structure-and-variables-4" title="Permalink"></a></h3><p>All metadata for model variables can be displayed with <code>PB.show_variables</code>:</p><pre><code class="language-julia hljs">show(PB.show_variables(model), allcols=true, allrows=true) # display in REPL
 # vscodedisplay(PB.show_variables(model)) # more convenient when using VS code</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">9×8 DataFrame
  Row │ domain     name        type                      units     vfunction         space        field_data  description
      │ String     String      DataType                  String    Variable…         DataType     DataType    String
@@ -1703,7 +1711,7 @@ integrate, ODE
 └ ================================================================================
 [ Info: ODEfunction: using Jacobian NoJacobian
 [ Info: jac_config_ode: jac_ad=NoJacobian
-  0.603256 seconds (996.91 k allocations: 54.568 MiB, 5.74% gc time, 99.92% compilation time)
+  0.445459 seconds (441.33 k allocations: 31.291 MiB, 4.14% gc time, 99.93% compilation time)
 ┌ Info:
 │ ================================================================================
 │ print_sol_stats:
@@ -1717,6 +1725,8 @@ integrate, ODE
 │ Number of Jacobians created:                       2
 │ Number of nonlinear solver iterations:             77
 │ Number of nonlinear solver convergence failures:   0
+│ Number of fixed-point solver iterations:                     0
+│ Number of fixed-point solver convergence failures:           0
 │ Number of rootfind condition calls:                0
 │ Number of accepted steps:                          66
 │ Number of rejected steps:                          0
@@ -1729,7 +1739,7 @@ integrate, ODE
 │ ================================================================================
 │ PALEOmodel.ODE.integrate: done
 └ ================================================================================
-  0.879425 seconds (1.34 M allocations: 75.376 MiB, 3.94% gc time, 98.52% compilation time)</code></pre><p><img src="../ex5_plot1.svg" alt/> <img src="../ex5_plot2.svg" alt/> <img src="../ex5_plot3.svg" alt/></p><h3 id="Displaying-model-structure-and-variables-5"><a class="docs-heading-anchor" href="#Displaying-model-structure-and-variables-5">Displaying model structure and variables</a><a class="docs-heading-anchor-permalink" href="#Displaying-model-structure-and-variables-5" title="Permalink"></a></h3><p>All metadata for model variables can be displayed with <code>PB.show_variables</code>:</p><pre><code class="language-julia hljs">show(PB.show_variables(model), allcols=true, allrows=true) # display in REPL
+  0.671261 seconds (639.03 k allocations: 45.992 MiB, 2.74% gc time, 99.48% compilation time)</code></pre><p><img src="../ex5_plot1.svg" alt/> <img src="../ex5_plot2.svg" alt/> <img src="../ex5_plot3.svg" alt/></p><h3 id="Displaying-model-structure-and-variables-5"><a class="docs-heading-anchor" href="#Displaying-model-structure-and-variables-5">Displaying model structure and variables</a><a class="docs-heading-anchor-permalink" href="#Displaying-model-structure-and-variables-5" title="Permalink"></a></h3><p>All metadata for model variables can be displayed with <code>PB.show_variables</code>:</p><pre><code class="language-julia hljs">show(PB.show_variables(model), allcols=true, allrows=true) # display in REPL
 # vscodedisplay(PB.show_variables(model)) # more convenient when using VS code</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">11×8 DataFrame
  Row │ domain     name        type                      units     vfunction         space        field_data     description
      │ String     String      DataType                  String    Variable…         DataType     Type           String
@@ -1744,4 +1754,4 @@ integrate, ODE
    8 │ Box2       B_norm      VariableDomPropDep                  VF_Undefined      ScalarSpace  ScalarData     scalar reservoir normalized
    9 │ Box2       B_sms       VariableDomContribTarget  mol yr-1  VF_Deriv          ScalarSpace  IsotopeLinear  scalar reservoir source-sinks
   10 │ fluxBoxes  flux_B      VariableDomContribTarget  mol yr-1  VF_Undefined      CellSpace    IsotopeLinear  flux input
-  11 │ global     E_total     VariableDomPropDep                  VF_Undefined      ScalarSpace  IsotopeLinear  sum of specified variables</code></pre><p>The variable names are as in <a href="#Example-4-Transfer-between-Domains">Example 4 Transfer between Domains</a>, however <code>field_data</code> is now <code>IsotopeLinear</code> and not <code>ScalarData</code> for the reservoir and flux variables.</p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../../ExampleInstallConfig/">« Installation and getting started</a><a class="docs-footer-nextpage" href="../../solvers/README/">ODE solvers »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.4.1 on <span class="colophon-date" title="Wednesday 8 May 2024 17:43">Wednesday 8 May 2024</span>. Using Julia version 1.8.5.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+  11 │ global     E_total     VariableDomPropDep                  VF_Undefined      ScalarSpace  IsotopeLinear  sum of specified variables</code></pre><p>The variable names are as in <a href="#Example-4-Transfer-between-Domains">Example 4 Transfer between Domains</a>, however <code>field_data</code> is now <code>IsotopeLinear</code> and not <code>ScalarData</code> for the reservoir and flux variables.</p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../../ExampleInstallConfig/">« Installation and getting started</a><a class="docs-footer-nextpage" href="../../solvers/README/">ODE solvers »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.4.1 on <span class="colophon-date" title="Wednesday 8 May 2024 17:56">Wednesday 8 May 2024</span>. Using Julia version 1.10.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
