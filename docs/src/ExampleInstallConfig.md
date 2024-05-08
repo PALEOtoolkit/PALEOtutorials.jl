@@ -19,7 +19,7 @@ navigate to the `PALEOtutorials.jl/examples` folder, and run:
 
 Individual examples can then be run by eg
 
-    julia> cd("CPU")  # PALEOtutorials/examples/CPU
+    julia> cd("CPU")  # PALEOtutorials.jl/examples/CPU
     julia> include("CPU_examples.jl")  # run CPU model example
 
 See the online [Documentation](https://paleotoolkit.github.io/PALEOtutorials.jl/) for details.
@@ -68,7 +68,7 @@ Start the julia REPL inside VS code, navigate to the `PALEOtutorials.jl/examples
 
 Individual examples can then be run by eg
 
-    julia> cd("CPU")  # PALEOtutorials/examples/CPU
+    julia> cd("CPU")  # PALEOtutorials.jl/examples/CPU
     julia> include("CPU_examples.jl")  # run CPU model example
 
 See the online [Documentation](https://paleotoolkit.github.io/PALEOtutorials.jl/) for details.
