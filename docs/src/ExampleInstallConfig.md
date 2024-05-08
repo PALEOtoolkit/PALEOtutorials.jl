@@ -1,44 +1,74 @@
-# Installation and initial configuration
+# Installation and getting started
 
-## Installing and configuring Julia and VS Code
+## Quickstart assuming a working Julia and VS code installation 
 
-### Julia
-Download and install Julia from <https://julialang.org/downloads/> (PALEO requires Julia 1.6 or a later version).
+> **Note** 
+> PALEO requires Julia version 1.10 or later
 
-### VS Code
+Clone this github repository to local directory `PALEOtutorials.jl`: from a VS code terminal, linux bash prompt or a Windows terminal,
+
+    $ git clone https://github.com/PALEOtoolkit/PALEOtutorials.jl
+
+Start VS code and the julia REPL, activate the `PALEOtutorials.jl/examples` environement:
+- In `VS code`, right click on any file in the `PALEOtutorials.jl/examples` folder and select `Julia: activate parent environment` from the pop-up menu. 
+
+navigate to the `PALEOtutorials.jl/examples` folder, and run:
+
+    julia> import Pkg
+    julia> Pkg.instantiate()   # download Julia packages
+
+Individual examples can then be run by eg
+
+    julia> cd("CPU")  # PALEOtutorials/examples/CPU
+    julia> include("CPU_examples.jl")  # run CPU model example
+
+See the online [Documentation](https://paleotoolkit.github.io/PALEOtutorials.jl/) for details.
+
+## Installing and configuring Julia, VS Code, and PALEOtutorials.jl
+
+### Install Julia
+Download and install Julia from <https://julialang.org/downloads/> (PALEO requires Julia 1.10 or a later version).
+
+### Install VS Code
 Install VS Code from <https://code.visualstudio.com/download>
 Follow instructions at <https://github.com/julia-vscode/julia-vscode> to install the Julia extension.
 
-## Installing and configuring the PALEOtutorials
+### Clone the PALEOtutorials.jl github repository
+This will download <https://github.com/PALEOtoolkit/PALEOtutorials.jl> into a new folder `PALEOtutorials.jl`
 
-### Clone github repository
-This will download <https://github.com/PALEOtoolkit/PALEOtutorials.jl> into a new folder `PALEOtutorials`
-
-    git clone https://github.com/PALEOtoolkit/PALEOtutorials.jl PALEOtutorials
+    git clone https://github.com/PALEOtoolkit/PALEOtutorials.jl
 
 
 ### Start a Julia REPL in VS code
 
-Launch VScode from the `PALEOtutorials` folder, or use Menu->File->Open folder from inside VSCode to change to this folder.
+Launch VScode from the `PALEOtutorials.jl` folder, or use `Menu->File->Open folder` from inside VSCode to change to this folder.
 
-Start Julia REPL: VScode menu View -> Command Palette, search for Julia, select `Julia: Start REPL` 
+Start Julia REPL: 
+- click VScode menu `View -> Command Palette`, search for Julia, select `Julia: Start REPL` 
 
-### Activate the Julia environment and install packages
+### Activate the `PALEOtutorials.jl/examples` Julia environment and install Julia packages
 
-The majority of high-level Julia functionality (numerical solvers, plotting, etc) is provided by `Packages`. Julia uses `environments` defined to a `Project.toml` file to control the loading of `Packages`, which implement `Modules` loaded by `import` or `using` (eg `import DifferentialEquations` to use the DifferentialEquations package). `Packages` can be registered with the Julia repository to make them generally available for download.
+The majority of high-level Julia functionality (numerical solvers, plotting, etc) is provided by `Packages`. Julia uses `environments` defined to a `Project.toml` file to control the loading of `Packages`, which implement `Modules` loaded by `import` or `using` (eg `import DifferentialEquations` to use the DifferentialEquations package).
 
-The recommended environment for using PALEOtutorials.jl is defined by `PALEOtutorials\examples\Project.toml`. This adds the `PALEOboxes`, `PALEOmodel` and `PALEOcopse` packages.
+The environment for using PALEOtutorials.jl is defined by `PALEOtutorials.jl/examples/Project.toml`. This adds PALEOtoolkit packages including `PALEOboxes`, `PALEOmodel` and required dependencies.
 
-To activate the correct Julia environment, either:
-- In `VS code`, right click on a file in the `PALEOtutorials\examples` folder and `activate parent environment`.
+To activate this environment:
+- In `VS code`, right click on any file in the `PALEOtutorials.jl/examples` folder and select `Julia: activate parent environment` from the pop-up menu.
 
-- Or from the Julia REPL (command line), use the package manager (called `Pkg`, <https://pkgdocs.julialang.org/v1/getting-started/>):
+Then download Julia packages: from the Julia REPL,
 
-        julia> cd("PALEOtutorials/examples")
-        julia> import Pkg
-        julia> Pkg.activate(".")
-
-Then download packages, from the Julia REPL:
-
+    julia> import Pkg
     julia> Pkg.instantiate()  # one-time initialisation for a new installation
 
+
+## Running the examples
+
+Start the julia REPL inside VS code, navigate to the `PALEOtutorials.jl/examples` folder, and activate the correct Julia environment:
+- In `VS code`, right click on any file in the `PALEOtutorials.jl/examples` folder and select `Julia: activate parent environment` from the pop-up menu.
+
+Individual examples can then be run by eg
+
+    julia> cd("CPU")  # PALEOtutorials/examples/CPU
+    julia> include("CPU_examples.jl")  # run CPU model example
+
+See the online [Documentation](https://paleotoolkit.github.io/PALEOtutorials.jl/) for details.
