@@ -6,6 +6,8 @@ NP_shelf:
     parameters:
         CIsotope: ScalarData
         SIsotope: ScalarData
+        phys_file:  S2P3_depth80_m2amp04_phys.nc
+        surf_file:  S2P3_depth80_m2amp04_surf.nc
     domains:
         global:
             # scalar domain
@@ -82,13 +84,101 @@ NP_shelf:
                         input_fluxes:         fluxAtmtoOceansurface.flux_$fluxname$
                         output_fluxes:        $fluxname$_sms          
 
+
+        oceansurface:
+            reactions:
+                airsea_O2:
+                   class: ReactionAirSeaO2
+                   parameters:
+                       # piston: 4.8 # m d-1
+                       piston_fixed: false
+
+                insol:
+                    class: ReactionForceInsolationModernEarth
+                    parameters:
+                        latitude: [50.0]  # degrees N
+                    variable_links:
+                        insolation: surface_insol
+
+                open_area_fraction:
+                    class: ReactionConst
+                    parameters: 
+                        constnames: ["open_area_fraction"]
+                    variable_attributes:
+                        open_area_fraction%initial_value: 1.0
+
+                wind_speed:
+                    class: ReactionForceGrid
+                    parameters:
+                        netcdf_file: external%surf_file
+                        data_var: wspeedms
+                        time_var: time
+                        tidx_start: 1
+                        tidx_end: 365
+                        cycle_time: 1.0 # yr (periodic annual forcing)
+                    variable_links:
+                        F: wind_speed
+
+                transfer_AtmtoOceansurface:
+                    class: ReactionFluxTransfer
+                    parameters:
+                        transfer_matrix:      Identity
+                        input_fluxes:         fluxAtmtoOceansurface.flux_$fluxname$
+                        output_fluxes:        ocean.oceansurface.$fluxname$_sms                       
+                    variable_links:                        
+                        # output_CO2:           ocean.oceansurface.DIC_sms
+
         ocean:
             reactions:
                 transport1D:
-                   class: ReactionOceanTransport1DColumn
+                   class: ReactionOceanTransportColumn
                    parameters:
-                       circname: S2P3win
-                       matrix_dir: $PALEOrootdir$/S2P3transport/S2P3_depth80_m2amp04
+                       grid_file: external%phys_file
+
+                sal:
+                    class: ReactionConst
+                    parameters: 
+                        constnames: ["sal"]
+                    variable_attributes:
+                        sal%initial_value: 35.0
+
+                temp:
+                    class: ReactionForceGrid
+                    parameters:
+                        netcdf_file: external%phys_file
+                        data_var: temp
+                        constant_offset: 273.15  # convert deg C in netcdf file to K 
+                        time_var: time
+                        tidx_start: 1
+                        tidx_end: 8760
+                        cycle_time: 1.0 # yr (periodic annual forcing)
+                    variable_links:
+                        F: temp  # Kelvin, Ocean temperature
+
+                rho:
+                    class: ReactionForceGrid
+                    parameters:
+                        netcdf_file: external%phys_file
+                        data_var: sigmat
+                        constant_offset: 1000.0  # convert to kg m-3 ocean density
+                        time_var: time
+                        tidx_start: 1
+                        tidx_end: 8760
+                        cycle_time: 1.0 # yr (periodic annual forcing)
+                    variable_links:
+                        F: rho  # kg m-3, ocean density
+
+                Kz:
+                    class: ReactionForceGrid
+                    parameters:
+                        netcdf_file: external%phys_file
+                        data_var: Kz
+                        time_var: time
+                        tidx_start: 1
+                        tidx_end: 8760
+                        cycle_time: 1.0 # yr (periodic annual forcing)
+                    variable_links:
+                        F: Kz # m^2 s-1 eddy diffusivity on upper cell surfaces                       
                         
                 sinkfloat:
                     class: ReactionSinkFloat
@@ -178,29 +268,6 @@ NP_shelf:
                         soluteflux_P:   P_sms
                         soluteflux_O2:   O2_sms
         
-        oceansurface:
-            reactions:
-                airsea_O2:
-                   class: ReactionAirSeaO2
-                   parameters:
-                       # piston: 4.8 # m d-1
-                       piston_fixed: false
-
-                insol:
-                    class: ReactionForceInsolation
-                    parameters:
-                        latitude: [50.0]  # degrees N
-                    variable_links:
-                        insolation: surface_insol
-
-                transfer_AtmtoOceansurface:
-                    class: ReactionFluxTransfer
-                    parameters:
-                        transfer_matrix:      Identity
-                        input_fluxes:         fluxAtmtoOceansurface.flux_$fluxname$
-                        output_fluxes:        ocean.oceansurface.$fluxname$_sms                       
-                    variable_links:                        
-                        # output_CO2:           ocean.oceansurface.DIC_sms
 
         oceanfloor:               
             reactions:
