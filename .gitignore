@@ -3,3 +3,5 @@ LocalPreferences.toml
 /docs/build/
 /docs/src/collated_examples/
 .vscode
+.nc
+examples/NAPC_tutorial/S2P3_transport_20240614
