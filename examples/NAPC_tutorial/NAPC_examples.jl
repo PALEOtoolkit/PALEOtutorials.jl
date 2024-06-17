@@ -66,10 +66,4 @@ pager(heatmap(title="P0", paleorun.output, "ocean.P0", (column=1, ), clim=(0,Inf
 pager(heatmap(title="P0_growth", paleorun.output, "ocean.P0_growth_rate", (column=1, ), clim=(0,Inf)))
 pager(:newpage) # flush output
 
-# pager(heatmap(title="Z0", paleorun.output, "ocean.Z0", (column=1, ), clim=(0,Inf)))
-# pager(:newpage) # flush output
-
-# pager(heatmap(title="Z0_growth", paleorun.output, "ocean.Z0_growth_rate", (column=1, ), clim=(0,Inf)))
-# pager(:newpage) # flush output
-
 @info "End $(@__FILE__)"
