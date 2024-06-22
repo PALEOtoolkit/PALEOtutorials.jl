@@ -12,19 +12,25 @@ import PALEOmodel
 import PALEOcopse
 @info "                  ... done"
 
-include("CPU_modular_reactions.jl")
-include("CPU_modular_expts.jl")
+include("CPU_reactions.jl")
+include("CPU_expts.jl")
+
 
 # baseline steady-state
-# model = CPU_expts([])
+model = PB.create_model_from_config(
+    joinpath(@__DIR__, "CPU_cfg.yaml"), 
+    "CPU_Zhang2020"; 
+    modelpars=Dict(), # optional Dict can be supplied to set top-level (model wide) Parameters
+)
+        
 
 # LIP CO2 input
-model = CPU_modular_expts([("LIP", 3e18)])
+CPU_expts(model, [("LIP", 3e18)])
 
 # increase E
-# model = CPU_modular_expts([("E", 2.0)])
+# CPU_expts(model, [("E", 2.0)])
 # increase V
-# model = CPU_modular_expts([("V", 2.0)])
+# CPU_expts(model, [("V", 2.0)])
 
 initial_state, modeldata = PALEOmodel.initialize!(model)
 
@@ -56,9 +62,9 @@ println("integrate, ODE")
 
 # assemble plots onto screens with 6 subplots
 gr(size=(1200, 900)) # gr backend (plotly merges captions with multiple panels)
-pager=PALEOmodel.PlotPager(6, (legend_background_color=nothing, ))
+pager=PALEOmodel.PlotPager(6, (legend_background_color=nothing, margin=(5, :mm)))
 
-plot_CPU_modular(paleorun.output; pager=pager)
+plot_CPU(paleorun.output; pager=pager)
 
 
 @info "End $(@__FILE__)"

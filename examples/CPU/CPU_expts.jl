@@ -4,14 +4,8 @@ import PALEOboxes as PB
 import PALEOmodel
 import PALEOcopse
 
-function CPU_expts(expts)
+function CPU_expts(model, expts)
 
-    model = PB.create_model_from_config(
-        joinpath(@__DIR__, "CPU_cfg.yaml"), 
-        "CPU_Zhang2020"; 
-        modelpars=Dict(), # optional Dict can be supplied to set top-level (model wide) Parameters
-    )
-        
     ###############################################
     # choose an 'expt' (a delta to the base model)
     ###############################################

@@ -29,5 +29,5 @@ This will run and plot output (NB: the first run will be slow as Julia JIT compi
 
 ## To display model Parameters, Variables, and output.
 
-See `PALEOmodel` [documentation](https://paleotoolkit.github.io/PALEOmodel.jl/)
+See [Displaying model configuration and output from the Julia REPL](@ref) 
 

@@ -14,7 +14,7 @@ F = \kappa A
 \frac{dB}{dt} =   F \\
 ```
 
-See `PALEOmodel` [documentation](https://paleotoolkit.github.io/PALEOmodel.jl/) for more information on analysing model output.
+See [Displaying model configuration and output from the Julia REPL](@ref) for more information on analysing model output.
 
 ## Example 1 A minimal self-contained PALEO reaction
 

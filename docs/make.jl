@@ -2,11 +2,24 @@ using Documenter
 
 using DocumenterCitations
 
+using DocumenterInterLinks
+
 import PALEOboxes as PB
 
 bib = CitationBibliography(
     joinpath(@__DIR__, "src/paleo_references.bib");
     style=:authoryear,
+)
+
+links = InterLinks(
+    "PALEOboxes" => (
+        "https://paleotoolkit.github.io/PALEOboxes.jl/stable/",
+        "https://paleotoolkit.github.io/PALEOboxes.jl/stable/objects.inv",
+    ),
+    "PALEOmodel" => (
+        "https://paleotoolkit.github.io/PALEOmodel.jl/stable/",
+        "https://paleotoolkit.github.io/PALEOmodel.jl/stable/objects.inv",
+    ),
 )
 
 # Collate all markdown files and images folders from PALEOexamples/src/ into a tree of pages
@@ -32,8 +45,11 @@ makedocs(;
             "ExampleInstallConfig.md",
             examples_pages,
         ),
-        # no Design docs yet
+        "Design" => [
+            "ComponentsWorkflow.md",
+        ],
         "HOWTOS" => [
+            "HOWTOshowmodelandoutput.md",
             "HOWTOJuliaUsage.md",
             "HOWTOadditionalconfig.md",
             "HOWTOminimalGit.md",
@@ -47,7 +63,7 @@ makedocs(;
     format = Documenter.HTML(
         prettyurls = get(ENV, "CI", nothing) == "true"
     ),
-    plugins = [bib],
+    plugins = [bib, links],
 )
 
 @info "Local html documentation is available at $(joinpath(@__DIR__, "build/index.html"))"
