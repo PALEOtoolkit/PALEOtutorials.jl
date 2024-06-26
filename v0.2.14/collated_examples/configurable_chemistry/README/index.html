@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Configurable chemistry using PALEOaqchem · PALEOtutorials Documentation</title><meta name="title" content="Configurable chemistry using PALEOaqchem · PALEOtutorials Documentation"/><meta property="og:title" content="Configurable chemistry using PALEOaqchem · PALEOtutorials Documentation"/><meta property="twitter:title" content="Configurable chemistry using PALEOaqchem · PALEOtutorials Documentation"/><meta name="description" content="Documentation for PALEOtutorials Documentation."/><meta property="og:description" content="Documentation for PALEOtutorials Documentation."/><meta property="twitter:description" content="Documentation for PALEOtutorials Documentation."/><script data-outdated-warner src="../../../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.050/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../../assets/documenter.js"></script><script src="../../../search_index.js"></script><script src="../../../siteinfo.js"></script><script src="../../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../../assets/themes/catppuccin-mocha.css" data-theme-name="catppuccin-mocha"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../../assets/themes/catppuccin-macchiato.css" data-theme-name="catppuccin-macchiato"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../../assets/themes/catppuccin-frappe.css" data-theme-name="catppuccin-frappe"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../../assets/themes/catppuccin-latte.css" data-theme-name="catppuccin-latte"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../../../">PALEOtutorials Documentation</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li><a class="tocitem" href="../../../">PALEOtutorials.jl documentation</a></li><li><span class="tocitem">Examples and Tutorials</span><ul><li><a class="tocitem" href="../../../ExampleInstallConfig/">Installation and getting started</a></li><li><input class="collapse-toggle" id="menuitem-2-2" type="checkbox"/><label class="tocitem" for="menuitem-2-2"><span class="docs-label">reservoirs</span><i class="docs-chevron"></i></label><ul class="collapsed"><li><a class="tocitem" href="../../reservoirs/README/">Reservoirs and fluxes</a></li></ul></li><li><input class="collapse-toggle" id="menuitem-2-3" type="checkbox"/><label class="tocitem" for="menuitem-2-3"><span class="docs-label">solvers</span><i class="docs-chevron"></i></label><ul class="collapsed"><li><a class="tocitem" href="../../solvers/README/">ODE solvers</a></li></ul></li><li><input class="collapse-toggle" id="menuitem-2-4" type="checkbox"/><label class="tocitem" for="menuitem-2-4"><span class="docs-label">error_examples</span><i class="docs-chevron"></i></label><ul class="collapsed"><li><a class="tocitem" href="../../error_examples/README/">Configuration Errors</a></li></ul></li><li><input class="collapse-toggle" id="menuitem-2-5" type="checkbox"/><label class="tocitem" for="menuitem-2-5"><span class="docs-label">CPU</span><i class="docs-chevron"></i></label><ul class="collapsed"><li><a class="tocitem" href="../../CPU/README/">CPU (Carbon, Phosphorus, Uranium) model</a></li></ul></li><li><input class="collapse-toggle" id="menuitem-2-6" type="checkbox"/><label class="tocitem" for="menuitem-2-6"><span class="docs-label">CPU_modular</span><i class="docs-chevron"></i></label><ul class="collapsed"><li><a class="tocitem" href="../../CPU_modular/README/">CPU (Carbon, Phosphorus, Uranium) model</a></li></ul></li><li><input class="collapse-toggle" id="menuitem-2-7" type="checkbox"/><label class="tocitem" for="menuitem-2-7"><span class="docs-label">ocean_chemistry</span><i class="docs-chevron"></i></label><ul class="collapsed"><li><a class="tocitem" href="../../ocean_chemistry/README/">Ocean chemistry</a></li></ul></li><li><input class="collapse-toggle" id="menuitem-2-8" type="checkbox" checked/><label class="tocitem" for="menuitem-2-8"><span class="docs-label">configurable_chemistry</span><i class="docs-chevron"></i></label><ul class="collapsed"><li class="is-active"><a class="tocitem" href>Configurable chemistry using PALEOaqchem</a><ul class="internal"><li><a class="tocitem" href="#Example-1-Configuring-a-minimal-Alk-pH-model"><span>Example 1 Configuring a minimal Alk-pH model</span></a></li><li><a class="tocitem" href="#Example-2-Minimal-Alk-pH-model-with-implicit-variables"><span>Example 2 Minimal Alk-pH model with implicit variables</span></a></li></ul></li></ul></li></ul></li><li><span class="tocitem">Design</span><ul><li><a class="tocitem" href="../../../ComponentsWorkflow/">PALEOtoolkit components and workflow</a></li></ul></li><li><span class="tocitem">HOWTOS</span><ul><li><a class="tocitem" href="../../../HOWTOshowmodelandoutput/">Displaying model configuration and output from the Julia REPL</a></li><li><a class="tocitem" href="../../../HOWTOJuliaUsage/">Julia and VS code usage</a></li><li><a class="tocitem" href="../../../HOWTOadditionalconfig/">Optional additional configuration</a></li><li><a class="tocitem" href="../../../HOWTOminimalGit/">Minimal git workflow for scientific collaboration and reproducibility</a></li><li><a class="tocitem" href="../../../HOWTOdocumentation/">Creating and updating PALEO documentation</a></li><li><a class="tocitem" href="../../../HOWTOPython/">Configuring for Julia - python interoperability</a></li></ul></li><li><a class="tocitem" href="../../../References/">References</a></li><li><a class="tocitem" href="../../../indexpage/">Index</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Examples and Tutorials</a></li><li><a class="is-disabled">configurable_chemistry</a></li><li class="is-active"><a href>Configurable chemistry using PALEOaqchem</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Configurable chemistry using PALEOaqchem</a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/PALEOtoolkit/PALEOtutorials.jl" title="View the repository on GitHub"><span class="docs-icon fa-brands"></span><span class="docs-label is-hidden-touch">GitHub</span></a><a class="docs-navbar-link" href="https://github.com/PALEOtoolkit/PALEOtutorials.jl/blob/main/docs/src/collated_examples/configurable_chemistry/README.md" title="Edit source on GitHub"><span class="docs-icon fa-solid"></span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><h1 id="Configurable-chemistry-using-PALEOaqchem"><a class="docs-heading-anchor" href="#Configurable-chemistry-using-PALEOaqchem">Configurable chemistry using PALEOaqchem</a><a id="Configurable-chemistry-using-PALEOaqchem-1"></a><a class="docs-heading-anchor-permalink" href="#Configurable-chemistry-using-PALEOaqchem" title="Permalink"></a></h1><p>These examples illustrate how to use the yaml configuration file to configure generic chemistry Reactions from PALEOaqchem to implement the same minimal model of the marine carbonate system shown in the <a href="../../ocean_chemistry/README/#Ocean-chemistry">Ocean chemistry</a> examples.</p><p>See <code>PALEOaqchem</code> <a href="https://paleotoolkit.github.io/PALEOaqchem.jl/">documentation</a> for more detail on the generic aqueous chemistry.</p><p>See <code>PALEOmodel</code> <a href="https://paleotoolkit.github.io/PALEOmodel.jl/">documentation</a> for more information on analysing model output.</p><h2 id="Example-1-Configuring-a-minimal-Alk-pH-model"><a class="docs-heading-anchor" href="#Example-1-Configuring-a-minimal-Alk-pH-model">Example 1 Configuring a minimal Alk-pH model</a><a id="Example-1-Configuring-a-minimal-Alk-pH-model-1"></a><a class="docs-heading-anchor-permalink" href="#Example-1-Configuring-a-minimal-Alk-pH-model" title="Permalink"></a></h2><p>This example configures generic chemistry reactions from PALEOaqchem to define a minimal Alk-pH model for aqueous carbonate chemistry. Carbonate system equations are from (<a href="../../../References/#Zeebe2001">Zeebe and Wolf-Gladrow, 2001</a>).</p><p>The <code>ocean</code> domain contains a <a href="https://paleotoolkit.github.io/PALEOocean.jl/dev/PALEOocean_Reactions/#PALEOocean.Ocean.OceanNoTransport.ReactionOceanNoTransport"><code>ReactionNoTransport</code></a> from the <a href="https://github.com/PALEOtoolkit/PALEOocean.jl"><code>PALEOocean</code></a> Julia package.  This defines standard ocean variables including cell <code>volume</code>, and is configured here to provide one ocean cell.</p><p>There are two state variables for <code>DIC</code> and <code>TAlk</code>, implemented using a <a href="https://paleotoolkit.github.io/PALEOboxes.jl/stable/ReactionCatalog/#PALEOboxes.Reservoirs.ReactionReservoir"><code>ReactionReservoir</code></a> from the <a href="https://github.com/PALEOtoolkit/PALEOboxes.jl"><code>PALEOboxes</code></a> Julia package. This Reaction also provides concentrations in <code>mol m-3</code>.  Constant Boron concentration <code>B_conc</code> is defined using a <a href="https://paleotoolkit.github.io/PALEOboxes.jl/stable/ReactionCatalog/#PALEOboxes.Reservoirs.ReactionReservoirConst"><code>ReactionReservoirConst</code></a>.</p><p>The carbonate chemistry system includes the speciation of water, boron and DIC. <code>B</code>, <code>DIC</code>, and <code>TAlk</code> are the three total variables with corresponding primary species concentrations <code>BOH3_conc</code>, <code>CO2_aq_conc</code>, and <code>H_conc</code> (defined by <code>pH</code>). Primary species are defined using the PALEOaqchem <code>ReactionConstraintReservoir</code>, which defines a state variable  (attribute <code>:vfunction = PB.VF_State</code>) eg <code>BOH3_conc</code>, an algebraic constraint for the corresponding total eg <code>B_constraint_conc</code> (with attribute <code>:vfunction = PB.VF_Constraint</code>), and a variable eg <code>B_calc</code> to accumulate primary and secondary species contributions. Secondary species eg <code>BOH4</code> are defined using the PALEOaqchem <code>ReactionAqEqb</code>, and their contribution added to the calculated total eg <code>B_calc</code>. The PALEO DAE solver then solves for the primary species concentration <code>BOH3_conc</code> that makes <code>B_calc</code> equal to the required value <code>B</code>. Note that the <code>ReactionConstraintReservoir</code> for <code>TAlk</code> defines <code>pH</code> as the state variable (from which <code>H_conc</code> is calculated), and that many species contribute to both <code>TAlk_calc</code> and their own total.</p><p>The combined system is then a Differential Algebraic Equation (DAE) system with two ODE state variables and corresponding time derivatives for <code>DIC</code> and <code>TAlk</code>, three algebraic constraints for <code>B</code>, <code>DIC</code>, and <code>TAlk</code>, and three additional state variables for the primary species <code>BOH3_conc</code>, <code>CO2_aq_conc</code>, and <code>pH</code>, and is integrated forward in time by a DAE solver <a href="https://paleotoolkit.github.io/PALEOmodel.jl/stable/PALEOmodelSolvers/#PALEOmodel.ODE.integrateDAE"><code>PALEOmodel.ODE.integrateDAE</code></a>.</p><h3 id="yaml-configuration-file"><a class="docs-heading-anchor" href="#yaml-configuration-file">yaml configuration file</a><a id="yaml-configuration-file-1"></a><a class="docs-heading-anchor-permalink" href="#yaml-configuration-file" title="Permalink"></a></h3><p>The model configuration (file <code>examples/configurable_chemistry/config_ex1.yaml</code>) contains two Reservoirs <code>DIC</code>, <code>TAlk</code>.</p><p>A <code>ReactionFluxPerturb</code> from the PALEOboxes.jl reaction catalog is used to add a constant TAlk flux.</p><pre><code class="language-julia hljs">Minimal_Alk_pH:
+
+    domains:
+
+        global:
+           
+            reactions:
+                add_Alk:
+                    # from PALEOboxes reaction catalog:  constant input flux of Alk
+                    class: ReactionFluxPerturb
+                    parameters:
+                        # linear interpolation for input flux - set to constant
+                        perturb_times: [-1e30, 1e30]
+                        # ocean volume = 3.6e14 * 3688.0 = 1.33e18 m^3
+                        # DIC in ocean = 2 * 1.33e18 = 2.66e18 mol
+                        # set Alk flux so Alk = DIC after 100 yr-1 = 2.66e18/100 = 2.66e16 mol yr-1
+                        perturb_totals: [2.66e16, 2.66e16] 
+                    variable_links:
+                        F: ocean.TAlk_sms  # add flux to TAlk reservoir NB: works for single-box ocean only !!
+ # --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------       
+
+        ocean:
+
+            reactions:
+
+                oceantrasport:
+
+                    class: ReactionOceanNoTransport
+
+                    parameters:
+
+                        area:  [3.6e14]               
+                        depth: [3688.0]               
+
+
+
+                reservoir_TA:
+
+                    class: ReactionReservoir
+                   
+                    variable_links:
+                        R*: TAlk*
+                    variable_attributes:
+                        R:initial_value:  0.0                  
+                        R:norm_value:     2.4e0                
+
+                reservoir_DIC:
+                    class: ReactionReservoir
+                   
+                    variable_links:
+                        R*: DIC*
+                    variable_attributes:
+                        R:initial_value:  2.0e0   
+                        R:norm_value:     2.0e0   
+
+                constant_B:
+                    class: ReactionReservoirConst
+                    variable_links:
+                        R*: B
+                    variable_attributes:
+                        R_conc:initial_value: 0.427 # mol m-3 contemporary value
+
+                ##########################################################################
+                # TAlk, primary species H_conc (as pH)
+                ########################################################################
+                
+                # [H+] primary species (as pH) for TAlk total
+                H_primary_species: {class: ReactionConstraintReservoir, 
+                    variable_links: {Primary_pconc: pH, Primary_conc: H_conc, R*: TAlk*},
+                    parameters: {primary_total_stoich: -1.0, primary_variable: p_concentration, constraint_variable: concentration}, 
+                    variable_attributes: {Primary_pconc%initial_value: 7.0, Primary_pconc%norm_value: 1.0, R_constraint_conc%norm_value: 1e-3}}           
+                
+                # Define OH_conc and add to TAlk
+                #   OH-  + H+  &lt;--&gt; H2O,   [OH] = K_w / [H]
+                OH_conc: { class: ReactionAqEqb, parameters: { K_power: 1.0,  # we need K_eqb in numerator
+                        K_eqb:              6.0e-14,    # K_w 6.0e-14 (mol^2 kg-2) equilibrium constant of water at S=35, T=25°C,
+                        K_density_power:    2.0,        # K_eqb*rho_ref^2 to convert to (mol^2 m-6)
+                        Reactants: [&quot;OH_conc&quot;, &quot;H_conc&quot;],       Products: [],
+                        N_components: [&quot;TAlk_calc&quot;],
+                    }
+                }
+              
+                ##########################################################################
+                # Boron speciation
+                ##########################################################################
+
+                # BOH3 primary species for B total
+                BOH3_primary_species: {class: ReactionConstraintReservoir,
+                    variable_links: {Primary*: BOH3*, R*: B*},
+                    parameters: {primary_total_stoich: 1.0, primary_variable: concentration, constraint_variable: concentration},                    
+                    variable_attributes: {Primary_conc%initial_value: 1.0, Primary_conc%norm_value: 1e-3, R_constraint_conc%norm_value: 1e-3}}    
+
+
+                # Define BOH4_conc and add to B, TAlk
+                #   B(OH)_4^-  + H+  &lt;--&gt; B(OH)3 + H2O,   [B(OH)_4^-] = K_B [B(OH)3] / [H+]
+                BOH4_conc: { class: ReactionAqEqb, parameters: { K_power: 1.0,  # we need K_eqb in numerator
+                        K_eqb:              2.5e-9,     # (mol kg-1)  K_B equilibrium constant of B(OH)4-
+                        K_density_power:    1.0,        # K_eqb*rho_ref to convert to (mol m-3)
+                        Reactants: [&quot;BOH4_conc&quot;, &quot;H_conc&quot;],     Products: [&quot;BOH3_conc&quot;],
+                        N_components: [&quot;B_calc&quot;, &quot;TAlk_calc&quot;],
+                    }
+                }
+
+                ##########################################################################
+                # Carbon speciation
+                ##########################################################################
+
+                # CO2_aq primary species for DIC total
+                CO2_aq_primary_species: {class: ReactionConstraintReservoir,
+                    variable_links: {Primary*: CO2_aq*, R*: DIC*},
+                    parameters: {primary_total_stoich: 1.0, primary_variable: concentration, constraint_variable: concentration},
+                    variable_attributes: {Primary_conc%initial_value: 1.0,  Primary_conc%norm_value: 1e-3, R_constraint_conc%norm_value: 1.0}}
+
+
+                # Define HCO3_conc and add to DIC, TAlk
+                #   HCO3-  + H+  &lt;--&gt; CO2 + H2O,   [HCO3-] = K_1 [CO2] / [H+]
+                HCO3_conc: { class: ReactionAqEqb, parameters: { K_power: 1.0,  # we need K_eqb in numerator
+                        K_eqb:              1.4e-6,     # (mol kg-1) K_1 equilibrium constant of CO2_aq and HCO3-
+                        K_density_power:    1.0,        # K_eqb*rho_ref to convert to (mol m-3)
+                        Reactants: [&quot;HCO3_conc&quot;, &quot;H_conc&quot;],     Products: [&quot;CO2_aq_conc&quot;],
+                        N_components: [&quot;DIC_calc&quot;, &quot;TAlk_calc&quot;],
+                    }
+                }
+
+                # Define CO3_conc and add to DIC, TAlk
+                #   CO3--  + H+  &lt;--&gt; HCO3- + H2O,   [CO3--] = K_2 [HCO3-] / [H+]
+                CO3_conc: { class: ReactionAqEqb, parameters: { K_power: 1.0,  # we need K_eqb in numerator
+                        K_eqb:              1.2e-9,     # (mol kg-1) K_2 equilibrium constant of HCO3- and CO32-
+                        K_density_power:    1.0,        # K_eqb*rho_ref to convert to (mol m-3)
+                        Reactants: [&quot;CO3_conc&quot;, &quot;H_conc&quot;],      Products: [&quot;HCO3_conc&quot;],
+                        N_components: [&quot;DIC_calc&quot;, &quot;2*TAlk_calc&quot;],
+                    }
+                }
+
+        oceanfloor:
+            # unused here, set up by ReactionOceanNoTransport
+
+        oceansurface:
+            # unused here, set up by ReactionOceanNoTransport</code></pre><h3 id="Run-script"><a class="docs-heading-anchor" href="#Run-script">Run script</a><a id="Run-script-1"></a><a class="docs-heading-anchor-permalink" href="#Run-script" title="Permalink"></a></h3><p>The script to run the model (file <code>examples/configurable_chemistry/run_ex1.jl</code>) contains:</p><pre><code class="language-julia hljs">import PALEOboxes as PB
+import PALEOmodel
+
+import PALEOocean
+import PALEOaqchem
+using Plots
+
+
+
+
+#####################################################
+# Create model
+
+model = PB.create_model_from_config(joinpath(@__DIR__, &quot;config_ex1.yaml&quot;), &quot;Minimal_Alk_pH&quot;)
+
+#########################################################
+# Initialize
+##########################################################
+
+initial_state, modeldata = PALEOmodel.initialize!(model)
+
+#####################################################################
+# Optional: call ODE function to check derivative
+#######################################################################
+initial_deriv = similar(initial_state)
+PALEOmodel.ODE.ModelODE(modeldata)(initial_deriv, initial_state , nothing, 0.0)
+println(&quot;initial_state: &quot;, initial_state)
+println(&quot;initial_deriv: &quot;, initial_deriv)
+
+#################################################################
+# Integrate vs time
+##################################################################
+
+# create a Run object to hold model and output
+paleorun = PALEOmodel.Run(model=model, output = PALEOmodel.OutputWriters.OutputMemory())
+
+println(&quot;integrate, DAE&quot;)
+# first run is slow as it includes JIT time
+@time PALEOmodel.ODE.integrateDAE(
+    paleorun, initial_state, modeldata, (0.0, 200.0), 
+    solvekwargs=(
+        reltol=1e-6,
+        # saveat=0.1, # save output every 0.1 yr see https://diffeq.sciml.ai/dev/basics/common_solver_opts/
+    )
+);
+   
+########################################
+# Plot output
+########################################
+
+display(plot(paleorun.output, [&quot;ocean.TAlk_conc&quot;, &quot;ocean.DIC_conc&quot;],                                           (cell=1,);
+    ylabel=&quot;TAlk, DIC conc (mol m-3)&quot;))
+display(plot(paleorun.output, [&quot;ocean.TAlk&quot;,&quot;ocean.TAlk_sms&quot;],                                                 (cell=1,)))
+display(plot(paleorun.output, &quot;ocean.pH&quot;,                                                                      (cell=1,)))
+display(plot(paleorun.output, [&quot;ocean.H_conc&quot;, &quot;ocean.OH_conc&quot;],                                               (cell=1,);
+    ylabel=&quot;H2O species (mol m-3)&quot;, ylim=(0, Inf)))
+display(plot(paleorun.output, [&quot;ocean.B_conc&quot;, &quot;ocean.BOH4_conc&quot;, &quot;ocean.BOH3_conc&quot;],                          (cell=1,);
+    ylabel=&quot;B species (mol m-3)&quot;, ylim=(0, Inf)))
+display(plot(paleorun.output, [&quot;ocean.DIC_conc&quot;, &quot;ocean.HCO3_conc&quot;, &quot;ocean.CO3_conc&quot;, &quot;ocean.CO2_aq_conc&quot;],    (cell=1,);
+    ylabel=&quot;DIC species (mol m-3)&quot;, ylim=(0, Inf)))
+display(
+    plot(
+        paleorun.output, 
+        [&quot;ocean.HCO3_conc&quot;, &quot;ocean.CO3_conc&quot;, &quot;ocean.CO2_aq_conc&quot;, &quot;ocean.BOH4_conc&quot;, &quot;ocean.BOH3_conc&quot;,  &quot;ocean.H_conc&quot;, &quot;ocean.OH_conc&quot;,],
+        (cell=1, tmodel=(1.0, 1e12)); # omit first point (pH 8 starting condition)
+        coords=[&quot;tmodel&quot;=&gt;(&quot;ocean.pH&quot;,),], # plot against pH instead of tmodel
+        ylabel=&quot;H2O, B, DIC species (mol m-3)&quot;, ylim=(0.5e-3, 0.5e1), yscale=:log10,
+        legend_background_color=nothing,
+        legend=:bottom,
+    )
+)
+
+</code></pre><p>and produces output showing the change, if <code>TAlk_conc</code> increase, how the carbonic acid and pH change in ocean:</p><pre class="documenter-example-output"><code class="nohighlight hljs ansi">[ Info: OceanTransportTMM adding default TMMDir =&gt; /home/runner/.julia/packages/PALEOocean/TMM to [PALEOocean.Ocean.OceanTransportTMM] LocalPreferences.toml (modify for your local setup)
+[ Info: OceanTransportTMM adding default TMMDir =&gt; /home/runner/.julia/packages/PALEOocean/TMM to [PALEOboxes] LocalPreferences.toml (modify for your local setup)
+┌ Info:
+│ ================================================================================
+│ create_model_from_config: configmodel Minimal_Alk_pH
+│     config_file: /home/runner/work/PALEOtutorials.jl/PALEOtutorials.jl/examples/configurable_chemistry/config_ex1.yaml
+└ ================================================================================
+[ Info: Model.parameters:
+┌ Info:
+│ ================================================================================
+│ creating Domains
+└ ================================================================================
+[ Info: generated Reaction catalog with 73 Reactions
+┌ Info:
+│ ================================================================================
+│ creating domain &#39;global&#39; ID=1
+└ ================================================================================
+┌ Info: create_reaction_from_config: global.add_Alk classname ReactionFluxPerturb
+│     set parameters: [Default]      field_data          =PALEOboxes.ScalarData
+│     set parameters: [config.yaml]  perturb_times       =[-1.0e30, 1.0e30]
+│     set parameters: [config.yaml]  perturb_totals      =[2.66e16, 2.66e16]
+│     set parameters: [Default]      perturb_deltas      =[0.0, 0.0]
+│     set parameters: [Default]      extrapolate         =throw
+│     set parameters: [Default]      extrapolate_before  =NaN
+│     set parameters: [Default]      extrapolate_before_delta=NaN
+│     set parameters: [Default]      extrapolate_after   =NaN
+└     set parameters: [Default]      extrapolate_after_delta=NaN
+┌ Info:
+│ ================================================================================
+│ creating domain &#39;ocean&#39; ID=2
+└ ================================================================================
+┌ Info: create_reaction_from_config: ocean.CO3_conc classname ReactionAqEqb
+│     set parameters: [config.yaml]  Reactants           =[&quot;CO3_conc&quot;, &quot;H_conc&quot;]
+│     set parameters: [config.yaml]  Products            =[&quot;HCO3_conc&quot;]
+│     set parameters: [config.yaml]  K_eqb               =1.2e-9
+│     set parameters: [config.yaml]  K_density_power     =1.0
+│     set parameters: [config.yaml]  K_power             =1.0
+└     set parameters: [config.yaml]  N_components        =[&quot;DIC_calc&quot;, &quot;2*TAlk_calc&quot;]
+┌ Info: create_reaction_from_config: ocean.reservoir_DIC classname ReactionReservoir
+│     set parameters: [Default]      field_data          =PALEOboxes.ScalarData
+│     set parameters: [Default]      total               =false
+│     set parameters: [Default]      limit_delta_conc    =0.0
+└     set parameters: [Default]      state_conc          =false
+┌ Info: create_reaction_from_config: ocean.reservoir_TA classname ReactionReservoir
+│     set parameters: [Default]      field_data          =PALEOboxes.ScalarData
+│     set parameters: [Default]      total               =false
+│     set parameters: [Default]      limit_delta_conc    =0.0
+└     set parameters: [Default]      state_conc          =false
+┌ Info: create_reaction_from_config: ocean.oceantrasport classname ReactionOceanNoTransport
+│     set parameters: [config.yaml]  area                =[3.6e14]
+└     set parameters: [config.yaml]  depth               =[3688.0]
+┌ Info: create_reaction_from_config: ocean.HCO3_conc classname ReactionAqEqb
+│     set parameters: [config.yaml]  Reactants           =[&quot;HCO3_conc&quot;, &quot;H_conc&quot;]
+│     set parameters: [config.yaml]  Products            =[&quot;CO2_aq_conc&quot;]
+│     set parameters: [config.yaml]  K_eqb               =1.4e-6
+│     set parameters: [config.yaml]  K_density_power     =1.0
+│     set parameters: [config.yaml]  K_power             =1.0
+└     set parameters: [config.yaml]  N_components        =[&quot;DIC_calc&quot;, &quot;TAlk_calc&quot;]
+┌ Info: create_reaction_from_config: ocean.BOH3_primary_species classname ReactionConstraintReservoir
+│     set parameters: [config.yaml]  primary_total_stoich=1.0
+│     set parameters: [Default]      primary_other_components=String[]
+│     set parameters: [config.yaml]  primary_variable    =concentration
+└     set parameters: [config.yaml]  constraint_variable =concentration
+┌ Info: create_reaction_from_config: ocean.constant_B classname ReactionReservoirConst
+└     set parameters: [Default]      field_data          =PALEOboxes.ScalarData
+┌ Info: create_reaction_from_config: ocean.BOH4_conc classname ReactionAqEqb
+│     set parameters: [config.yaml]  Reactants           =[&quot;BOH4_conc&quot;, &quot;H_conc&quot;]
+│     set parameters: [config.yaml]  Products            =[&quot;BOH3_conc&quot;]
+│     set parameters: [config.yaml]  K_eqb               =2.5e-9
+│     set parameters: [config.yaml]  K_density_power     =1.0
+│     set parameters: [config.yaml]  K_power             =1.0
+└     set parameters: [config.yaml]  N_components        =[&quot;B_calc&quot;, &quot;TAlk_calc&quot;]
+┌ Info: create_reaction_from_config: ocean.CO2_aq_primary_species classname ReactionConstraintReservoir
+│     set parameters: [config.yaml]  primary_total_stoich=1.0
+│     set parameters: [Default]      primary_other_components=String[]
+│     set parameters: [config.yaml]  primary_variable    =concentration
+└     set parameters: [config.yaml]  constraint_variable =concentration
+┌ Info: create_reaction_from_config: ocean.OH_conc classname ReactionAqEqb
+│     set parameters: [config.yaml]  Reactants           =[&quot;OH_conc&quot;, &quot;H_conc&quot;]
+│     set parameters: [config.yaml]  Products            =Any[]
+│     set parameters: [config.yaml]  K_eqb               =6.0e-14
+│     set parameters: [config.yaml]  K_density_power     =2.0
+│     set parameters: [config.yaml]  K_power             =1.0
+└     set parameters: [config.yaml]  N_components        =[&quot;TAlk_calc&quot;]
+┌ Info: create_reaction_from_config: ocean.H_primary_species classname ReactionConstraintReservoir
+│     set parameters: [config.yaml]  primary_total_stoich=-1.0
+│     set parameters: [Default]      primary_other_components=String[]
+│     set parameters: [config.yaml]  primary_variable    =p_concentration
+└     set parameters: [config.yaml]  constraint_variable =concentration
+┌ Info:
+│ ================================================================================
+│ creating domain &#39;oceansurface&#39; ID=3
+└ ================================================================================
+┌ Info:
+│ ================================================================================
+│ creating domain &#39;oceanfloor&#39; ID=4
+└ ================================================================================
+┌ Info:
+│ ================================================================================
+│ set_model_geometry
+└ ================================================================================
+[ Info:   set ocean.oceansurface Subdomain size=1
+[ Info:   set ocean.oceanfloor Subdomain size=1
+[ Info: Ocean.set_model_domains:
+[ Info:   ocean Domain size=1 grid=UnstructuredVectorGrid(ncells=1, cellnames=Dict{Symbol, Int64}(), subdomains: [&quot;oceansurface&quot;, &quot;oceanfloor&quot;])
+[ Info:   oceansurface Domain size=1 grid=UnstructuredVectorGrid(ncells=1, cellnames=Dict{Symbol, Int64}(), subdomains: [&quot;ocean&quot;])
+[ Info:   oceanfloor Domain size=1 grid=UnstructuredVectorGrid(ncells=1, cellnames=Dict{Symbol, Int64}(), subdomains: [&quot;ocean&quot;])
+┌ Info:
+│ ================================================================================
+│ register_reaction_methods!
+└ ================================================================================
+[ Info: ReactionFluxPerturb.register_methods! global.add_Alk
+[ Info: register_methods! ocean.CO3_conc
+[ Info: register_methods! ocean.HCO3_conc
+[ Info: register_methods! ocean.BOH4_conc
+[ Info: register_methods! ocean.OH_conc
+┌ Info:
+│ ================================================================================
+│ link_variables: first pass
+└ ================================================================================
+┌ Info:
+│ ================================================================================
+│ link_variables: register_reaction_dynamic_methods and configure variables
+└ ================================================================================
+┌ Info: _configure_variables: ReactionFluxPerturb global.add_Alk variable_links:
+└     set variable_links: F                    -&gt; ocean.TAlk_sms
+┌ Info: _configure_variables: ReactionReservoir ocean.reservoir_DIC variable_links:
+│     set variable_links: R                    -&gt; DIC
+│     set variable_links: R_sms                -&gt; DIC_sms
+│     set variable_links: R_conc               -&gt; DIC_conc
+│ _configure_variables: ReactionReservoir ocean.reservoir_DIC variable_attributes:
+│     set attribute: R                    :norm_value           = 2.0
+└     set attribute: R                    :initial_value        = 2.0
+┌ Info: _configure_variables: ReactionReservoir ocean.reservoir_TA variable_links:
+│     set variable_links: R                    -&gt; TAlk
+│     set variable_links: R_sms                -&gt; TAlk_sms
+│     set variable_links: R_conc               -&gt; TAlk_conc
+│ _configure_variables: ReactionReservoir ocean.reservoir_TA variable_attributes:
+│     set attribute: R                    :norm_value           = 2.4
+└     set attribute: R                    :initial_value        = 0.0
+┌ Info: _configure_variables: ReactionConstraintReservoir ocean.BOH3_primary_species variable_links:
+│     set variable_links: Primary_conc         -&gt; BOH3_conc
+│     set variable_links: R_constraint_conc    -&gt; B_constraint_conc
+│     set variable_links: R_calc               -&gt; B_calc
+│     set variable_links: R_conc               -&gt; B_conc
+│ _configure_variables: ReactionConstraintReservoir ocean.BOH3_primary_species variable_attributes:
+│     set attribute: Primary_conc         :initial_value        = 1.0
+│     set attribute: Primary_conc         :norm_value           = 0.001
+└     set attribute: R_constraint_conc    :norm_value           = 0.001
+┌ Info: _configure_variables: ReactionReservoirConst ocean.constant_B variable_links:
+│     set variable_links: R_conc               -&gt; B_conc
+│ _configure_variables: ReactionReservoirConst ocean.constant_B variable_attributes:
+└     set attribute: R_conc               :initial_value        = 0.427
+┌ Info: _configure_variables: ReactionConstraintReservoir ocean.CO2_aq_primary_species variable_links:
+│     set variable_links: Primary_conc         -&gt; CO2_aq_conc
+│     set variable_links: R_constraint_conc    -&gt; DIC_constraint_conc
+│     set variable_links: R_calc               -&gt; DIC_calc
+│     set variable_links: R_conc               -&gt; DIC_conc
+│ _configure_variables: ReactionConstraintReservoir ocean.CO2_aq_primary_species variable_attributes:
+│     set attribute: Primary_conc         :initial_value        = 1.0
+│     set attribute: Primary_conc         :norm_value           = 0.001
+└     set attribute: R_constraint_conc    :norm_value           = 1.0
+┌ Info: _configure_variables: ReactionConstraintReservoir ocean.H_primary_species variable_links:
+│     set variable_links: R_constraint_conc    -&gt; TAlk_constraint_conc
+│     set variable_links: R_calc               -&gt; TAlk_calc
+│     set variable_links: R_conc               -&gt; TAlk_conc
+│     set variable_links: Primary_conc         -&gt; H_conc
+│     set variable_links: Primary_pconc        -&gt; pH
+│ _configure_variables: ReactionConstraintReservoir ocean.H_primary_species variable_attributes:
+│     set attribute: Primary_pconc        :initial_value        = 7.0
+│     set attribute: R_constraint_conc    :norm_value           = 0.001
+└     set attribute: Primary_pconc        :norm_value           = 1.0
+┌ Info:
+│ ================================================================================
+│ link_variables: second pass:
+└ ================================================================================
+┌ Info:
+│ ================================================================================
+│ link_variables! unlinked variables:
+└ ================================================================================
+┌ Info:
+│ ================================================================================
+│ create_model_from_config: done
+└ ================================================================================
+┌ Info:
+│ ================================================================================
+│ PALEOmodel.initialize! start
+└ ================================================================================
+┌ Info:
+│ ================================================================================
+│ allocate_variables! (modeldata arrays_idx=1)
+└ ================================================================================
+[ Info: Domain global               data dimensions PALEOboxes.NamedDimension[] allocating 2    variables (hostdep=nothing)
+[ Info:     set :field_data=PALEOboxes.ScalarData for host-dependent Variable global.tforce
+[ Info: Domain ocean                data dimensions PALEOboxes.NamedDimension[] allocating 29   variables (hostdep=nothing)
+[ Info: Domain oceansurface         data dimensions PALEOboxes.NamedDimension[] allocating 1    variables (hostdep=nothing)
+[ Info: Domain oceanfloor           data dimensions PALEOboxes.NamedDimension[] allocating 3    variables (hostdep=nothing)
+[ Info: set_default_solver_view:
+┌ Info: SolverView:
+│     host-dependent Variables:
+│     ------------------------------------------------------------------------------------------------------------------------------------------------
+│     Domain                  operatorID  VF_StateExplicit  VF_Total          VF_Constraint     VF_StateTotal     VF_State          VF_Undefined
+│     global                  0           0                 0                 0                 0                 0                 1
+│     ocean                   0           2                 0                 3                 0                 3                 0
+│     oceansurface            0           0                 0                 0                 0                 0                 0
+│     oceanfloor              0           0                 0                 0                 0                 0                 0
+│     ------------------------------------------------------------------------------------------------------------------------------------------------
+│     Total                   -           2                 0                 3                 0                 3                 1
+│     ------------------------------------------------------------------------------------------------------------------------------------------------
+│   n_state_vars 5  (stateexplicit 2 + statetotal 0 + state 3)
+│   n_equations 5  (stateexplicit 2 + total 0 + constraint 3)
+│   including all host-dependent non-state Variables
+└   host-dependent non-state Variables (:vfunction PB.VF_Undefined): [&quot;global.tforce&quot;]
+┌ Info:
+│ ================================================================================
+│ initialize_reactiondata! (modeldata arrays_indices=1:1)
+└ ================================================================================
+┌ Info:
+│ ================================================================================
+│ dispatch_setup :setup
+└ ================================================================================
+[ Info: ocean.constant_B.setup_initialvalue_vars_default:
+[ Info: init_values!     :initial_value        ocean.B_conc                   = 0.427
+┌ Info:
+│ ================================================================================
+│ dispatch_setup :norm_value
+└ ================================================================================
+[ Info: ocean.BOH3_primary_species.setup_initialvalue_vars_default:
+[ Info: init_values!     :norm_value           ocean.BOH3_conc                = 0.001
+[ Info: init_values!     :norm_value           ocean.B_constraint_conc        = 0.001
+[ Info: ocean.CO2_aq_primary_species.setup_initialvalue_vars_default:
+[ Info: init_values!     :norm_value           ocean.CO2_aq_conc              = 0.001
+[ Info: init_values!     :norm_value           ocean.DIC_constraint_conc      = 1.0
+[ Info: ocean.H_primary_species.setup_initialvalue_vars_default:
+[ Info: init_values!     :norm_value           ocean.pH                       = 1.0
+[ Info: init_values!     :norm_value           ocean.TAlk_constraint_conc     = 0.001
+[ Info: ocean.reservoir_DIC.setup_initialvalue_vars_default:
+[ Info: init_values!     :norm_value           ocean.DIC                      = 2.0 * volume
+[ Info: ocean.reservoir_TA.setup_initialvalue_vars_default:
+[ Info: init_values!     :norm_value           ocean.TAlk                     = 2.4 * volume
+┌ Info:
+│ ================================================================================
+│ dispatch_setup :initial_value
+└ ================================================================================
+[ Info: ocean.BOH3_primary_species.setup_initialvalue_vars_default:
+[ Info: init_values!     :initial_value        ocean.BOH3_conc                = 1.0
+[ Info: init_values!     :initial_value        ocean.B_constraint_conc        = 0.0
+[ Info: ocean.CO2_aq_primary_species.setup_initialvalue_vars_default:
+[ Info: init_values!     :initial_value        ocean.CO2_aq_conc              = 1.0
+[ Info: init_values!     :initial_value        ocean.DIC_constraint_conc      = 0.0
+[ Info: ocean.H_primary_species.setup_initialvalue_vars_default:
+[ Info: init_values!     :initial_value        ocean.pH                       = 7.0
+[ Info: init_values!     :initial_value        ocean.TAlk_constraint_conc     = 0.0
+[ Info: ocean.reservoir_DIC.setup_initialvalue_vars_default:
+[ Info: init_values!     :initial_value        ocean.DIC                      = 2.0 * volume
+[ Info: ocean.reservoir_TA.setup_initialvalue_vars_default:
+[ Info: init_values!     :initial_value        ocean.TAlk                     = 0.0 * volume
+┌ Info:
+│ ================================================================================
+│ PALEOmodel.initialize! done
+└ ================================================================================
+initial_state: [0.0, 2.65536e18, 1.0, 1.0, 7.0]
+initial_deriv: [2.66e16, 0.0, -0.5979999999999999, -13.168, -14.361513500000001]
+integrate, DAE
+┌ Info:
+│ ================================================================================
+│ PALEOmodel.ODE.integrateDAE:
+│     tspan: (0.0, 200.0)
+│     algorithm: Sundials.IDA{:Dense, Nothing, Nothing}(0, 0, 0, 5, 7, 0.33, 3, 10, 0.0033, 5, 4, 10, 100, true, false, nothing, nothing)
+│     Jacobian: NoJacobian
+│     using 1 BLAS threads
+└ ================================================================================
+[ Info: DAEfunction:  using Jacobian NoJacobian
+[ Info: jac_config_dae: jac_ad=NoJacobian
+[ Info: calling get_inconsistent_initial_deriv
+  0.866247 seconds (691.14 k allocations: 47.402 MiB, 1.79% gc time, 99.85% compilation time)
+┌ Info:
+│ ================================================================================
+│ print_sol_stats:
+│     retcode=Success
+│     alg=Sundials.IDA{:Dense, Nothing, Nothing}(0, 0, 0, 5, 7, 0.33, 3, 10, 0.0033, 5, 4, 10, 100, true, false, nothing, nothing)
+│     stats=SciMLBase.DEStats
+│ Number of function 1 evaluations:                  547
+│ Number of function 2 evaluations:                  0
+│ Number of W matrix evaluations:                    109
+│ Number of linear solves:                           0
+│ Number of Jacobians created:                       109
+│ Number of nonlinear solver iterations:             545
+│ Number of nonlinear solver convergence failures:   0
+│ Number of fixed-point solver iterations:                     0
+│ Number of fixed-point solver convergence failures:           0
+│ Number of rootfind condition calls:                0
+│ Number of accepted steps:                          292
+│ Number of rejected steps:                          14
+│     length(sol.t) 307
+│     size(sol) (5, 307)
+└ ================================================================================
+[ Info: ODE.calc_output_sol!: 307 records
+[ Info: ODE.calc_output_sol!: done
+┌ Info:
+│ ================================================================================
+│ PALEOmodel.ODE.integrateDAE: done
+└ ================================================================================
+  4.678583 seconds (5.43 M allocations: 372.469 MiB, 2.89% gc time, 99.74% compilation time)</code></pre><p><img src="../ex1_plot1.svg" alt/> <img src="../ex1_plot2.svg" alt/> <img src="../ex1_plot3.svg" alt/> <img src="../ex1_plot4.svg" alt/></p><h3 id="Displaying-model-structure-and-variables"><a class="docs-heading-anchor" href="#Displaying-model-structure-and-variables">Displaying model structure and variables</a><a id="Displaying-model-structure-and-variables-1"></a><a class="docs-heading-anchor-permalink" href="#Displaying-model-structure-and-variables" title="Permalink"></a></h3><p>All metadata for model variables can be displayed with <code>PB.show_variables</code>:</p><pre><code class="language-julia hljs">show(PB.show_variables(model), allcols=true, allrows=true) # display in REPL
+# vscodedisplay(PB.show_variables(model)) # more convenient when using VS code</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">35×8 DataFrame
+ Row │ domain        name                  type                      units     vfunction         space        field_data  description
+     │ String        String                DataType                  String    Variable…         DataType     DataType    String
+─────┼──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+   1 │ global        add_Alk/FApplied      VariableDomPropDep        mol yr-1  VF_Undefined      ScalarSpace  ScalarData  flux perturbation applied, for d…
+   2 │ global        tforce                VariableDomPropDep        yr        VF_Undefined      ScalarSpace  ScalarData  time at which to apply perturbat…
+   3 │ ocean         Abox                  VariableDomPropDep        m^2       VF_Undefined      CellSpace    ScalarData  horizontal area of box
+   4 │ ocean         BOH3_conc             VariableDomPropDep        mol m-3   VF_State          CellSpace    ScalarData  concentration of primary species
+   5 │ ocean         BOH4_conc             VariableDomPropDep        mol m-3   VF_Undefined      CellSpace    ScalarData  aqueous concentration or activity
+   6 │ ocean         B_calc                VariableDomContribTarget  mol       VF_Undefined      CellSpace    ScalarData  contributions to total R_calc_co…
+   7 │ ocean         B_conc                VariableDomPropDep        mol m-3   VF_Undefined      CellSpace    ScalarData  concentration
+   8 │ ocean         B_constraint_conc     VariableDomContribTarget  mol m-3   VF_Constraint     CellSpace    ScalarData  algebraic constraint on R_conc (…
+   9 │ ocean         CO2_aq_conc           VariableDomPropDep        mol m-3   VF_State          CellSpace    ScalarData  concentration of primary species
+  10 │ ocean         CO3_conc              VariableDomPropDep        mol m-3   VF_Undefined      CellSpace    ScalarData  aqueous concentration or activity
+  11 │ ocean         DIC                   VariableDomPropDep        mol       VF_StateExplicit  CellSpace    ScalarData  vector reservoir
+  12 │ ocean         DIC_calc              VariableDomContribTarget  mol       VF_Undefined      CellSpace    ScalarData  contributions to total R_calc_co…
+  13 │ ocean         DIC_conc              VariableDomPropDep        mol m-3   VF_Undefined      CellSpace    ScalarData  concentration
+  14 │ ocean         DIC_constraint_conc   VariableDomContribTarget  mol m-3   VF_Constraint     CellSpace    ScalarData  algebraic constraint on R_conc (…
+  15 │ ocean         DIC_sms               VariableDomContribTarget  mol yr-1  VF_Deriv          CellSpace    ScalarData  vector reservoir source-sinks
+  16 │ ocean         HCO3_conc             VariableDomPropDep        mol m-3   VF_Undefined      CellSpace    ScalarData  aqueous concentration or activity
+  17 │ ocean         H_conc                VariableDomPropDep        mol m-3   VF_Undefined      CellSpace    ScalarData  concentration of primary species
+  18 │ ocean         OH_conc               VariableDomPropDep        mol m-3   VF_Undefined      CellSpace    ScalarData  aqueous concentration or activity
+  19 │ ocean         TAlk                  VariableDomPropDep        mol       VF_StateExplicit  CellSpace    ScalarData  vector reservoir
+  20 │ ocean         TAlk_calc             VariableDomContribTarget  mol       VF_Undefined      CellSpace    ScalarData  contributions to total R_calc_co…
+  21 │ ocean         TAlk_conc             VariableDomPropDep        mol m-3   VF_Undefined      CellSpace    ScalarData  concentration
+  22 │ ocean         TAlk_constraint_conc  VariableDomContribTarget  mol m-3   VF_Constraint     CellSpace    ScalarData  algebraic constraint on R_conc (…
+  23 │ ocean         TAlk_sms              VariableDomContribTarget  mol yr-1  VF_Deriv          CellSpace    ScalarData  vector reservoir source-sinks
+  24 │ ocean         pH                    VariableDomPropDep                  VF_State          CellSpace    ScalarData  -log10(concentration of primary …
+  25 │ ocean         pressure              VariableDomPropDep        dbar      VF_Undefined      CellSpace    ScalarData  Ocean pressure
+  26 │ ocean         rho_ref               VariableDomPropDep        kg m^-3   VF_Undefined      CellSpace    ScalarData  Ocean transport model density co…
+  27 │ ocean         volume                VariableDomPropDep        m^3       VF_Undefined      CellSpace    ScalarData  volume of ocean cells
+  28 │ ocean         volume_total          VariableDomPropDep        m^3       VF_Undefined      ScalarSpace  ScalarData  total volume of ocean cells
+  29 │ ocean         zlower                VariableDomPropDep        m         VF_Undefined      CellSpace    ScalarData  depth of lower surface of box (m)
+  30 │ ocean         zmid                  VariableDomPropDep        m         VF_Undefined      CellSpace    ScalarData  mean depth of box
+  31 │ ocean         zupper                VariableDomPropDep        m         VF_Undefined      CellSpace    ScalarData  depth of upper surface of box (m…
+  32 │ oceanfloor    Afloor                VariableDomPropDep        m^2       VF_Undefined      CellSpace    ScalarData  horizontal area of seafloor at b…
+  33 │ oceanfloor    Afloor_total          VariableDomPropDep        m^2       VF_Undefined      ScalarSpace  ScalarData  total area of seafloor
+  34 │ oceanfloor    zfloor                VariableDomPropDep        m         VF_Undefined      CellSpace    ScalarData  depth of ocean floor (m, -ve)
+  35 │ oceansurface  Asurf                 VariableDomPropDep        m^2       VF_Undefined      CellSpace    ScalarData  horizontal area of oceansurface</code></pre><h2 id="Example-2-Minimal-Alk-pH-model-with-implicit-variables"><a class="docs-heading-anchor" href="#Example-2-Minimal-Alk-pH-model-with-implicit-variables">Example 2 Minimal Alk-pH model with implicit variables</a><a id="Example-2-Minimal-Alk-pH-model-with-implicit-variables-1"></a><a class="docs-heading-anchor-permalink" href="#Example-2-Minimal-Alk-pH-model-with-implicit-variables" title="Permalink"></a></h2><p>This example contains the same chemistry as <a href="#Example-1-Configuring-a-minimal-Alk-pH-model">Example 1 Configuring a minimal Alk-pH model</a>, using the Direct Substitution Approach (DSA) to eliminate the two algebraic equations corresponding to the mass action equations for <code>DIC</code> and <code>TAlk</code>.</p><p>The state variables for <code>DIC_conc</code> and <code>TAlk_conc</code> are now implicit total variables defined by PALEOaqchem <code>ReactionImplicitReservoir</code>s. These define a PALEO Total variable  (attribute <code>:vfunction = PB.VF_Total</code>) eg <code>DIC_conc</code> which is a function of a primary species concentration implemented as a PALEO StateTotal variable (attribute <code>:vfunction = PB.VF_StateTotal</code>) eg <code>CO_2_aq_conc</code>, and a time derivative eg <code>DIC_conc_sms</code> implemented as a PALEO Deriv variable (attribute <code>:vfunction = PB.VF_Deriv</code>).</p><p>The combined system is then a Differential Algebraic Equation (DAE) system with three implicit total variables for <code>DIC_conc</code>, <code>B_conc</code>, and <code>TAlk_conc</code>, with corresponding time derivatives <code>DIC_conc_sms</code>, <code>B_conc_sms</code>, and <code>TAlk_conc_sms</code> and state variables for the primary species <code>CO2_aq_conc</code>, <code>BOH3_conc</code> and <code>pH</code>, and is integrated forward in time by a DAE solver <a href="https://paleotoolkit.github.io/PALEOmodel.jl/stable/PALEOmodelSolvers/#PALEOmodel.ODE.integrateDAE"><code>PALEOmodel.ODE.integrateDAE</code></a>.</p><p>Notes:</p><ul><li>The combination of constant <code>BOH3_conc</code> and a <code>ReactionConstraintReservoir</code> defining primary species <code>BOH3_conc</code> has been replaced with an implicit state variable for <code>B_conc</code> and primary species <code>BOH3_conc</code>: this is required to use the IDA DAE solver, which cannot handle initialisation of that combination of implicit and constraint variables (see <code>PALEOmodel</code> documentation).</li><li>Initial values are now specified for the primary species (eg <code>CO2_conc</code>, <code>BOH3_conc</code>, <code>pH</code>), not the corresponding totals (eg <code>DIC_conc</code>). This is less convenient here (where we are want to set <code>DIC_conc</code> and <code>B_conc</code> that remain constant), but may not be an issue in a more complete model that includes additional processes that define  time evolution that is insensitive to initial conditions after a spinup.</li><li>This configuration provides concentrations, instead of mol (per cell) to the solver. This is not required here, but is good practice as it helps the numerical solver by providing variables with better scaling.</li></ul><h3 id="yaml-configuration-file-2"><a class="docs-heading-anchor" href="#yaml-configuration-file-2">yaml configuration file</a><a class="docs-heading-anchor-permalink" href="#yaml-configuration-file-2" title="Permalink"></a></h3><p>The model configuration (file <code>examples/configurable_chemistry/config_ex2.yaml</code>) contains: </p><pre><code class="language-julia hljs">Minimal_Alk_pH:
+
+    domains:
+
+        global:
+           
+            reactions:
+                add_Alk:
+                    # from PALEOboxes reaction catalog:  constant input flux of Alk
+                    class: ReactionFluxPerturb
+                    parameters:
+                        # linear interpolation for input flux - set to constant
+                        perturb_times: [-1e30, 1e30]
+                        # ocean volume = 3.6e14 * 3688.0 = 1.33e18 m^3
+                        # DIC in ocean = 2 * 1.33e18 = 2.66e18 mol
+                        # set Alk flux so Alk = DIC after 100 yr-1 = 2.66e18/100 = 2.66e16 mol yr-1
+                        perturb_totals: [2.66e16, 2.66e16] 
+                    variable_links:
+                        F: ocean.TAlk_sms  # add flux to TAlk reservoir NB: works for single-box ocean only !!
+ # --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------       
+
+        ocean:
+
+            reactions:
+
+                oceantransport:
+
+                    class: ReactionOceanNoTransport
+
+                    parameters:
+
+                        area:  [3.6e14]               
+                        depth: [3688.0]               
+
+                # TA as total and H (as pH) as primary species
+                TA_total_H_primary:
+                    class: ReactionImplicitReservoir
+                    variable_links:
+                        Primary_pconc: pH
+                        Primary_conc: H_conc
+                        R*: TAlk*
+                    parameters: 
+                        primary_total_stoich: -1.0
+                        primary_variable: p_concentration # provide solver with -log10(H_conc)
+                        total_variable: concentration # provide solver with TAlk_conc
+                    variable_attributes:
+                        Primary_pconc%initial_value: 4.28  # value tuned to give TAlk ~ 0.0 initially
+                        Primary_pconc%norm_value: 1.0
+                        R_conc%norm_value: 1.0
+
+                # DIC as total and CO2_aq as primary species
+                DIC_total_CO2_aq_primary:
+                    class: ReactionImplicitReservoir
+                    variable_links:
+                        R*: DIC*
+                        Primary*: CO2_aq*
+                    parameters: 
+                        primary_total_stoich: 1.0  # add CO2 to DIC, no contribution to TAlk
+                        primary_variable: concentration  # provide solver with CO2_aq_conc (mol m-3)
+                        total_variable: concentration # provide solver with DIC_conc (mol m-3)
+                    variable_attributes:
+                        Primary_conc%initial_value: 1.94 # This value has been tuned to produce initial DIC_conc = 2.0
+                        Primary_conc%norm_value: 1.0
+                        R_conc%norm_value: 1.0
+
+                # B as total and BOH3 as primary species
+                B_total_BOH3_primary:
+                    class: ReactionImplicitReservoir
+                    variable_links:
+                        R*: B*
+                        Primary*: BOH3*
+                    parameters: 
+                        primary_total_stoich: 1.0  # add BOH3 to B, no contribution to TAlk
+                        primary_variable: concentration  # provide solver with BOH3_conc (mol m-3)
+                        total_variable: concentration # provide solver with B_conc (mol m-3)
+                    variable_attributes:
+                        Primary_conc%initial_value: 0.427 # This produces initial B_conc ~ 0.427 (as initial BOH4_conc is very small)
+                        Primary_conc%norm_value: 1.0
+                        R_conc%norm_value: 1.0
+
+                ##########################################################################
+                # H2O speciation
+                ########################################################################
+            
+                # Define OH_conc and add to TAlk
+                #   OH-  + H+  &lt;--&gt; H2O,   [OH] = K_w / [H]
+                OH_conc: { class: ReactionAqEqb, parameters: { K_power: 1.0,  # we need K_eqb in numerator
+                        K_eqb:              6.0e-14,    # K_w 6.0e-14 (mol^2 kg-2) equilibrium constant of water at S=35, T=25°C,
+                        K_density_power:    2.0,        # K_eqb*rho_ref^2 to convert to (mol^2 m-6)
+                        Reactants: [&quot;OH_conc&quot;, &quot;H_conc&quot;],       Products: [],
+                        N_components: [&quot;TAlk_calc&quot;],
+                    }
+                }
+              
+                ##########################################################################
+                # Boron speciation
+                ##########################################################################
+
+                # Define BOH4_conc and add to B, TAlk
+                #   B(OH)_4^-  + H+  &lt;--&gt; B(OH)3 + H2O,   [B(OH)_4^-] = K_B [B(OH)3] / [H+]
+                BOH4_conc: { class: ReactionAqEqb, parameters: { K_power: 1.0,  # we need K_eqb in numerator
+                        K_eqb:              2.5e-9,     # (mol kg-1)  K_B equilibrium constant of B(OH)4-
+                        K_density_power:    1.0,        # K_eqb*rho_ref to convert to (mol m-3)
+                        Reactants: [&quot;BOH4_conc&quot;, &quot;H_conc&quot;],     Products: [&quot;BOH3_conc&quot;],
+                        N_components: [&quot;B_calc&quot;, &quot;TAlk_calc&quot;],
+                    }
+                }
+
+                ##########################################################################
+                # Carbon speciation
+                ##########################################################################
+
+                # Define HCO3_conc and add to DIC, TAlk
+                #   HCO3-  + H+  &lt;--&gt; CO2 + H2O,   [HCO3-] = K_1 [CO2] / [H+]
+                HCO3_conc: { class: ReactionAqEqb, parameters: { K_power: 1.0,  # we need K_eqb in numerator
+                        K_eqb:              1.4e-6,     # (mol kg-1) K_1 equilibrium constant of CO2_aq and HCO3-
+                        K_density_power:    1.0,        # K_eqb*rho_ref to convert to (mol m-3)
+                        Reactants: [&quot;HCO3_conc&quot;, &quot;H_conc&quot;],     Products: [&quot;CO2_aq_conc&quot;],
+                        N_components: [&quot;DIC_calc&quot;, &quot;TAlk_calc&quot;],
+                    }
+                }
+
+                # Define CO3_conc and add to DIC, TAlk
+                #   CO3--  + H+  &lt;--&gt; HCO3- + H2O,   [CO3--] = K_2 [HCO3-] / [H+]
+                CO3_conc: { class: ReactionAqEqb, parameters: { K_power: 1.0,  # we need K_eqb in numerator
+                        K_eqb:              1.2e-9,     # (mol kg-1) K_2 equilibrium constant of HCO3- and CO32-
+                        K_density_power:    1.0,        # K_eqb*rho_ref to convert to (mol m-3)
+                        Reactants: [&quot;CO3_conc&quot;, &quot;H_conc&quot;],      Products: [&quot;HCO3_conc&quot;],
+                        N_components: [&quot;DIC_calc&quot;, &quot;2*TAlk_calc&quot;],
+                    }
+                }
+
+        oceanfloor:
+            # unused here, set up by ReactionOceanNoTransport
+
+        oceansurface:
+            # unused here, set up by ReactionOceanNoTransport</code></pre><h3 id="Run-script-2"><a class="docs-heading-anchor" href="#Run-script-2">Run script</a><a class="docs-heading-anchor-permalink" href="#Run-script-2" title="Permalink"></a></h3><p>The script to run the model (file <code>examples/configurable_chemistry/run_ex2.jl</code>) contains:</p><pre><code class="language-julia hljs">import PALEOboxes as PB
+import PALEOmodel
+
+import PALEOocean
+import PALEOaqchem
+using Plots
+
+
+
+
+#####################################################
+# Create model
+
+model = PB.create_model_from_config(joinpath(@__DIR__, &quot;config_ex2.yaml&quot;), &quot;Minimal_Alk_pH&quot;)
+
+#########################################################
+# Initialize
+##########################################################
+
+initial_state, modeldata = PALEOmodel.initialize!(model)
+
+#####################################################################
+# Optional: call ODE function to check derivative
+#######################################################################
+initial_deriv = similar(initial_state)
+PALEOmodel.ODE.ModelODE(modeldata)(initial_deriv, initial_state , nothing, 0.0)
+println(&quot;initial_state: &quot;, initial_state)
+println(&quot;initial_deriv: &quot;, initial_deriv)
+
+#################################################################
+# Integrate vs time
+##################################################################
+
+# create a Run object to hold model and output
+paleorun = PALEOmodel.Run(model=model, output = PALEOmodel.OutputWriters.OutputMemory())
+
+println(&quot;integrate, DAE&quot;)
+# first run is slow as it includes JIT time
+# NB: Jacobian is required to use implicit variables, so use integrateDAEForwardDiff instead of integrateDAE
+@time PALEOmodel.ODE.integrateDAEForwardDiff(
+    paleorun, initial_state, modeldata, (0.0, 200.0), 
+    solvekwargs=(
+        reltol=1e-6,
+        # saveat=0.1, # save output every 0.1 yr see https://diffeq.sciml.ai/dev/basics/common_solver_opts/
+    )
+);
+   
+########################################
+# Plot output
+########################################
+
+display(plot(paleorun.output, [&quot;ocean.TAlk_conc&quot;, &quot;ocean.DIC_conc&quot;],                                           (cell=1,);
+    ylabel=&quot;TAlk, DIC conc (mol m-3)&quot;))
+display(plot(paleorun.output, [&quot;ocean.TAlk_conc&quot;,&quot;ocean.TAlk_conc_sms&quot;],                                                 (cell=1,)))
+display(plot(paleorun.output, &quot;ocean.pH&quot;,                                                                      (cell=1,)))
+display(plot(paleorun.output, [&quot;ocean.H_conc&quot;, &quot;ocean.OH_conc&quot;],                                               (cell=1,);
+    ylabel=&quot;H2O species (mol m-3)&quot;, ylim=(0, Inf)))
+display(plot(paleorun.output, [&quot;ocean.B_conc&quot;, &quot;ocean.BOH4_conc&quot;, &quot;ocean.BOH3_conc&quot;],                          (cell=1,);
+    ylabel=&quot;B species (mol m-3)&quot;, ylim=(0, Inf)))
+display(plot(paleorun.output, [&quot;ocean.DIC_conc&quot;, &quot;ocean.HCO3_conc&quot;, &quot;ocean.CO3_conc&quot;, &quot;ocean.CO2_aq_conc&quot;],    (cell=1,);
+    ylabel=&quot;DIC species (mol m-3)&quot;, ylim=(0, Inf)))
+display(
+    plot(
+        paleorun.output, 
+        [&quot;ocean.HCO3_conc&quot;, &quot;ocean.CO3_conc&quot;, &quot;ocean.CO2_aq_conc&quot;, &quot;ocean.BOH4_conc&quot;, &quot;ocean.BOH3_conc&quot;,  &quot;ocean.H_conc&quot;, &quot;ocean.OH_conc&quot;,],
+        (cell=1, tmodel=(1.0, 1e12)); # omit first point (pH 8 starting condition)
+        coords=[&quot;tmodel&quot;=&gt;(&quot;ocean.pH&quot;,),], # plot against pH instead of tmodel
+        ylabel=&quot;H2O, B, DIC species (mol m-3)&quot;, ylim=(0.5e-3, 0.5e1), yscale=:log10,
+        legend_background_color=nothing,
+        legend=:bottom,
+    )
+)
+
+</code></pre><p>and produces output showing the change, if <code>TAlk_conc</code> increase, how the carbonic acid and pH change in ocean:</p><pre class="documenter-example-output"><code class="nohighlight hljs ansi">┌ Info:
+│ ================================================================================
+│ create_model_from_config: configmodel Minimal_Alk_pH
+│     config_file: /home/runner/work/PALEOtutorials.jl/PALEOtutorials.jl/examples/configurable_chemistry/config_ex2.yaml
+└ ================================================================================
+[ Info: Model.parameters:
+┌ Info:
+│ ================================================================================
+│ creating Domains
+└ ================================================================================
+[ Info: generated Reaction catalog with 73 Reactions
+┌ Info:
+│ ================================================================================
+│ creating domain &#39;global&#39; ID=1
+└ ================================================================================
+┌ Info: create_reaction_from_config: global.add_Alk classname ReactionFluxPerturb
+│     set parameters: [Default]      field_data          =PALEOboxes.ScalarData
+│     set parameters: [config.yaml]  perturb_times       =[-1.0e30, 1.0e30]
+│     set parameters: [config.yaml]  perturb_totals      =[2.66e16, 2.66e16]
+│     set parameters: [Default]      perturb_deltas      =[0.0, 0.0]
+│     set parameters: [Default]      extrapolate         =throw
+│     set parameters: [Default]      extrapolate_before  =NaN
+│     set parameters: [Default]      extrapolate_before_delta=NaN
+│     set parameters: [Default]      extrapolate_after   =NaN
+└     set parameters: [Default]      extrapolate_after_delta=NaN
+┌ Info:
+│ ================================================================================
+│ creating domain &#39;ocean&#39; ID=2
+└ ================================================================================
+┌ Info: create_reaction_from_config: ocean.OH_conc classname ReactionAqEqb
+│     set parameters: [config.yaml]  Reactants           =[&quot;OH_conc&quot;, &quot;H_conc&quot;]
+│     set parameters: [config.yaml]  Products            =Any[]
+│     set parameters: [config.yaml]  K_eqb               =6.0e-14
+│     set parameters: [config.yaml]  K_density_power     =2.0
+│     set parameters: [config.yaml]  K_power             =1.0
+└     set parameters: [config.yaml]  N_components        =[&quot;TAlk_calc&quot;]
+┌ Info: create_reaction_from_config: ocean.oceantransport classname ReactionOceanNoTransport
+│     set parameters: [config.yaml]  area                =[3.6e14]
+└     set parameters: [config.yaml]  depth               =[3688.0]
+┌ Info: create_reaction_from_config: ocean.DIC_total_CO2_aq_primary classname ReactionImplicitReservoir
+│     set parameters: [config.yaml]  primary_total_stoich=1.0
+│     set parameters: [Default]      primary_other_components=String[]
+│     set parameters: [config.yaml]  primary_variable    =concentration
+│     set parameters: [config.yaml]  total_variable      =concentration
+└     set parameters: [Default]      total               =false
+┌ Info: create_reaction_from_config: ocean.BOH4_conc classname ReactionAqEqb
+│     set parameters: [config.yaml]  Reactants           =[&quot;BOH4_conc&quot;, &quot;H_conc&quot;]
+│     set parameters: [config.yaml]  Products            =[&quot;BOH3_conc&quot;]
+│     set parameters: [config.yaml]  K_eqb               =2.5e-9
+│     set parameters: [config.yaml]  K_density_power     =1.0
+│     set parameters: [config.yaml]  K_power             =1.0
+└     set parameters: [config.yaml]  N_components        =[&quot;B_calc&quot;, &quot;TAlk_calc&quot;]
+┌ Info: create_reaction_from_config: ocean.TA_total_H_primary classname ReactionImplicitReservoir
+│     set parameters: [config.yaml]  primary_total_stoich=-1.0
+│     set parameters: [Default]      primary_other_components=String[]
+│     set parameters: [config.yaml]  primary_variable    =p_concentration
+│     set parameters: [config.yaml]  total_variable      =concentration
+└     set parameters: [Default]      total               =false
+┌ Info: create_reaction_from_config: ocean.B_total_BOH3_primary classname ReactionImplicitReservoir
+│     set parameters: [config.yaml]  primary_total_stoich=1.0
+│     set parameters: [Default]      primary_other_components=String[]
+│     set parameters: [config.yaml]  primary_variable    =concentration
+│     set parameters: [config.yaml]  total_variable      =concentration
+└     set parameters: [Default]      total               =false
+┌ Info: create_reaction_from_config: ocean.HCO3_conc classname ReactionAqEqb
+│     set parameters: [config.yaml]  Reactants           =[&quot;HCO3_conc&quot;, &quot;H_conc&quot;]
+│     set parameters: [config.yaml]  Products            =[&quot;CO2_aq_conc&quot;]
+│     set parameters: [config.yaml]  K_eqb               =1.4e-6
+│     set parameters: [config.yaml]  K_density_power     =1.0
+│     set parameters: [config.yaml]  K_power             =1.0
+└     set parameters: [config.yaml]  N_components        =[&quot;DIC_calc&quot;, &quot;TAlk_calc&quot;]
+┌ Info: create_reaction_from_config: ocean.CO3_conc classname ReactionAqEqb
+│     set parameters: [config.yaml]  Reactants           =[&quot;CO3_conc&quot;, &quot;H_conc&quot;]
+│     set parameters: [config.yaml]  Products            =[&quot;HCO3_conc&quot;]
+│     set parameters: [config.yaml]  K_eqb               =1.2e-9
+│     set parameters: [config.yaml]  K_density_power     =1.0
+│     set parameters: [config.yaml]  K_power             =1.0
+└     set parameters: [config.yaml]  N_components        =[&quot;DIC_calc&quot;, &quot;2*TAlk_calc&quot;]
+┌ Info:
+│ ================================================================================
+│ creating domain &#39;oceansurface&#39; ID=3
+└ ================================================================================
+┌ Info:
+│ ================================================================================
+│ creating domain &#39;oceanfloor&#39; ID=4
+└ ================================================================================
+┌ Info:
+│ ================================================================================
+│ set_model_geometry
+└ ================================================================================
+[ Info:   set ocean.oceansurface Subdomain size=1
+[ Info:   set ocean.oceanfloor Subdomain size=1
+[ Info: Ocean.set_model_domains:
+[ Info:   ocean Domain size=1 grid=UnstructuredVectorGrid(ncells=1, cellnames=Dict{Symbol, Int64}(), subdomains: [&quot;oceansurface&quot;, &quot;oceanfloor&quot;])
+[ Info:   oceansurface Domain size=1 grid=UnstructuredVectorGrid(ncells=1, cellnames=Dict{Symbol, Int64}(), subdomains: [&quot;ocean&quot;])
+[ Info:   oceanfloor Domain size=1 grid=UnstructuredVectorGrid(ncells=1, cellnames=Dict{Symbol, Int64}(), subdomains: [&quot;ocean&quot;])
+┌ Info:
+│ ================================================================================
+│ register_reaction_methods!
+└ ================================================================================
+[ Info: ReactionFluxPerturb.register_methods! global.add_Alk
+[ Info: register_methods! ocean.OH_conc
+[ Info: register_methods! ocean.BOH4_conc
+[ Info: register_methods! ocean.HCO3_conc
+[ Info: register_methods! ocean.CO3_conc
+┌ Info:
+│ ================================================================================
+│ link_variables: first pass
+└ ================================================================================
+┌ Info:
+│ ================================================================================
+│ link_variables: register_reaction_dynamic_methods and configure variables
+└ ================================================================================
+┌ Info: _configure_variables: ReactionFluxPerturb global.add_Alk variable_links:
+└     set variable_links: F                    -&gt; ocean.TAlk_sms
+┌ Info: _configure_variables: ReactionImplicitReservoir ocean.DIC_total_CO2_aq_primary variable_links:
+│     set variable_links: Primary_conc         -&gt; CO2_aq_conc
+│     set variable_links: R_conc               -&gt; DIC_conc
+│     set variable_links: R_sms                -&gt; DIC_sms
+│     set variable_links: R_conc_sms           -&gt; DIC_conc_sms
+│     set variable_links: R_calc               -&gt; DIC_calc
+│     set variable_links: R                    -&gt; DIC
+│ _configure_variables: ReactionImplicitReservoir ocean.DIC_total_CO2_aq_primary variable_attributes:
+│     set attribute: Primary_conc         :initial_value        = 1.94
+│     set attribute: Primary_conc         :norm_value           = 1.0
+└     set attribute: R_conc               :norm_value           = 1.0
+┌ Info: _configure_variables: ReactionImplicitReservoir ocean.TA_total_H_primary variable_links:
+│     set variable_links: R_conc               -&gt; TAlk_conc
+│     set variable_links: R_sms                -&gt; TAlk_sms
+│     set variable_links: R_conc_sms           -&gt; TAlk_conc_sms
+│     set variable_links: R_calc               -&gt; TAlk_calc
+│     set variable_links: R                    -&gt; TAlk
+│     set variable_links: Primary_conc         -&gt; H_conc
+│     set variable_links: Primary_pconc        -&gt; pH
+│ _configure_variables: ReactionImplicitReservoir ocean.TA_total_H_primary variable_attributes:
+│     set attribute: Primary_pconc        :initial_value        = 4.28
+│     set attribute: R_conc               :norm_value           = 1.0
+└     set attribute: Primary_pconc        :norm_value           = 1.0
+┌ Info: _configure_variables: ReactionImplicitReservoir ocean.B_total_BOH3_primary variable_links:
+│     set variable_links: Primary_conc         -&gt; BOH3_conc
+│     set variable_links: R_conc               -&gt; B_conc
+│     set variable_links: R_sms                -&gt; B_sms
+│     set variable_links: R_conc_sms           -&gt; B_conc_sms
+│     set variable_links: R_calc               -&gt; B_calc
+│     set variable_links: R                    -&gt; B
+│ _configure_variables: ReactionImplicitReservoir ocean.B_total_BOH3_primary variable_attributes:
+│     set attribute: Primary_conc         :initial_value        = 0.427
+│     set attribute: Primary_conc         :norm_value           = 1.0
+└     set attribute: R_conc               :norm_value           = 1.0
+┌ Info:
+│ ================================================================================
+│ link_variables: second pass:
+└ ================================================================================
+┌ Info:
+│ ================================================================================
+│ link_variables! unlinked variables:
+└ ================================================================================
+┌ Info:
+│ ================================================================================
+│ create_model_from_config: done
+└ ================================================================================
+┌ Info:
+│ ================================================================================
+│ PALEOmodel.initialize! start
+└ ================================================================================
+┌ Info:
+│ ================================================================================
+│ allocate_variables! (modeldata arrays_idx=1)
+└ ================================================================================
+[ Info: Domain global               data dimensions PALEOboxes.NamedDimension[] allocating 2    variables (hostdep=nothing)
+[ Info:     set :field_data=PALEOboxes.ScalarData for host-dependent Variable global.tforce
+[ Info: Domain ocean                data dimensions PALEOboxes.NamedDimension[] allocating 31   variables (hostdep=nothing)
+[ Info: Domain oceansurface         data dimensions PALEOboxes.NamedDimension[] allocating 1    variables (hostdep=nothing)
+[ Info: Domain oceanfloor           data dimensions PALEOboxes.NamedDimension[] allocating 3    variables (hostdep=nothing)
+[ Info: set_default_solver_view:
+┌ Info: SolverView:
+│     host-dependent Variables:
+│     ------------------------------------------------------------------------------------------------------------------------------------------------
+│     Domain                  operatorID  VF_StateExplicit  VF_Total          VF_Constraint     VF_StateTotal     VF_State          VF_Undefined
+│     global                  0           0                 0                 0                 0                 0                 1
+│     ocean                   0           0                 3                 0                 3                 0                 0
+│     oceansurface            0           0                 0                 0                 0                 0                 0
+│     oceanfloor              0           0                 0                 0                 0                 0                 0
+│     ------------------------------------------------------------------------------------------------------------------------------------------------
+│     Total                   -           0                 3                 0                 3                 0                 1
+│     ------------------------------------------------------------------------------------------------------------------------------------------------
+│   n_state_vars 3  (stateexplicit 0 + statetotal 3 + state 0)
+│   n_equations 3  (stateexplicit 0 + total 3 + constraint 0)
+│   including all host-dependent non-state Variables
+└   host-dependent non-state Variables (:vfunction PB.VF_Undefined): [&quot;global.tforce&quot;]
+┌ Info:
+│ ================================================================================
+│ initialize_reactiondata! (modeldata arrays_indices=1:1)
+└ ================================================================================
+┌ Info:
+│ ================================================================================
+│ dispatch_setup :setup
+└ ================================================================================
+┌ Info:
+│ ================================================================================
+│ dispatch_setup :norm_value
+└ ================================================================================
+[ Info: ocean.DIC_total_CO2_aq_primary.setup_initialvalue_vars_default:
+[ Info: init_values!     :norm_value           ocean.CO2_aq_conc              = 1.0
+[ Info: init_values!     :norm_value           ocean.DIC_conc                 = 1.0
+[ Info: ocean.TA_total_H_primary.setup_initialvalue_vars_default:
+[ Info: init_values!     :norm_value           ocean.pH                       = 1.0
+[ Info: init_values!     :norm_value           ocean.TAlk_conc                = 1.0
+[ Info: ocean.B_total_BOH3_primary.setup_initialvalue_vars_default:
+[ Info: init_values!     :norm_value           ocean.BOH3_conc                = 1.0
+[ Info: init_values!     :norm_value           ocean.B_conc                   = 1.0
+┌ Info:
+│ ================================================================================
+│ dispatch_setup :initial_value
+└ ================================================================================
+[ Info: ocean.DIC_total_CO2_aq_primary.setup_initialvalue_vars_default:
+[ Info: init_values!     :initial_value        ocean.CO2_aq_conc              = 1.94
+[ Info: init_values!     :initial_value        ocean.DIC_conc                 = 0.0
+[ Info: ocean.TA_total_H_primary.setup_initialvalue_vars_default:
+[ Info: init_values!     :initial_value        ocean.pH                       = 4.28
+[ Info: init_values!     :initial_value        ocean.TAlk_conc                = 0.0
+[ Info: ocean.B_total_BOH3_primary.setup_initialvalue_vars_default:
+[ Info: init_values!     :initial_value        ocean.BOH3_conc                = 0.427
+[ Info: init_values!     :initial_value        ocean.B_conc                   = 0.0
+┌ Info:
+│ ================================================================================
+│ PALEOmodel.initialize! done
+└ ================================================================================
+initial_state: [0.427, 1.94, 4.28]
+initial_deriv: [0.0, 0.0, 0.020034948180284406]
+integrate, DAE
+┌ Info:
+│ ================================================================================
+│ PALEOmodel.ODE.integrateDAE:
+│     tspan: (0.0, 200.0)
+│     algorithm: Sundials.IDA{:KLU, Nothing, Nothing}(0, 0, 0, 5, 7, 0.33, 3, 10, 0.0033, 5, 4, 10, 100, true, false, nothing, nothing)
+│     Jacobian: ForwardDiffSparse
+│     using 1 BLAS threads
+└ ================================================================================
+[ Info: DAEfunction:  using Jacobian ForwardDiffSparse
+[ Info: jac_config_dae: jac_ad=ForwardDiffSparse
+[ Info:   using ForwardDiff sparse Jacobian with sparsity calculated at t=0.0
+[ Info: calcJacobianSparsitySparsityTracing!
+[ Info: add_arrays_data! (arrays_eltype=SparsityTracing.ADval{Float64}, arrays_tagname=sparsity_tracing)
+[ Info: calcJacobianSparsitySparsityTracing! do_deriv
+[ Info: calcJacobianSparsitySparsityTracing!  initial_jac size=(3, 3) nnz=0 non-zero=0 at time=0.0
+[ Info:   fill_sparse_jac: initial_jac nnz 0 (0.0%) non-zero 0
+[ Info:   fill_sparse_jac: after filling diagonal nnz 3
+[ Info:   jac_prototype nnz=3 num colors=1
+[ Info:   calculating dTdS for 3 Total Variables
+[ Info: add_arrays_data! (arrays_eltype=SparsityTracing.ADval{Float64}, arrays_tagname=sparsity_tracing_implicit)
+[ Info:   initial_dTdS size=(3, 3) nnz=7 non-zero=7 at time=0.0
+[ Info:   fill_sparse_jac: initial_jac nnz 7 (77.8%) non-zero 7
+[ Info:   implicit_prototype nnz=7 num colors=3
+[ Info:     combined jac_prototype nnz=9 num colors=3
+[ Info: add_arrays_data! (arrays_eltype=ForwardDiff.Dual{Nothing, Float64, 3}, arrays_tagname=jac_ad)
+[ Info: calling get_inconsistent_initial_deriv
+  2.653626 seconds (3.75 M allocations: 255.464 MiB, 3.89% gc time, 99.94% compilation time)
+┌ Info:
+│ ================================================================================
+│ print_sol_stats:
+│     retcode=Success
+│     alg=Sundials.IDA{:KLU, Nothing, Nothing}(0, 0, 0, 5, 7, 0.33, 3, 10, 0.0033, 5, 4, 10, 100, true, false, nothing, nothing)
+│     stats=SciMLBase.DEStats
+│ Number of function 1 evaluations:                  370
+│ Number of function 2 evaluations:                  0
+│ Number of W matrix evaluations:                    48
+│ Number of linear solves:                           0
+│ Number of Jacobians created:                       48
+│ Number of nonlinear solver iterations:             368
+│ Number of nonlinear solver convergence failures:   1
+│ Number of fixed-point solver iterations:                     0
+│ Number of fixed-point solver convergence failures:           0
+│ Number of rootfind condition calls:                0
+│ Number of accepted steps:                          191
+│ Number of rejected steps:                          5
+│     length(sol.t) 197
+│     size(sol) (3, 197)
+└ ================================================================================
+[ Info: ODE.calc_output_sol!: 197 records
+[ Info: ODE.calc_output_sol!: done
+┌ Info:
+│ ================================================================================
+│ PALEOmodel.ODE.integrateDAE: done
+└ ================================================================================
+  6.244111 seconds (7.46 M allocations: 513.551 MiB, 2.88% gc time, 99.64% compilation time)</code></pre><p><img src="../ex2_plot1.svg" alt/> <img src="../ex2_plot2.svg" alt/> <img src="../ex2_plot3.svg" alt/> <img src="../ex2_plot4.svg" alt/></p><h3 id="Displaying-model-structure-and-variables-2"><a class="docs-heading-anchor" href="#Displaying-model-structure-and-variables-2">Displaying model structure and variables</a><a class="docs-heading-anchor-permalink" href="#Displaying-model-structure-and-variables-2" title="Permalink"></a></h3><p>All metadata for model variables can be displayed with <code>PB.show_variables</code>:</p><pre><code class="language-julia hljs">show(PB.show_variables(model), allcols=true, allrows=true) # display in REPL
+# vscodedisplay(PB.show_variables(model)) # more convenient when using VS code</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">37×8 DataFrame
+ Row │ domain        name              type                      units         vfunction      space        field_data  description
+     │ String        String            DataType                  String        Variable…      DataType     DataType    String
+─────┼───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+   1 │ global        add_Alk/FApplied  VariableDomPropDep        mol yr-1      VF_Undefined   ScalarSpace  ScalarData  flux perturbation applied, for d…
+   2 │ global        tforce            VariableDomPropDep        yr            VF_Undefined   ScalarSpace  ScalarData  time at which to apply perturbat…
+   3 │ ocean         Abox              VariableDomPropDep        m^2           VF_Undefined   CellSpace    ScalarData  horizontal area of box
+   4 │ ocean         B                 VariableDomPropDep        mol           VF_Undefined   CellSpace    ScalarData  total or component R
+   5 │ ocean         BOH3_conc         VariableDomPropDep        mol m-3       VF_StateTotal  CellSpace    ScalarData  concentration of primary species
+   6 │ ocean         BOH4_conc         VariableDomPropDep        mol m-3       VF_Undefined   CellSpace    ScalarData  aqueous concentration or activity
+   7 │ ocean         B_calc            VariableDomContribTarget  mol           VF_Undefined   CellSpace    ScalarData  contributions to total R_calc_co…
+   8 │ ocean         B_conc            VariableDomContribTarget  mol m-3       VF_Total       CellSpace    ScalarData  total or component R_conc
+   9 │ ocean         B_conc_sms        VariableDomContribTarget  mol m-3 yr-1  VF_Deriv       CellSpace    ScalarData  total or component R_conc source…
+  10 │ ocean         B_sms             VariableDomContribTarget  mol yr-1      VF_Undefined   CellSpace    ScalarData  total or component R source - si…
+  11 │ ocean         CO2_aq_conc       VariableDomPropDep        mol m-3       VF_StateTotal  CellSpace    ScalarData  concentration of primary species
+  12 │ ocean         CO3_conc          VariableDomPropDep        mol m-3       VF_Undefined   CellSpace    ScalarData  aqueous concentration or activity
+  13 │ ocean         DIC               VariableDomPropDep        mol           VF_Undefined   CellSpace    ScalarData  total or component R
+  14 │ ocean         DIC_calc          VariableDomContribTarget  mol           VF_Undefined   CellSpace    ScalarData  contributions to total R_calc_co…
+  15 │ ocean         DIC_conc          VariableDomContribTarget  mol m-3       VF_Total       CellSpace    ScalarData  total or component R_conc
+  16 │ ocean         DIC_conc_sms      VariableDomContribTarget  mol m-3 yr-1  VF_Deriv       CellSpace    ScalarData  total or component R_conc source…
+  17 │ ocean         DIC_sms           VariableDomContribTarget  mol yr-1      VF_Undefined   CellSpace    ScalarData  total or component R source - si…
+  18 │ ocean         HCO3_conc         VariableDomPropDep        mol m-3       VF_Undefined   CellSpace    ScalarData  aqueous concentration or activity
+  19 │ ocean         H_conc            VariableDomPropDep        mol m-3       VF_Undefined   CellSpace    ScalarData  concentration of primary species
+  20 │ ocean         OH_conc           VariableDomPropDep        mol m-3       VF_Undefined   CellSpace    ScalarData  aqueous concentration or activity
+  21 │ ocean         TAlk              VariableDomPropDep        mol           VF_Undefined   CellSpace    ScalarData  total or component R
+  22 │ ocean         TAlk_calc         VariableDomContribTarget  mol           VF_Undefined   CellSpace    ScalarData  contributions to total R_calc_co…
+  23 │ ocean         TAlk_conc         VariableDomContribTarget  mol m-3       VF_Total       CellSpace    ScalarData  total or component R_conc
+  24 │ ocean         TAlk_conc_sms     VariableDomContribTarget  mol m-3 yr-1  VF_Deriv       CellSpace    ScalarData  total or component R_conc source…
+  25 │ ocean         TAlk_sms          VariableDomContribTarget  mol yr-1      VF_Undefined   CellSpace    ScalarData  total or component R source - si…
+  26 │ ocean         pH                VariableDomPropDep                      VF_StateTotal  CellSpace    ScalarData  -log10(concentration of primary …
+  27 │ ocean         pressure          VariableDomPropDep        dbar          VF_Undefined   CellSpace    ScalarData  Ocean pressure
+  28 │ ocean         rho_ref           VariableDomPropDep        kg m^-3       VF_Undefined   CellSpace    ScalarData  Ocean transport model density co…
+  29 │ ocean         volume            VariableDomPropDep        m^3           VF_Undefined   CellSpace    ScalarData  volume of ocean cells
+  30 │ ocean         volume_total      VariableDomPropDep        m^3           VF_Undefined   ScalarSpace  ScalarData  total volume of ocean cells
+  31 │ ocean         zlower            VariableDomPropDep        m             VF_Undefined   CellSpace    ScalarData  depth of lower surface of box (m)
+  32 │ ocean         zmid              VariableDomPropDep        m             VF_Undefined   CellSpace    ScalarData  mean depth of box
+  33 │ ocean         zupper            VariableDomPropDep        m             VF_Undefined   CellSpace    ScalarData  depth of upper surface of box (m…
+  34 │ oceanfloor    Afloor            VariableDomPropDep        m^2           VF_Undefined   CellSpace    ScalarData  horizontal area of seafloor at b…
+  35 │ oceanfloor    Afloor_total      VariableDomPropDep        m^2           VF_Undefined   ScalarSpace  ScalarData  total area of seafloor
+  36 │ oceanfloor    zfloor            VariableDomPropDep        m             VF_Undefined   CellSpace    ScalarData  depth of ocean floor (m, -ve)
+  37 │ oceansurface  Asurf             VariableDomPropDep        m^2           VF_Undefined   CellSpace    ScalarData  horizontal area of oceansurface</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../ocean_chemistry/README/">« Ocean chemistry</a><a class="docs-footer-nextpage" href="../../../ComponentsWorkflow/">PALEOtoolkit components and workflow »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.5.0 on <span class="colophon-date" title="Wednesday 26 June 2024 10:56">Wednesday 26 June 2024</span>. Using Julia version 1.10.4.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
