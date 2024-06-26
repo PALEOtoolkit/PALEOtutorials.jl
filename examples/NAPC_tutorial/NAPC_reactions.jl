@@ -41,39 +41,46 @@ function PB.register_methods!(rj::ReactionPhytoplankton)
     # 'Prop' - something we calculate
     # 'Contrib' - a flux we calculate to add to an external Target (eg a reservoir source - sink)
     vars = [
+        PB.VarDep("volume",         "m^3",          "cell volume"),
         PB.VarDep("insol",          "W m-2",        "insolation"),
-        PB.VarDep("O2_conc",             "mol m-3",          "oxygen conc"),
-        PB.VarContrib("O2_sms",          "mol m-3 yr-1",  "Oxygen source-sink"),
-        PB.VarDep("P_conc",             "mol m-3",          "Nutrient conc"),
-        PB.VarContrib("P_sms",          "mol m-3 yr-1",     "Nutrient source-sink"),
-        PB.VarProp("PX_growth_rate",  "yr-1",             "phytoplankton growth rate"),
-        PB.VarDep("PX_conc",          "mol m-3",          "phytoplankton concentration"),
-        PB.VarContrib("PX_sms",       "mol m-3 yr-1",     "phytoplankton source-sink"),
+        # PB.VarDep("O2_conc",        "mol m-3",      "oxygen conc"),
+        PB.VarContrib("O2_sms",     "mol yr-1",     "Oxygen source-sink"),
+        PB.VarDep("P_conc",         "mol m-3",      "Nutrient conc"),
+        PB.VarContrib("P_sms",      "mol yr-1",     "Nutrient source-sink"),
+        PB.VarProp("PX_growth_rate", "yr-1",        "phytoplankton growth rate"),
+        PB.VarDep("PX_conc",        "mol m-3",      "phytoplankton concentration"),
+        PB.VarContrib("PX_sms",     "mol yr-1",     "phytoplankton source-sink"),
     ]
     PB.add_method_do!(rj, grow_phyto, (PB.VarList_namedtuple(vars),))
 
     return nothing
 end
 
-function grow_phyto(m::PB.ReactionMethod, (vars, ), cellrange::PB.AbstractCellRange, deltat)
-    rj = m.reaction
+function grow_phyto(m::PB.ReactionMethod, pars, (vars, ), cellrange::PB.AbstractCellRange, deltat)
     
-    mumax_yr = rj.pars.mumax.v * PB.Constants.k_daypyr # convert d-1 to yr-1
-    @inbounds for i in cellrange.indices
+    mumax_yr = pars.mumax[] * PB.Constants.k_daypyr # convert d-1 to yr-1
+    for i in cellrange.indices
         # NB: for numerical stability, defend against -ve values by setting rate to 0
+        # NB: units - _sms variables are mol yr-1, so may need to multiply rates by ocean cell volume
+
+        # calculate specific growth rate limited by light and nutrient availability
+        light_lim_fac = pars.insol_scale[]*vars.insol[i]
+        nut_lim_fac = max(vars.P_conc[i], 0.0)/(max(vars.P_conc[i], 0.0) + pars.Ks[])
         # yr-1
+        vars.PX_growth_rate[i] = mumax_yr*light_lim_fac*nut_lim_fac
 
-        vars.PX_growth_rate[i] = rj.pars.insol_scale.v*vars.insol[i]*mumax_yr*max(vars.P_conc[i], 0.0)/(max(vars.P_conc[i], 0.0) + rj.pars.Ks.v)
-
-        nutrient_rate = max(vars.PX_conc[i], 0.0)*vars.PX_growth_rate[i]
+        # convert specific growth rate to population growth rate for this ocean cell
+        # mol P yr-1    =  yr-1                 * mol P m-3              * m^3
+        pop_growth_rate = vars.PX_growth_rate[i]*max(vars.PX_conc[i], 0.0)*vars.volume[i]
         
-        vars.PX_sms[i] += nutrient_rate
-        vars.P_sms[i] -= nutrient_rate
-        vars.O2_sms[i] -= rj.pars.stoich_PtoO2.v*nutrient_rate
+        vars.PX_sms[i] += pop_growth_rate
+        vars.P_sms[i] -= pop_growth_rate
+        vars.O2_sms[i] -= pars.stoich_PtoO2[]*pop_growth_rate
        
     end
 
     return nothing
 end
+
 
 end #end module
