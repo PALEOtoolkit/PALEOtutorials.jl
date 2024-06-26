@@ -31,7 +31,7 @@ model = PB.create_model_from_config(
 
 tspan=(0,5.0)
 
-initial_state, modeldata = PALEOmodel.initialize!(model)
+initial_state, modeldata = PALEOmodel.initialize!(model; check_units_opt=:warn)
 
 paleorun = PALEOmodel.Run(model=model, output = PALEOmodel.OutputWriters.OutputMemory()) 
 
