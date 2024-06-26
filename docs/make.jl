@@ -54,7 +54,6 @@ makedocs(;
             "HOWTOadditionalconfig.md",
             "HOWTOminimalGit.md",
             "HOWTOdocumentation.md",
-            "HOWTOPython.md",
         ],
         # no Reference doc yet
         "References.md",
