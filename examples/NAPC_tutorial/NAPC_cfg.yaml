@@ -219,7 +219,8 @@ NP_shelf:
                 P0_growth:
                     class: ReactionPhytoplankton
                     parameters:
-                        mumax: 1.4 #units="d-1" max growth rate
+                        # mumax: 1.4 #units="d-1" max growth rate
+                        mumax: 0.7 #units="d-1" max growth rate (corrected value after volume units fix)
                         Ks: 1e-3 #units="mol m-3 nutrient limitation factor
                         insol_scale: 0.005 #units="" insolation scale factor
                         O2_thresh: 1e-6 #units="mol m-3" oxygen threshold constant
