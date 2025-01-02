@@ -70,7 +70,7 @@ display(  # hide
     plot(  # hide
         paleorun.output,   # hide
         ["ocean.HCO3_conc", "ocean.CO3_conc", "ocean.CO2_aq_conc", "ocean.BOH4_conc", "ocean.BOH3_conc",  "ocean.H_conc", "ocean.OH_conc",],  # hide
-        (cell=1, tmodel=(1.0, 1e12)); # omit first point (pH 8 starting condition)  # hide
+        (cell=1, ); # hide
         coords=["tmodel"=>("ocean.pH",),], # plot against pH instead of tmodel  # hide
         ylabel="H2O, B, DIC species (mol m-3)", ylim=(0.5e-3, 0.5e1), yscale=:log10,  # hide
         legend_background_color=nothing,  # hide

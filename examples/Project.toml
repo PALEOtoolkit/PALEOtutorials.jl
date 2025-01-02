@@ -19,5 +19,5 @@ ZipFile = "a5390f91-8eb1-5f08-bee0-b1d1ffed6cea"
 
 [compat]
 PALEOaqchem = "0.3.9"
-PALEOboxes = "0.21.29"
-PALEOmodel = "0.15.40"
+PALEOboxes = "0.21.29, 0.22"
+PALEOmodel = "0.15.40, 0.16.3"

@@ -55,7 +55,7 @@ Use [`PALEOboxes.show_variables`](@extref) to list all Variables in the model, o
 
 To list full information for all Variables in the model (including Variable linking and current values):
 
-    julia> vscodedisplay(PB.show_variables(model, modeldata=modeldata, showlinks=true))
+    julia> vscodedisplay(PB.show_variables(model; modeldata=modeldata, showlinks=true))
 
 This illustrates the modularized model structure, with:
 
@@ -103,15 +103,17 @@ named dimensions and coordinates):
 
     julia> pCO2atm = PALEOmodel.get_array(paleorun.output, "atm.pCO2atm")
     julia> pCO2atm.values # raw data Array
-    julia> pCO2atm.dims[1] # pCO2 is a scalar Variable with one dimension `records` which has a coordinate `tmodel`
-    julia> pCO2atm.dims[1].coords[1].values # raw values for model time (`tmodel`)
+    julia> pCO2atm.dims_coords # pCO2 is a scalar Variable with one dimension `tmodel` which has one coordinate variable also called `tmodel`
+    julia> pCO2atm.dims_coords[1] # first dimension, as a Pair dimension => vector of attached coordinates
+    julia> pCO2atm.dims_coords[1][2][1] # coordinate variable (also a FieldArray)
+    julia> pCO2atm.dims_coords[1][2][1].values # raw values for model time (`tmodel`) from coordinate variable
 
 Raw data arrays can also be accessed as Julia Vectors using `get_data`:
 
     julia> pCO2atm_raw = PB.get_data(paleorun.output, "atm.pCO2atm")  # raw data Array
     julia> tmodel_raw = PB.get_data(paleorun.output, "atm.tmodel") # raw data Array
 
-(here these are the values and coordinate of the `pCO2atm` [`PALEOmodel.FieldArray`](@extref), ie `pCO2atm_raw == pCO2atm.values` and `tmodel_raw == pCO2atm.dims[1].coords[1].values`).
+(here these are the values and coordinate of the `pCO2atm` [`PALEOmodel.FieldArray`](@extref), ie `pCO2atm_raw == pCO2atm.values` and `tmodel_raw == pCO2atm.dims_coords[1][2][1].values`).
 
 ## Plot model output
 
@@ -135,14 +137,20 @@ To analyze spatial or eg wavelength-dependent output (eg time series from a 1D c
 
 ### Examples for a column-based model
 
-Visualisation of spatial and wavelength-dependent output from the PALEOdev.jl ozone photochemistry example (a single 1D atmospheric column):
+Visualisation of spatial and wavelength-dependent output from the PALEOatmosphere.jl ozone photochemistry example (a single 1D atmospheric column):
 
 #### 1D column data
-    julia> plot(title="O3 mixing ratio", output, "atm.O3_mr", (tmodel=[0.0, 0.1, 1.0, 10.0, 100.0, 1000.0], column=1),
+To plot O3 mixing ratio vs height in the 1D atmosphere column, at the last model timestep:
+
+    julia> plot(title="O3 mixing ratio", paleorun.output, "atm.O3_mr", (tmodel=1e12, column=1),
+                swap_xy=true, xscale=:log10) # plots O3 vs default height coordinate, at the nearest model time to 1e12 yr (ie the last timestep)
+
+To plot results from multiple output times:
+
+    julia> plot(title="O3 mixing ratio", paleorun.output, "atm.O3_mr", (tmodel=[0.0, 0.1, 1.0, 10.0, 100.0, 1000.0], column=1),
                 swap_xy=true, xscale=:log10, labelattribute=:filter_records) # plots O3 vs default height coordinate
 
-Here the optional `labelattribute=:filter_records` keyword argument is used to generate plot labels from the `:filter_records` FieldArray attribute, which contains the `tmodel` values used to select the timeseries records.  The plot recipe expands
-the Vector-valued `tmodel` argument to overlay a sequence of plots.
+Here the plot recipe expands the Vector-valued `tmodel` argument to create a composite plot. The optional `labelattribute=:filter_records` keyword argument is used to generate plot labels from the `:filter_records` FieldArray attribute, which contains the `tmodel` values used to select the timeseries records.  
 
 This is equivalent to first creating and then plotting a sequence of `FieldArray` objects:
 
@@ -153,41 +161,39 @@ This is equivalent to first creating and then plotting a sequence of `FieldArray
 
 The default height coordinate from the model grid can be replaced using the optional `coords` keyword argument, eg
 
-    julia> plot(title="O3 mixing ratio", output, "atm.O3_mr", (tmodel=[0.0, 0.1, 1.0, 10.0, 100.0, 1000.0], column=1),
-                coords=["p"=>("atm.pmid", "atm.plower", "atm.pupper")],
+    julia> plot(title="O3 mixing ratio", paleorun.output, "atm.O3_mr", (tmodel=[0.0, 0.1, 1.0, 10.0, 100.0, 1000.0], column=1),
+                coords=["cells"=>("atm.pmid", "atm.plower", "atm.pupper")],
                 swap_xy=true, xscale=:log10, yflip=true, yscale=:log10, labelattribute=:filter_records) # plots O3 vs pressure
 
-The current values in the `modeldata` struct can also be plotted using the same syntax, eg
-
-    julia> plot(title="O2, O3 mixing ratios", modeldata, ["atm.O2_mr", "atm.O3_mr"], (column=1,),
-                swap_xy=true, xscale=:log10) # plot current value of O2, O3 vs height
-
-
 #### Wavelength-dependent data
-    julia> plot(title="direct transmittance", output, ["atm.direct_trans"], (tmodel=1e12, column=1, cell=[1, 80]),
+    julia> plot(title="direct transmittance", paleorun.output, ["atm.direct_trans"], (tmodel=1e12, column=1, cell=[1, 80]),
                 ylabel="fraction", labelattribute=:filter_region) # plots vs wavelength
 
-Here `tmodel=1e12` selects the last model time output, and `column=1, cell=[1, 80]` selects the top and bottom cells within the first (only) 1D column. The `labelattribute=:filter_region` keyword argument is used to generate plot labels from the `:filter_region` FieldArray attribute, which contains the `column` and `cell` values used to select the spatial region.
+Here `tmodel=1e12` selects the nearest model time to 1e12 yr ie the last model time output, and `column=1, cell=[1, 80]` selects the top and bottom cells within the first (only) 1D column. The `labelattribute=:filter_region` keyword argument is used to generate plot labels from the `:filter_region` FieldArray attribute, which contains the `column` and `cell` values used to select the spatial region.
 
 ### Examples for a 3D GCM-based model
 
-Visualisation of spatial output from the 3D GENIE transport-matrix example (PALEOdev.jl repository)
+Visualisation of spatial output from the 3D MITgcm transport-matrix example (PALEOocean.jl repository)
 
 ### Horizontal slices across levels
-    julia> heatmap(paleorun.output, "ocean.O2_conc", (tmodel=1e12, k=1), swap_xy=true)
+    julia> heatmap(paleorun.output, "ocean.O2_conc", (tmodel=1e12, zt_isel=1, expand_cartesian=true), swap_xy=true)
 
-Here `k=1` selects a horizontal level corresponding to model grid cells with index k=1, which is the ocean surface in the GENIE grid.
+Here `zt_isel=1` selects a horizontal level corresponding to model grid cells with index of 'zt' dimension = 1, which is the ocean surface in the MITgcm grid (NB: naming of dimensions is specific to model configurations, as is ordering and sign of depth coordinates hence need for `swap_xy` option). `expand_cartesian=true` expands the internal storage from a vector of cells to a 3D cartesian grid.
 
 ### Vertical section at constant longitude
-    julia> heatmap(paleorun.output, "ocean.O2_conc", (tmodel=1e12, i=10), swap_xy=true, mult_y_coord=-1.0)
+    julia> heatmap(paleorun.output, "ocean.O2_conc", (tmodel=1e12, lon=340.0, expand_cartesian=true), swap_xy=true)
 
-Here `i=10` selects a section at longitude corresponding to model grid cells with index i=10.
+Here `lon=340.0` selects a section at the nearest 'lon' coordinate to 340.0 degrees east (NB: naming of dimensions is specific to model configurations, as is ordering and sign of depth coordinates hence need for `swap_xy` and `mult_y_coord` options).
+
+### Exporting to netcdf to use xarray etc
+
+PALEO output (see below) is in standard netcdf format with the ocean data in the ocean group of a multi-group netcdf file, so can be analyzed using eg the Python `xarray` package, see example Jupyter notebook in the `PALEOocean` repository, `examples/mitgcm` folder. 
 
 ## Save and load output
 
 Model output can be saved and loaded using the [`PALEOmodel.OutputWriters.save_netcdf`](@extref) and [`PALEOmodel.OutputWriters.load_netcdf!`](@extref) methods.
 
-NB: the [`PALEOmodel.OutputWriters.save_jld2`](@extref) and [`PALEOmodel.OutputWriters.load_jld2!`](@extref) methods are still available, but no longer recommended as these files will not remain readable with future Julia or PALEO versions.
+Output attempts to follow standard netcdf conventions. NB each PALEO Domain is a separate group in a multi-group netcdf file.
 
 ## Export output to a CSV file
 

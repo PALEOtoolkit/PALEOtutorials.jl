@@ -30,7 +30,7 @@ all_values = all_vars.values # nested NamedTuples
 # create an object to hold output
 output_euler = PALEOmodel.OutputWriters.OutputMemory()
 nsteps = floor(Int, (tspan[2] - tspan[1])/dt)
-PALEOmodel.OutputWriters.initialize!(output_euler, model, modeldata, nsteps+1; rec_coord=:tmodel)
+PALEOmodel.OutputWriters.initialize!(output_euler, model, modeldata, nsteps+1; record_dim_name=:tmodel)
 
 #################################################################
 # Integrate vs time
