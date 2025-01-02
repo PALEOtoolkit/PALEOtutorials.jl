@@ -167,7 +167,7 @@ display(plot(paleorun.output, &quot;global.decay_flux&quot;))</code></pre><p>And
 │ ================================================================================
 │ creating Domains
 └ ================================================================================
-[ Info: generated Reaction catalog with 73 Reactions
+[ Info: generated Reaction catalog with 74 Reactions
 ┌ Info:
 │ ================================================================================
 │ creating domain &#39;global&#39; ID=1
@@ -263,7 +263,7 @@ integrate, ODE
 └ ================================================================================
 [ Info: ODEfunction: using Jacobian NoJacobian
 [ Info: jac_config_ode: jac_ad=NoJacobian
-  0.509713 seconds (812.85 k allocations: 56.909 MiB, 3.00% gc time, 99.91% compilation time)
+  0.580970 seconds (1.13 M allocations: 78.937 MiB, 5.24% gc time, 99.93% compilation time)
 ┌ Info:
 │ ================================================================================
 │ print_sol_stats:
@@ -291,25 +291,25 @@ integrate, ODE
 │ ================================================================================
 │ PALEOmodel.ODE.integrate: done
 └ ================================================================================
-  1.136750 seconds (1.43 M allocations: 99.044 MiB, 2.54% gc time, 99.69% compilation time)</code></pre><p><img src="../ex1_plot1.svg" alt/> <img src="../ex1_plot2.svg" alt/></p><h3 id="Displaying-model-structure-and-variables"><a class="docs-heading-anchor" href="#Displaying-model-structure-and-variables">Displaying model structure and variables</a><a id="Displaying-model-structure-and-variables-1"></a><a class="docs-heading-anchor-permalink" href="#Displaying-model-structure-and-variables" title="Permalink"></a></h3><p>All metadata for model variables can be displayed with <code>PB.show_variables</code>:</p><pre><code class="language-julia hljs">show(PB.show_variables(model), allcols=true, allrows=true) # display in REPL
-# vscodedisplay(PB.show_variables(model)) # more convenient when using VS code</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">3×8 DataFrame
- Row │ domain  name        type                      units     vfunction         space        field_data  description
-     │ String  String      DataType                  String    Variable…         DataType     DataType    String
-─────┼────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-   1 │ global  A           VariableDomPropDep        mol       VF_StateExplicit  ScalarSpace  ScalarData  reservoir for species A
-   2 │ global  A_sms       VariableDomContribTarget  mol yr-1  VF_Deriv          ScalarSpace  ScalarData  reservoir A source - sink
-   3 │ global  decay_flux  VariableDomPropDep        mol yr-1  VF_Undefined      ScalarSpace  ScalarData  decay flux from reservoir A</code></pre><p>The <code>type</code> column shows the two pairings of <code>VariableReaction</code>s linked to <code>VariableDomain</code>s:</p><ul><li>Reaction Property and Dependency Variables, linked to a <code>VariableDomPropDep</code>. These are used to represent   a quantity calculated in one Reaction (or provided by the numerical solver, in the case of &quot;global.A&quot;) that is then used by other Reactions.</li><li>Reaction Target and Contributor Variables, linked to a <code>VariableDomContribTarget</code>. These are used to represent   a flux-like quantity, with one Reaction (or the numerical solver, in the case of &quot;global.A_sms&quot;) definining the Target and multiple Reactions adding contributions.</li></ul><p>Variable links for an individual VariableDomain can be displayed using <code>PB.show_links</code>, where the linked variables are shown as &quot;<code>&lt;domain name&gt;.&lt;reaction name&gt;.&lt;method name&gt;.&lt;local name&gt;</code>&quot;:</p><pre><code class="language-julia hljs">PB.show_links(model, &quot;global.decay_flux&quot;)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">	PALEOboxes.VariableDomPropDep &quot;global.decay_flux&quot; links:
+  1.211437 seconds (1.77 M allocations: 122.745 MiB, 3.65% gc time, 99.70% compilation time)</code></pre><p><img src="../ex1_plot1.svg" alt/> <img src="../ex1_plot2.svg" alt/></p><h3 id="Displaying-model-structure-and-variables"><a class="docs-heading-anchor" href="#Displaying-model-structure-and-variables">Displaying model structure and variables</a><a id="Displaying-model-structure-and-variables-1"></a><a class="docs-heading-anchor-permalink" href="#Displaying-model-structure-and-variables" title="Permalink"></a></h3><p>All metadata for model variables can be displayed with <code>PB.show_variables</code>:</p><pre><code class="language-julia hljs">show(PB.show_variables(model), allcols=true, allrows=true) # display in REPL
+# vscodedisplay(PB.show_variables(model)) # more convenient when using VS code</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">3×9 DataFrame
+ Row │ domain  name        type                      units     vfunction         space        data_dims  field_data  description
+     │ String  String      DataType                  String    Variable…         DataType     Tuple{}    DataType    String
+─────┼───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+   1 │ global  A           VariableDomPropDep        mol       VF_StateExplicit  ScalarSpace  ()         ScalarData  reservoir for species A
+   2 │ global  A_sms       VariableDomContribTarget  mol yr-1  VF_Deriv          ScalarSpace  ()         ScalarData  reservoir A source - sink
+   3 │ global  decay_flux  VariableDomPropDep        mol yr-1  VF_Undefined      ScalarSpace  ()         ScalarData  decay flux from reservoir A</code></pre><p>The <code>type</code> column shows the two pairings of <code>VariableReaction</code>s linked to <code>VariableDomain</code>s:</p><ul><li>Reaction Property and Dependency Variables, linked to a <code>VariableDomPropDep</code>. These are used to represent   a quantity calculated in one Reaction (or provided by the numerical solver, in the case of &quot;global.A&quot;) that is then used by other Reactions.</li><li>Reaction Target and Contributor Variables, linked to a <code>VariableDomContribTarget</code>. These are used to represent   a flux-like quantity, with one Reaction (or the numerical solver, in the case of &quot;global.A_sms&quot;) definining the Target and multiple Reactions adding contributions.</li></ul><p>Variable links for an individual VariableDomain can be displayed using <code>PB.show_links</code>, where the linked variables are shown as &quot;<code>&lt;domain name&gt;.&lt;reaction name&gt;.&lt;method name&gt;.&lt;local name&gt;</code>&quot;:</p><pre><code class="language-julia hljs">PB.show_links(model, &quot;global.decay_flux&quot;)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">	PALEOboxes.VariableDomPropDep &quot;global.decay_flux&quot; links:
 		property:	&quot;global.Adecay.do_example1.decay_flux&quot;
 		dependencies:	String[]</code></pre><p>(demonstrating that <code>global.decay_flux</code> is set by the <code>do_example1</code> method of the Reaction named <code>Adecay</code> in the yaml config file)</p><pre><code class="language-julia hljs">PB.show_links(model, &quot;global.A&quot;)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">	PALEOboxes.VariableDomPropDep &quot;global.A&quot; links:
 		property:	nothing
 		dependencies:	[&quot;global.Adecay.setup_example1.A&quot;, &quot;global.Adecay.do_example1.A&quot;]</code></pre><p>(demonstrating that the &quot;global.A&quot; state Variable has both the <code>do_setup_example1</code> and <code>do_example1</code> methods of the Reaction named <code>Adecay</code> in the yaml config file, which respectively set the initial value at model start, and then read the value at each timestep)</p><p><code>PB.show_variables</code> with an additional <code>showlinks=true</code> argument will also show variable links:</p><pre><code class="language-julia hljs">show(PB.show_variables(model; showlinks=true), allcols=true, allrows=true) # display in REPL
-# vscodedisplay(PB.show_variables(model; showlinks=true)) # more convenient when using VS code</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">3×12 DataFrame
- Row │ domain  name        type                      units     vfunction         space        field_data  description                  property                           dependencies                       target   contributors
-     │ String  String      DataType                  String    Variable…         DataType     DataType    String                       Array…?                            Array…?                            Missing  Array…?
-─────┼──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-   1 │ global  A           VariableDomPropDep        mol       VF_StateExplicit  ScalarSpace  ScalarData  reservoir for species A      missing                            [&quot;global.Adecay.setup_example1.A…  missing  missing
-   2 │ global  A_sms       VariableDomContribTarget  mol yr-1  VF_Deriv          ScalarSpace  ScalarData  reservoir A source - sink    missing                            missing                            missing  [&quot;global.Adecay.initialize_examp…
-   3 │ global  decay_flux  VariableDomPropDep        mol yr-1  VF_Undefined      ScalarSpace  ScalarData  decay flux from reservoir A  [&quot;global.Adecay.do_example1.deca…  missing                            missing  missing</code></pre><p>where the property, dependencies, target and contributor columns show the VariableReactions (defined by ReactionMethods) that link to each VariableDomain.</p><h3 id="Analysing-output"><a class="docs-heading-anchor" href="#Analysing-output">Analysing output</a><a id="Analysing-output-1"></a><a class="docs-heading-anchor-permalink" href="#Analysing-output" title="Permalink"></a></h3><p>Numerical values of variables at each timestep can be displayed with <code>PB.get_table</code>:</p><pre><code class="language-julia hljs">show(PB.get_table(paleorun.output, &quot;global&quot;), allcols=true, allrows=true) # display to REPL
+# vscodedisplay(PB.show_variables(model; showlinks=true)) # more convenient when using VS code</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">3×13 DataFrame
+ Row │ domain  name        type                      units     vfunction         space        data_dims  field_data  description                  property                           dependencies                       target   contributors
+     │ String  String      DataType                  String    Variable…         DataType     Tuple{}    DataType    String                       Array…?                            Array…?                            Missing  Array…?
+─────┼─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+   1 │ global  A           VariableDomPropDep        mol       VF_StateExplicit  ScalarSpace  ()         ScalarData  reservoir for species A      missing                            [&quot;global.Adecay.setup_example1.A…  missing  missing
+   2 │ global  A_sms       VariableDomContribTarget  mol yr-1  VF_Deriv          ScalarSpace  ()         ScalarData  reservoir A source - sink    missing                            missing                            missing  [&quot;global.Adecay.initialize_examp…
+   3 │ global  decay_flux  VariableDomPropDep        mol yr-1  VF_Undefined      ScalarSpace  ()         ScalarData  decay flux from reservoir A  [&quot;global.Adecay.do_example1.deca…  missing                            missing  missing</code></pre><p>where the property, dependencies, target and contributor columns show the VariableReactions (defined by ReactionMethods) that link to each VariableDomain.</p><h3 id="Analysing-output"><a class="docs-heading-anchor" href="#Analysing-output">Analysing output</a><a id="Analysing-output-1"></a><a class="docs-heading-anchor-permalink" href="#Analysing-output" title="Permalink"></a></h3><p>Numerical values of variables at each timestep can be displayed with <code>PB.get_table</code>:</p><pre><code class="language-julia hljs">show(PB.get_table(paleorun.output, &quot;global&quot;), allcols=true, allrows=true) # display to REPL
 # vscodedisplay(PB.get_table(paleorun.output, &quot;global&quot;)) # more convenient when using VS code</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">75×4 DataFrame
  Row │ tmodel       A           A_sms       decay_flux
      │ Float64      Float64     Float64     Float64
@@ -537,7 +537,7 @@ display(plot(paleorun.output, &quot;global.decay_flux&quot;))
 │ ================================================================================
 │ creating Domains
 └ ================================================================================
-[ Info: generated Reaction catalog with 73 Reactions
+[ Info: generated Reaction catalog with 74 Reactions
 ┌ Info:
 │ ================================================================================
 │ creating domain &#39;global&#39; ID=1
@@ -641,7 +641,7 @@ integrate, ODE
 └ ================================================================================
 [ Info: ODEfunction: using Jacobian NoJacobian
 [ Info: jac_config_ode: jac_ad=NoJacobian
-  0.000198 seconds (825 allocations: 38.312 KiB)
+  0.000167 seconds (920 allocations: 39.797 KiB)
 ┌ Info:
 │ ================================================================================
 │ print_sol_stats:
@@ -669,15 +669,15 @@ integrate, ODE
 │ ================================================================================
 │ PALEOmodel.ODE.integrate: done
 └ ================================================================================
-  0.001584 seconds (2.67 k allocations: 970.695 KiB)</code></pre><p><img src="../ex2_plot1.svg" alt/> <img src="../ex2_plot2.svg" alt/></p><h3 id="Displaying-model-structure-and-variables-2"><a class="docs-heading-anchor" href="#Displaying-model-structure-and-variables-2">Displaying model structure and variables</a><a class="docs-heading-anchor-permalink" href="#Displaying-model-structure-and-variables-2" title="Permalink"></a></h3><p>All metadata for model variables can be displayed with <code>PB.show_variables</code>:</p><pre><code class="language-julia hljs">show(PB.show_variables(model), allcols=true, allrows=true) # display in REPL
-# vscodedisplay(PB.show_variables(model)) # more convenient when using VS code</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">4×8 DataFrame
- Row │ domain  name        type                      units     vfunction         space        field_data  description
-     │ String  String      DataType                  String    Variable…         DataType     DataType    String
-─────┼──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-   1 │ global  A           VariableDomPropDep        mol       VF_StateExplicit  ScalarSpace  ScalarData  scalar reservoir
-   2 │ global  A_norm      VariableDomPropDep                  VF_Undefined      ScalarSpace  ScalarData  scalar reservoir normalized
-   3 │ global  A_sms       VariableDomContribTarget  mol yr-1  VF_Deriv          ScalarSpace  ScalarData  scalar reservoir source-sinks
-   4 │ global  decay_flux  VariableDomPropDep        mol yr-1  VF_Undefined      ScalarSpace  ScalarData  decay flux from reservoir A</code></pre><p>there is one more Variable &quot;global.A_norm&quot;, the normalized value of &quot;global.A&quot;, provided by the generic ReactionReservoirScalar and not used here.</p><p>The linking of the &quot;global.A&quot; variable illustrates the key difference between this example and Example 1:</p><pre><code class="language-julia hljs">PB.show_links(model, &quot;global.A&quot;)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">	PALEOboxes.VariableDomPropDep &quot;global.A&quot; links:
+  0.001404 seconds (4.28 k allocations: 1.015 MiB)</code></pre><p><img src="../ex2_plot1.svg" alt/> <img src="../ex2_plot2.svg" alt/></p><h3 id="Displaying-model-structure-and-variables-2"><a class="docs-heading-anchor" href="#Displaying-model-structure-and-variables-2">Displaying model structure and variables</a><a class="docs-heading-anchor-permalink" href="#Displaying-model-structure-and-variables-2" title="Permalink"></a></h3><p>All metadata for model variables can be displayed with <code>PB.show_variables</code>:</p><pre><code class="language-julia hljs">show(PB.show_variables(model), allcols=true, allrows=true) # display in REPL
+# vscodedisplay(PB.show_variables(model)) # more convenient when using VS code</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">4×9 DataFrame
+ Row │ domain  name        type                      units     vfunction         space        data_dims  field_data  description
+     │ String  String      DataType                  String    Variable…         DataType     Tuple{}    DataType    String
+─────┼─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+   1 │ global  A           VariableDomPropDep        mol       VF_StateExplicit  ScalarSpace  ()         ScalarData  scalar reservoir
+   2 │ global  A_norm      VariableDomPropDep                  VF_Undefined      ScalarSpace  ()         ScalarData  scalar reservoir normalized
+   3 │ global  A_sms       VariableDomContribTarget  mol yr-1  VF_Deriv          ScalarSpace  ()         ScalarData  scalar reservoir source-sinks
+   4 │ global  decay_flux  VariableDomPropDep        mol yr-1  VF_Undefined      ScalarSpace  ()         ScalarData  decay flux from reservoir A</code></pre><p>there is one more Variable &quot;global.A_norm&quot;, the normalized value of &quot;global.A&quot;, provided by the generic ReactionReservoirScalar and not used here.</p><p>The linking of the &quot;global.A&quot; variable illustrates the key difference between this example and Example 1:</p><pre><code class="language-julia hljs">PB.show_links(model, &quot;global.A&quot;)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">	PALEOboxes.VariableDomPropDep &quot;global.A&quot; links:
 		property:	nothing
 		dependencies:	[&quot;global.Adecay.do_example2.A&quot;, &quot;global.reservoir_A.setup_reactionreservoirscalar.R&quot;, &quot;global.reservoir_A.do_reactionreservoirscalar.R&quot;]</code></pre><p>The &quot;global.A&quot; state Variable now has three dependencies:</p><ul><li>the <code>setup_initialvalue_vars_default</code> method of the reaction named <code>reservoir_A</code> in the yaml file (a ReactionReservoirScalar), where the variable has local name <code>R</code> and has been renamed to <code>A</code> in the yaml file.</li><li>the <code>do_reactionreservoirscalar</code> method of the reaction named <code>reservoir_A</code> (which calculates normalized value <code>A_norm</code>, not needed here).</li><li>the <code>do_example1</code> method of the Reaction named <code>Adecay</code> in the yaml config file, where the variable has local name <code>A</code>, which reads the value.</li></ul><h2 id="Example-3-Transfer-between-two-Reservoirs"><a class="docs-heading-anchor" href="#Example-3-Transfer-between-two-Reservoirs">Example 3 Transfer between two Reservoirs</a><a id="Example-3-Transfer-between-two-Reservoirs-1"></a><a class="docs-heading-anchor-permalink" href="#Example-3-Transfer-between-two-Reservoirs" title="Permalink"></a></h2><p>Generalizing the Reaction to transfer between two reservoirs.</p><h3 id="Additional-code-files-3"><a class="docs-heading-anchor" href="#Additional-code-files-3">Additional code files</a><a class="docs-heading-anchor-permalink" href="#Additional-code-files-3" title="Permalink"></a></h3><p>The Reaction code (file <code>examples/reservoirs/reactions_ex3.jl</code>) now produces an <code>output_flux</code>, and has been generalized to operate on a generic <code>input_particle</code> Reservoir:</p><pre><code class="language-julia hljs">module Example3
 
@@ -823,7 +823,7 @@ display(plot(paleorun.output, &quot;global.decay_flux&quot;))</code></pre><p>and
 │ ================================================================================
 │ creating Domains
 └ ================================================================================
-[ Info: generated Reaction catalog with 73 Reactions
+[ Info: generated Reaction catalog with 74 Reactions
 ┌ Info:
 │ ================================================================================
 │ creating domain &#39;global&#39; ID=1
@@ -944,7 +944,7 @@ integrate, ODE
 └ ================================================================================
 [ Info: ODEfunction: using Jacobian NoJacobian
 [ Info: jac_config_ode: jac_ad=NoJacobian
-  0.526172 seconds (809.73 k allocations: 56.724 MiB, 3.01% gc time, 99.94% compilation time)
+  0.566189 seconds (1.13 M allocations: 78.491 MiB, 5.45% gc time, 99.96% compilation time)
 ┌ Info:
 │ ================================================================================
 │ print_sol_stats:
@@ -972,18 +972,18 @@ integrate, ODE
 │ ================================================================================
 │ PALEOmodel.ODE.integrate: done
 └ ================================================================================
-  0.669879 seconds (943.83 k allocations: 67.003 MiB, 2.37% gc time, 99.49% compilation time)</code></pre><p><img src="../ex3_plot1.svg" alt/> <img src="../ex3_plot2.svg" alt/></p><h3 id="Displaying-model-structure-and-variables-3"><a class="docs-heading-anchor" href="#Displaying-model-structure-and-variables-3">Displaying model structure and variables</a><a class="docs-heading-anchor-permalink" href="#Displaying-model-structure-and-variables-3" title="Permalink"></a></h3><p>All metadata for model variables can be displayed with <code>PB.show_variables</code>:</p><pre><code class="language-julia hljs">show(PB.show_variables(model), allcols=true, allrows=true) # display in REPL
-# vscodedisplay(PB.show_variables(model)) # more convenient when using VS code</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">7×8 DataFrame
- Row │ domain  name        type                      units     vfunction         space        field_data  description
-     │ String  String      DataType                  String    Variable…         DataType     DataType    String
-─────┼──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-   1 │ global  A           VariableDomPropDep        mol       VF_StateExplicit  ScalarSpace  ScalarData  scalar reservoir
-   2 │ global  A_norm      VariableDomPropDep                  VF_Undefined      ScalarSpace  ScalarData  scalar reservoir normalized
-   3 │ global  A_sms       VariableDomContribTarget  mol yr-1  VF_Deriv          ScalarSpace  ScalarData  scalar reservoir source-sinks
-   4 │ global  B           VariableDomPropDep        mol       VF_StateExplicit  ScalarSpace  ScalarData  scalar reservoir
-   5 │ global  B_norm      VariableDomPropDep                  VF_Undefined      ScalarSpace  ScalarData  scalar reservoir normalized
-   6 │ global  B_sms       VariableDomContribTarget  mol yr-1  VF_Deriv          ScalarSpace  ScalarData  scalar reservoir source-sinks
-   7 │ global  decay_flux  VariableDomPropDep        mol yr-1  VF_Undefined      ScalarSpace  ScalarData  decay flux</code></pre><p>We now have additional Variables corresponding to the <code>B</code> reservoir.</p><h2 id="Example-4-Transfer-between-Domains"><a class="docs-heading-anchor" href="#Example-4-Transfer-between-Domains">Example 4 Transfer between Domains</a><a id="Example-4-Transfer-between-Domains-1"></a><a class="docs-heading-anchor-permalink" href="#Example-4-Transfer-between-Domains" title="Permalink"></a></h2><p>The <code>ReactionExample3</code> from the previous example can be reused in a different model configuration that includes flux transfer between Reservoirs in two Domains. </p><h3 id="Additional-code-files-4"><a class="docs-heading-anchor" href="#Additional-code-files-4">Additional code files</a><a class="docs-heading-anchor-permalink" href="#Additional-code-files-4" title="Permalink"></a></h3><p>This example reuses the PALEO reactions from <a href="#Example-3-Transfer-between-two-Reservoirs">Example 3 Transfer between two Reservoirs</a></p><h3 id="yaml-configuration-file-4"><a class="docs-heading-anchor" href="#yaml-configuration-file-4">yaml configuration file</a><a class="docs-heading-anchor-permalink" href="#yaml-configuration-file-4" title="Permalink"></a></h3><p>The model configuration (file <code>examples/reservoirs/config_ex4.yaml</code>) contains two Domains <code>Box1</code> and <code>Box2</code>, and a flux coupler Domain <code>fluxBoxes</code>.  The <code>ReactionSum</code> in the <code>global</code> Domain tracks conservation:</p><pre><code class="language-julia hljs">############################################
+  0.704074 seconds (1.27 M allocations: 89.452 MiB, 4.38% gc time, 99.53% compilation time)</code></pre><p><img src="../ex3_plot1.svg" alt/> <img src="../ex3_plot2.svg" alt/></p><h3 id="Displaying-model-structure-and-variables-3"><a class="docs-heading-anchor" href="#Displaying-model-structure-and-variables-3">Displaying model structure and variables</a><a class="docs-heading-anchor-permalink" href="#Displaying-model-structure-and-variables-3" title="Permalink"></a></h3><p>All metadata for model variables can be displayed with <code>PB.show_variables</code>:</p><pre><code class="language-julia hljs">show(PB.show_variables(model), allcols=true, allrows=true) # display in REPL
+# vscodedisplay(PB.show_variables(model)) # more convenient when using VS code</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">7×9 DataFrame
+ Row │ domain  name        type                      units     vfunction         space        data_dims  field_data  description
+     │ String  String      DataType                  String    Variable…         DataType     Tuple{}    DataType    String
+─────┼─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+   1 │ global  A           VariableDomPropDep        mol       VF_StateExplicit  ScalarSpace  ()         ScalarData  scalar reservoir
+   2 │ global  A_norm      VariableDomPropDep                  VF_Undefined      ScalarSpace  ()         ScalarData  scalar reservoir normalized
+   3 │ global  A_sms       VariableDomContribTarget  mol yr-1  VF_Deriv          ScalarSpace  ()         ScalarData  scalar reservoir source-sinks
+   4 │ global  B           VariableDomPropDep        mol       VF_StateExplicit  ScalarSpace  ()         ScalarData  scalar reservoir
+   5 │ global  B_norm      VariableDomPropDep                  VF_Undefined      ScalarSpace  ()         ScalarData  scalar reservoir normalized
+   6 │ global  B_sms       VariableDomContribTarget  mol yr-1  VF_Deriv          ScalarSpace  ()         ScalarData  scalar reservoir source-sinks
+   7 │ global  decay_flux  VariableDomPropDep        mol yr-1  VF_Undefined      ScalarSpace  ()         ScalarData  decay flux</code></pre><p>We now have additional Variables corresponding to the <code>B</code> reservoir.</p><h2 id="Example-4-Transfer-between-Domains"><a class="docs-heading-anchor" href="#Example-4-Transfer-between-Domains">Example 4 Transfer between Domains</a><a id="Example-4-Transfer-between-Domains-1"></a><a class="docs-heading-anchor-permalink" href="#Example-4-Transfer-between-Domains" title="Permalink"></a></h2><p>The <code>ReactionExample3</code> from the previous example can be reused in a different model configuration that includes flux transfer between Reservoirs in two Domains. </p><h3 id="Additional-code-files-4"><a class="docs-heading-anchor" href="#Additional-code-files-4">Additional code files</a><a class="docs-heading-anchor-permalink" href="#Additional-code-files-4" title="Permalink"></a></h3><p>This example reuses the PALEO reactions from <a href="#Example-3-Transfer-between-two-Reservoirs">Example 3 Transfer between two Reservoirs</a></p><h3 id="yaml-configuration-file-4"><a class="docs-heading-anchor" href="#yaml-configuration-file-4">yaml configuration file</a><a class="docs-heading-anchor-permalink" href="#yaml-configuration-file-4" title="Permalink"></a></h3><p>The model configuration (file <code>examples/reservoirs/config_ex4.yaml</code>) contains two Domains <code>Box1</code> and <code>Box2</code>, and a flux coupler Domain <code>fluxBoxes</code>.  The <code>ReactionSum</code> in the <code>global</code> Domain tracks conservation:</p><pre><code class="language-julia hljs">############################################
 # Example 4
 # First order decay of a scalar variable
 # with transfer of flux to a second variable
@@ -1118,7 +1118,7 @@ display(plot(paleorun.output, [&quot;Box1.decay_flux&quot;, &quot;fluxBoxes.flux
 │ ================================================================================
 │ creating Domains
 └ ================================================================================
-[ Info: generated Reaction catalog with 73 Reactions
+[ Info: generated Reaction catalog with 74 Reactions
 ┌ Info:
 │ ================================================================================
 │ creating domain &#39;global&#39; ID=1
@@ -1169,8 +1169,8 @@ display(plot(paleorun.output, [&quot;Box1.decay_flux&quot;, &quot;fluxBoxes.flux
 │ register_reaction_methods!
 └ ================================================================================
 ┌ Info: register_methods: global.sum_E PALEOboxes.VariableStats.ReactionSum
-│     add 1.0 * Box1.A
-└     add 1.0 * Box2.B
+│     add 1 * Box1.A
+└     add 1 * Box2.B
 ┌ Info:
 │ ================================================================================
 │ link_variables: first pass
@@ -1282,7 +1282,7 @@ integrate, ODE
 └ ================================================================================
 [ Info: ODEfunction: using Jacobian NoJacobian
 [ Info: jac_config_ode: jac_ad=NoJacobian
-  0.000190 seconds (615 allocations: 32.906 KiB)
+  0.000153 seconds (684 allocations: 33.984 KiB)
 ┌ Info:
 │ ================================================================================
 │ print_sol_stats:
@@ -1310,20 +1310,20 @@ integrate, ODE
 │ ================================================================================
 │ PALEOmodel.ODE.integrate: done
 └ ================================================================================
-  0.022697 seconds (6.07 k allocations: 1.188 MiB, 58.85% gc time, 31.12% compilation time)</code></pre><p><img src="../ex4_plot1.svg" alt/> <img src="../ex4_plot2.svg" alt/></p><h3 id="Displaying-model-structure-and-variables-4"><a class="docs-heading-anchor" href="#Displaying-model-structure-and-variables-4">Displaying model structure and variables</a><a class="docs-heading-anchor-permalink" href="#Displaying-model-structure-and-variables-4" title="Permalink"></a></h3><p>All metadata for model variables can be displayed with <code>PB.show_variables</code>:</p><pre><code class="language-julia hljs">show(PB.show_variables(model), allcols=true, allrows=true) # display in REPL
-# vscodedisplay(PB.show_variables(model)) # more convenient when using VS code</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">9×8 DataFrame
- Row │ domain     name        type                      units     vfunction         space        field_data  description
-     │ String     String      DataType                  String    Variable…         DataType     DataType    String
-─────┼─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-   1 │ Box1       A           VariableDomPropDep        mol       VF_StateExplicit  ScalarSpace  ScalarData  scalar reservoir
-   2 │ Box1       A_norm      VariableDomPropDep                  VF_Undefined      ScalarSpace  ScalarData  scalar reservoir normalized
-   3 │ Box1       A_sms       VariableDomContribTarget  mol yr-1  VF_Deriv          ScalarSpace  ScalarData  scalar reservoir source-sinks
-   4 │ Box1       decay_flux  VariableDomPropDep        mol yr-1  VF_Undefined      ScalarSpace  ScalarData  decay flux
-   5 │ Box2       B           VariableDomPropDep        mol       VF_StateExplicit  ScalarSpace  ScalarData  scalar reservoir
-   6 │ Box2       B_norm      VariableDomPropDep                  VF_Undefined      ScalarSpace  ScalarData  scalar reservoir normalized
-   7 │ Box2       B_sms       VariableDomContribTarget  mol yr-1  VF_Deriv          ScalarSpace  ScalarData  scalar reservoir source-sinks
-   8 │ fluxBoxes  flux_B      VariableDomContribTarget  mol yr-1  VF_Undefined      CellSpace    ScalarData  flux input
-   9 │ global     E_total     VariableDomPropDep        unknown   VF_Undefined      ScalarSpace  ScalarData  sum of specified variables</code></pre><p>This shows that we now have four Domains:</p><ul><li><code>Box1</code> containing <code>reservoir_A</code>, <code>Adecay</code>, and associated Variables</li><li><code>Box2</code> containing <code>reservoir_B</code>and associated Variables</li><li><code>fluxBoxes</code> containing a Variable <code>flux_B</code> created by the <code>ReactionFluxTarget</code></li><li><code>global</code> containing <code>E_total</code> to check conservation.</li></ul><h3 id="An-aside-on-ordering-of-ReactionMethods"><a class="docs-heading-anchor" href="#An-aside-on-ordering-of-ReactionMethods">An aside on ordering of ReactionMethods</a><a id="An-aside-on-ordering-of-ReactionMethods-1"></a><a class="docs-heading-anchor-permalink" href="#An-aside-on-ordering-of-ReactionMethods" title="Permalink"></a></h3><div class="admonition is-info"><header class="admonition-header">Info</header><div class="admonition-body"><p>It is rarely necessary or useful to look at this - shown here just to illustrate how PALEO works</p></div></div><p>PALEO orders ReactionMethods based on the dependency information defined by the linked Variables (a method defining a Property must run before all methods that link to it as Dependencies, a method defining a Target must run after all methods that link to it as Contributors).</p><p>The order in which ReactionMethods are called during each timestep is stored in <code>model.sorted_methods_do</code> (a <code>struct PB.MethodSort</code>) and can be displayed using:</p><pre><code class="language-julia hljs">model.sorted_methods_do</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">MethodSort
+  0.036726 seconds (30.06 k allocations: 2.750 MiB, 94.57% compilation time)</code></pre><p><img src="../ex4_plot1.svg" alt/> <img src="../ex4_plot2.svg" alt/></p><h3 id="Displaying-model-structure-and-variables-4"><a class="docs-heading-anchor" href="#Displaying-model-structure-and-variables-4">Displaying model structure and variables</a><a class="docs-heading-anchor-permalink" href="#Displaying-model-structure-and-variables-4" title="Permalink"></a></h3><p>All metadata for model variables can be displayed with <code>PB.show_variables</code>:</p><pre><code class="language-julia hljs">show(PB.show_variables(model), allcols=true, allrows=true) # display in REPL
+# vscodedisplay(PB.show_variables(model)) # more convenient when using VS code</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">9×9 DataFrame
+ Row │ domain     name        type                      units     vfunction         space        data_dims  field_data  description
+     │ String     String      DataType                  String    Variable…         DataType     Tuple{}    DataType    String
+─────┼────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+   1 │ Box1       A           VariableDomPropDep        mol       VF_StateExplicit  ScalarSpace  ()         ScalarData  scalar reservoir
+   2 │ Box1       A_norm      VariableDomPropDep                  VF_Undefined      ScalarSpace  ()         ScalarData  scalar reservoir normalized
+   3 │ Box1       A_sms       VariableDomContribTarget  mol yr-1  VF_Deriv          ScalarSpace  ()         ScalarData  scalar reservoir source-sinks
+   4 │ Box1       decay_flux  VariableDomPropDep        mol yr-1  VF_Undefined      ScalarSpace  ()         ScalarData  decay flux
+   5 │ Box2       B           VariableDomPropDep        mol       VF_StateExplicit  ScalarSpace  ()         ScalarData  scalar reservoir
+   6 │ Box2       B_norm      VariableDomPropDep                  VF_Undefined      ScalarSpace  ()         ScalarData  scalar reservoir normalized
+   7 │ Box2       B_sms       VariableDomContribTarget  mol yr-1  VF_Deriv          ScalarSpace  ()         ScalarData  scalar reservoir source-sinks
+   8 │ fluxBoxes  flux_B      VariableDomContribTarget  mol yr-1  VF_Undefined      CellSpace    ()         ScalarData  flux input
+   9 │ global     E_total     VariableDomPropDep        unknown   VF_Undefined      ScalarSpace  ()         ScalarData  sum of specified variables</code></pre><p>This shows that we now have four Domains:</p><ul><li><code>Box1</code> containing <code>reservoir_A</code>, <code>Adecay</code>, and associated Variables</li><li><code>Box2</code> containing <code>reservoir_B</code>and associated Variables</li><li><code>fluxBoxes</code> containing a Variable <code>flux_B</code> created by the <code>ReactionFluxTarget</code></li><li><code>global</code> containing <code>E_total</code> to check conservation.</li></ul><h3 id="An-aside-on-ordering-of-ReactionMethods"><a class="docs-heading-anchor" href="#An-aside-on-ordering-of-ReactionMethods">An aside on ordering of ReactionMethods</a><a id="An-aside-on-ordering-of-ReactionMethods-1"></a><a class="docs-heading-anchor-permalink" href="#An-aside-on-ordering-of-ReactionMethods" title="Permalink"></a></h3><div class="admonition is-info"><header class="admonition-header">Info</header><div class="admonition-body"><p>It is rarely necessary or useful to look at this - shown here just to illustrate how PALEO works</p></div></div><p>PALEO orders ReactionMethods based on the dependency information defined by the linked Variables (a method defining a Property must run before all methods that link to it as Dependencies, a method defining a Target must run after all methods that link to it as Contributors).</p><p>The order in which ReactionMethods are called during each timestep is stored in <code>model.sorted_methods_do</code> (a <code>struct PB.MethodSort</code>) and can be displayed using:</p><pre><code class="language-julia hljs">model.sorted_methods_do</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">MethodSort
   group=BitSet([1, 2, 4, 5])
     global.sum_E.do_scalarsum
     Box2.reservoir_B.do_reactionreservoirscalar
@@ -1536,7 +1536,7 @@ display(plot(paleorun.output, [&quot;Box1.A_delta&quot;, &quot;Box1.decay_flux.v
 │ ================================================================================
 │ creating Domains
 └ ================================================================================
-[ Info: generated Reaction catalog with 73 Reactions
+[ Info: generated Reaction catalog with 74 Reactions
 ┌ Info:
 │ ================================================================================
 │ creating domain &#39;global&#39; ID=1
@@ -1595,8 +1595,8 @@ display(plot(paleorun.output, [&quot;Box1.A_delta&quot;, &quot;Box1.decay_flux.v
 │ register_reaction_methods!
 └ ================================================================================
 ┌ Info: register_methods: global.sum_E PALEOboxes.VariableStats.ReactionSum
-│     add 1.0 * Box1.A
-└     add 1.0 * Box2.B
+│     add 1 * Box1.A
+└     add 1 * Box2.B
 ┌ Info:
 │ ================================================================================
 │ link_variables: first pass
@@ -1711,7 +1711,7 @@ integrate, ODE
 └ ================================================================================
 [ Info: ODEfunction: using Jacobian NoJacobian
 [ Info: jac_config_ode: jac_ad=NoJacobian
-  0.515893 seconds (799.65 k allocations: 55.965 MiB, 3.26% gc time, 99.94% compilation time)
+  0.573460 seconds (1.12 M allocations: 77.735 MiB, 5.43% gc time, 99.95% compilation time)
 ┌ Info:
 │ ================================================================================
 │ print_sol_stats:
@@ -1739,19 +1739,19 @@ integrate, ODE
 │ ================================================================================
 │ PALEOmodel.ODE.integrate: done
 └ ================================================================================
-  0.755961 seconds (997.34 k allocations: 70.664 MiB, 2.23% gc time, 99.45% compilation time)</code></pre><p><img src="../ex5_plot1.svg" alt/> <img src="../ex5_plot2.svg" alt/> <img src="../ex5_plot3.svg" alt/></p><h3 id="Displaying-model-structure-and-variables-5"><a class="docs-heading-anchor" href="#Displaying-model-structure-and-variables-5">Displaying model structure and variables</a><a class="docs-heading-anchor-permalink" href="#Displaying-model-structure-and-variables-5" title="Permalink"></a></h3><p>All metadata for model variables can be displayed with <code>PB.show_variables</code>:</p><pre><code class="language-julia hljs">show(PB.show_variables(model), allcols=true, allrows=true) # display in REPL
-# vscodedisplay(PB.show_variables(model)) # more convenient when using VS code</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">11×8 DataFrame
- Row │ domain     name        type                      units     vfunction         space        field_data     description
-     │ String     String      DataType                  String    Variable…         DataType     Type           String
-─────┼─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-   1 │ Box1       A           VariableDomPropDep        mol       VF_StateExplicit  ScalarSpace  IsotopeLinear  scalar reservoir
-   2 │ Box1       A_delta     VariableDomPropDep        per mil   VF_Undefined      ScalarSpace  ScalarData     scalar reservoir isotope delta
-   3 │ Box1       A_norm      VariableDomPropDep                  VF_Undefined      ScalarSpace  ScalarData     scalar reservoir normalized
-   4 │ Box1       A_sms       VariableDomContribTarget  mol yr-1  VF_Deriv          ScalarSpace  IsotopeLinear  scalar reservoir source-sinks
-   5 │ Box1       decay_flux  VariableDomPropDep        mol yr-1  VF_Undefined      ScalarSpace  IsotopeLinear  decay flux
-   6 │ Box2       B           VariableDomPropDep        mol       VF_StateExplicit  ScalarSpace  IsotopeLinear  scalar reservoir
-   7 │ Box2       B_delta     VariableDomPropDep        per mil   VF_Undefined      ScalarSpace  ScalarData     scalar reservoir isotope delta
-   8 │ Box2       B_norm      VariableDomPropDep                  VF_Undefined      ScalarSpace  ScalarData     scalar reservoir normalized
-   9 │ Box2       B_sms       VariableDomContribTarget  mol yr-1  VF_Deriv          ScalarSpace  IsotopeLinear  scalar reservoir source-sinks
-  10 │ fluxBoxes  flux_B      VariableDomContribTarget  mol yr-1  VF_Undefined      CellSpace    IsotopeLinear  flux input
-  11 │ global     E_total     VariableDomPropDep        unknown   VF_Undefined      ScalarSpace  IsotopeLinear  sum of specified variables</code></pre><p>The variable names are as in <a href="#Example-4-Transfer-between-Domains">Example 4 Transfer between Domains</a>, however <code>field_data</code> is now <code>IsotopeLinear</code> and not <code>ScalarData</code> for the reservoir and flux variables.</p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../../ExampleInstallConfig/">« Installation and getting started</a><a class="docs-footer-nextpage" href="../../solvers/README/">ODE solvers »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.5.0 on <span class="colophon-date" title="Thursday 18 July 2024 14:20">Thursday 18 July 2024</span>. Using Julia version 1.10.4.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+  0.789910 seconds (1.32 M allocations: 92.864 MiB, 3.94% gc time, 99.47% compilation time)</code></pre><p><img src="../ex5_plot1.svg" alt/> <img src="../ex5_plot2.svg" alt/> <img src="../ex5_plot3.svg" alt/></p><h3 id="Displaying-model-structure-and-variables-5"><a class="docs-heading-anchor" href="#Displaying-model-structure-and-variables-5">Displaying model structure and variables</a><a class="docs-heading-anchor-permalink" href="#Displaying-model-structure-and-variables-5" title="Permalink"></a></h3><p>All metadata for model variables can be displayed with <code>PB.show_variables</code>:</p><pre><code class="language-julia hljs">show(PB.show_variables(model), allcols=true, allrows=true) # display in REPL
+# vscodedisplay(PB.show_variables(model)) # more convenient when using VS code</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">11×9 DataFrame
+ Row │ domain     name        type                      units     vfunction         space        data_dims  field_data     description
+     │ String     String      DataType                  String    Variable…         DataType     Tuple{}    Type           String
+─────┼────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+   1 │ Box1       A           VariableDomPropDep        mol       VF_StateExplicit  ScalarSpace  ()         IsotopeLinear  scalar reservoir
+   2 │ Box1       A_delta     VariableDomPropDep        per mil   VF_Undefined      ScalarSpace  ()         ScalarData     scalar reservoir isotope delta
+   3 │ Box1       A_norm      VariableDomPropDep                  VF_Undefined      ScalarSpace  ()         ScalarData     scalar reservoir normalized
+   4 │ Box1       A_sms       VariableDomContribTarget  mol yr-1  VF_Deriv          ScalarSpace  ()         IsotopeLinear  scalar reservoir source-sinks
+   5 │ Box1       decay_flux  VariableDomPropDep        mol yr-1  VF_Undefined      ScalarSpace  ()         IsotopeLinear  decay flux
+   6 │ Box2       B           VariableDomPropDep        mol       VF_StateExplicit  ScalarSpace  ()         IsotopeLinear  scalar reservoir
+   7 │ Box2       B_delta     VariableDomPropDep        per mil   VF_Undefined      ScalarSpace  ()         ScalarData     scalar reservoir isotope delta
+   8 │ Box2       B_norm      VariableDomPropDep                  VF_Undefined      ScalarSpace  ()         ScalarData     scalar reservoir normalized
+   9 │ Box2       B_sms       VariableDomContribTarget  mol yr-1  VF_Deriv          ScalarSpace  ()         IsotopeLinear  scalar reservoir source-sinks
+  10 │ fluxBoxes  flux_B      VariableDomContribTarget  mol yr-1  VF_Undefined      CellSpace    ()         IsotopeLinear  flux input
+  11 │ global     E_total     VariableDomPropDep        unknown   VF_Undefined      ScalarSpace  ()         IsotopeLinear  sum of specified variables</code></pre><p>The variable names are as in <a href="#Example-4-Transfer-between-Domains">Example 4 Transfer between Domains</a>, however <code>field_data</code> is now <code>IsotopeLinear</code> and not <code>ScalarData</code> for the reservoir and flux variables.</p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../../ExampleInstallConfig/">« Installation and getting started</a><a class="docs-footer-nextpage" href="../../solvers/README/">ODE solvers »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.8.0 on <span class="colophon-date" title="Thursday 2 January 2025 21:51">Thursday 2 January 2025</span>. Using Julia version 1.10.7.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>

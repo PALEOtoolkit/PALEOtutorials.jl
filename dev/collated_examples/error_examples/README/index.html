@@ -77,7 +77,7 @@ example5_syntax_error:
 │     config_file: /home/runner/work/PALEOtutorials.jl/PALEOtutorials.jl/examples/error_examples/config_ex5_syntax_error.yaml
 └ ================================================================================
 ERROR: LoadError: YAML.ParserError while reading .yaml config file(s) [&quot;/home/runner/work/PALEOtutorials.jl/PALEOtutorials.jl/examples/error_examples/config_ex5_syntax_error.yaml&quot;].
-If the error isn&#39;t obvious by looking at the file(s) (often this is a whitespace issue), try an online YAML validator eg http://www.yamllint.com
+If the error isn&#39;t obvious by looking at the file(s) (often this is a whitespace issue), install the VS Code YAML plugin, or try an online YAML validator eg http://www.yamllint.com
 in expression starting at /home/runner/work/PALEOtutorials.jl/PALEOtutorials.jl/examples/error_examples/run_ex5_syntax_error.jl:11</code></pre><h2 id="Missing-/-unlinked-Variables"><a class="docs-heading-anchor" href="#Missing-/-unlinked-Variables">Missing / unlinked Variables</a><a id="Missing-/-unlinked-Variables-1"></a><a class="docs-heading-anchor-permalink" href="#Missing-/-unlinked-Variables" title="Permalink"></a></h2><p>The model configuration (file <code>examples/error_examples/config_ex5_reservoir_A_missing.yaml</code>) omits a <code>ReactionReservoirScalar</code>, resulting in Variable Dependencies and Contributors with no corresponding Properties and Targets.</p><pre><code class="language-julia hljs">##################################################################
 # ../reservoirs/config_ex5.yaml with common configuration errors
 #################################################################
@@ -161,13 +161,13 @@ example5_reservoir_A_missing:
 │ ================================================================================
 │ creating Domains
 └ ================================================================================
-[ Info: generated Reaction catalog with 73 Reactions
+[ Info: generated Reaction catalog with 74 Reactions
 ┌ Info: 
 │ ================================================================================
 │ creating domain &#39;global&#39; ID=1
 └ ================================================================================
 ┌ Warning: create_domain_from_config Domain &#39;global&#39; empty &#39;reactions:&#39; key in .yaml file
-└ @ PALEOboxes ~/.julia/packages/PALEOboxes/R8qlj/src/Domain.jl:314
+└ @ PALEOboxes ~/.julia/packages/PALEOboxes/PtQTd/src/Domain.jl:349
 ┌ Info: 
 │ ================================================================================
 │ creating domain &#39;fluxBoxes&#39; ID=2
@@ -248,34 +248,25 @@ example5_reservoir_A_missing:
 │ ================================================================================
 │ PALEOmodel.initialize! start
 └ ================================================================================
-┌ Info: 
-│ ================================================================================
-│ allocate_variables! (modeldata arrays_idx=1)
-└ ================================================================================
-[ Info: Domain global               data dimensions PALEOboxes.NamedDimension[] allocating 0    variables (hostdep=nothing)
-[ Info: Domain fluxBoxes            data dimensions PALEOboxes.NamedDimension[] allocating 1    variables (hostdep=nothing)
-[ Info: Domain Box2                 data dimensions PALEOboxes.NamedDimension[] allocating 4    variables (hostdep=nothing)
-[ Info: Domain Box1                 data dimensions PALEOboxes.NamedDimension[] allocating 4    variables (hostdep=nothing)
-[ Info:     set :field_data=PALEOboxes.ScalarData for host-dependent Variable Box1.A_delta
-┌ Warning: check_ready: unexpected host-dependent Variable Box1.A_sms (usually an unlinked Variable due to eg a missing renaming in the :variable_links sections in the .yaml file, a spelling mistake either in a Variable default name in the code or renaming in the .yaml file, or a missing Reaction)
+┌ Warning: check_variable_links: unexpected host-dependent Variable Box1.A_sms (usually an unlinked Variable due to eg a missing renaming in the :variable_links sections in the .yaml file, a spelling mistake either in a Variable default name in the code or renaming in the .yaml file, or a missing Reaction)
 │ 	PALEOboxes.VariableDomContribTarget &quot;Box1.A_sms&quot; links:
 │ 		target:		nothing
 │ 		contributors:	[&quot;Box1.Adecay.do_example5.input_particle_sms&quot;]
 │ 		dependencies:	String[]
-└ @ PALEOboxes ~/.julia/packages/PALEOboxes/R8qlj/src/Model.jl:446
-┌ Warning: check_ready: unexpected host-dependent Variable Box1.A (usually an unlinked Variable due to eg a missing renaming in the :variable_links sections in the .yaml file, a spelling mistake either in a Variable default name in the code or renaming in the .yaml file, or a missing Reaction)
+└ @ PALEOboxes ~/.julia/packages/PALEOboxes/PtQTd/src/Model.jl:380
+┌ Warning: check_variable_links: unexpected host-dependent Variable Box1.A (usually an unlinked Variable due to eg a missing renaming in the :variable_links sections in the .yaml file, a spelling mistake either in a Variable default name in the code or renaming in the .yaml file, or a missing Reaction)
 │ 	PALEOboxes.VariableDomPropDep &quot;Box1.A&quot; links:
 │ 		property:	nothing
 │ 		dependencies:	[&quot;Box1.Adecay.do_example5.input_particle&quot;]
-└ @ PALEOboxes ~/.julia/packages/PALEOboxes/R8qlj/src/Model.jl:446
-┌ Warning: check_ready: unexpected host-dependent Variable Box1.A_delta (usually an unlinked Variable due to eg a missing renaming in the :variable_links sections in the .yaml file, a spelling mistake either in a Variable default name in the code or renaming in the .yaml file, or a missing Reaction)
+└ @ PALEOboxes ~/.julia/packages/PALEOboxes/PtQTd/src/Model.jl:380
+┌ Warning: check_variable_links: unexpected host-dependent Variable Box1.A_delta (usually an unlinked Variable due to eg a missing renaming in the :variable_links sections in the .yaml file, a spelling mistake either in a Variable default name in the code or renaming in the .yaml file, or a missing Reaction)
 │ 	PALEOboxes.VariableDomPropDep &quot;Box1.A_delta&quot; links:
 │ 		property:	nothing
 │ 		dependencies:	[&quot;Box1.Adecay.do_example5.input_particle_delta&quot;]
-└ @ PALEOboxes ~/.julia/packages/PALEOboxes/R8qlj/src/Model.jl:446
-┌ Error: check_ready failed
-└ @ PALEOboxes ~/.julia/packages/PALEOboxes/R8qlj/src/Model.jl:454
-ERROR: LoadError: check_ready failed
+└ @ PALEOboxes ~/.julia/packages/PALEOboxes/PtQTd/src/Model.jl:380
+┌ Error: check_variable_links failed
+└ @ PALEOboxes ~/.julia/packages/PALEOboxes/PtQTd/src/Model.jl:387
+ERROR: LoadError: check_variable_links failed
 in expression starting at /home/runner/work/PALEOtutorials.jl/PALEOtutorials.jl/examples/error_examples/run_ex5_reservoir_A_missing.jl:20</code></pre><h2 id="A-duplicated-Variable-or-a-name-collision"><a class="docs-heading-anchor" href="#A-duplicated-Variable-or-a-name-collision">A duplicated Variable or a name collision</a><a id="A-duplicated-Variable-or-a-name-collision-1"></a><a class="docs-heading-anchor-permalink" href="#A-duplicated-Variable-or-a-name-collision" title="Permalink"></a></h2><p>The model configuration (file <code>examples/error_examples/config_ex5_reservoir_A_duplicate.yaml</code>) contains two copies of a <code>ReactionReservoirScalar</code>, both attempting to create the same VariableDomains</p><pre><code class="language-julia hljs">##################################################################
 # ../reservoirs/config_ex5.yaml with common configuration errors
 #################################################################
@@ -366,7 +357,7 @@ example5_reservoir_A_duplicate:
 │ ================================================================================
 │ creating Domains
 └ ================================================================================
-[ Info: generated Reaction catalog with 73 Reactions
+[ Info: generated Reaction catalog with 74 Reactions
 ┌ Info: 
 │ ================================================================================
 │ creating domain &#39;global&#39; ID=1
@@ -431,8 +422,8 @@ example5_reservoir_A_duplicate:
 │ register_reaction_methods!
 └ ================================================================================
 ┌ Info: register_methods: global.sum_E PALEOboxes.VariableStats.ReactionSum
-│     add 1.0 * Box1.A
-└     add 1.0 * Box2.B
+│     add 1 * Box1.A
+└     add 1 * Box2.B
 ┌ Info: 
 │ ================================================================================
 │ link_variables: first pass
@@ -525,7 +516,7 @@ example5_reservoir_A_noisotope:
 │ ================================================================================
 │ creating Domains
 └ ================================================================================
-[ Info: generated Reaction catalog with 73 Reactions
+[ Info: generated Reaction catalog with 74 Reactions
 ┌ Info: 
 │ ================================================================================
 │ creating domain &#39;global&#39; ID=1
@@ -582,8 +573,8 @@ example5_reservoir_A_noisotope:
 │ register_reaction_methods!
 └ ================================================================================
 ┌ Info: register_methods: global.sum_E PALEOboxes.VariableStats.ReactionSum
-│     add 1.0 * Box1.A
-└     add 1.0 * Box2.B
+│     add 1 * Box1.A
+└     add 1 * Box2.B
 ┌ Info: 
 │ ================================================================================
 │ link_variables: first pass
@@ -678,7 +669,7 @@ example5_flux_noisotope:
 │ ================================================================================
 │ creating Domains
 └ ================================================================================
-[ Info: generated Reaction catalog with 73 Reactions
+[ Info: generated Reaction catalog with 74 Reactions
 ┌ Info: 
 │ ================================================================================
 │ creating domain &#39;global&#39; ID=1
@@ -737,8 +728,8 @@ example5_flux_noisotope:
 │ register_reaction_methods!
 └ ================================================================================
 ┌ Info: register_methods: global.sum_E PALEOboxes.VariableStats.ReactionSum
-│     add 1.0 * Box1.A
-└     add 1.0 * Box2.B
+│     add 1 * Box1.A
+└     add 1 * Box2.B
 ┌ Info: 
 │ ================================================================================
 │ link_variables: first pass
@@ -818,13 +809,13 @@ example5_flux_noisotope:
 │ initialize_reactiondata! (modeldata arrays_indices=1:1)
 └ ================================================================================
 ┌ Warning: create_accessor: VariableReaction Box1.Adecay.do_example5.output_flux  -&gt;  fluxBoxes.flux_B:  invalid :field_data combination - attempting to link a Variable with :field_data=PALEOboxes.IsotopeLinear to a Variable with :field_data=PALEOboxes.ScalarData
-└ @ PALEOboxes ~/.julia/packages/PALEOboxes/R8qlj/src/VariableReaction.jl:759
+└ @ PALEOboxes ~/.julia/packages/PALEOboxes/PtQTd/src/VariableReaction.jl:759
 ERROR: LoadError: MethodError: no method matching create_accessor(::Type{PALEOboxes.IsotopeLinear}, ::PALEOboxes.Field{PALEOboxes.ScalarData, PALEOboxes.CellSpace, Vector{Float64}, 0, Nothing}, ::Nothing; forceview::Bool, components::Bool)
 
 Closest candidates are:
-  create_accessor(::Union{Type{D}, Type{PALEOboxes.UndefinedData}}, <span class="sgr91">::PALEOboxes.Field{D, S, V, N, M}</span>, ::Union{Nothing, PALEOboxes.AbstractSubdomain}; forceview, components) where {D, S, V, N, M}
-<span class="sgr90">   @</span> <span class="sgr35">PALEOboxes</span> <span class="sgr90">~/.julia/packages/PALEOboxes/R8qlj/src/<span class="sgr4">Fields.jl:440</span></span>
+  create_accessor(::Union{Type{FieldData}, Type{PALEOboxes.UndefinedData}}, <span class="sgr91">::PALEOboxes.Field{FieldData, Space, V, N, Mesh}</span>, ::Union{Nothing, PALEOboxes.AbstractSubdomain}; forceview, components) where {FieldData, Space, V, N, Mesh}
+<span class="sgr90">   @</span> <span class="sgr35">PALEOboxes</span> <span class="sgr90">~/.julia/packages/PALEOboxes/PtQTd/src/<span class="sgr4">Fields.jl:480</span></span>
   create_accessor(<span class="sgr91">::Type{PALEOboxes.ScalarData}</span>, <span class="sgr91">::PALEOboxes.Field{PALEOboxes.IsotopeLinear, S, V, W, M}</span>, ::Union{Nothing, PALEOboxes.AbstractSubdomain}; forceview, components) where {S, V, W, M}
-<span class="sgr90">   @</span> <span class="sgr35">PALEOboxes</span> <span class="sgr90">~/.julia/packages/PALEOboxes/R8qlj/src/data/<span class="sgr4">IsotopeData.jl:380</span></span>
+<span class="sgr90">   @</span> <span class="sgr35">PALEOboxes</span> <span class="sgr90">~/.julia/packages/PALEOboxes/PtQTd/src/data/<span class="sgr4">IsotopeData.jl:380</span></span>
 
-in expression starting at /home/runner/work/PALEOtutorials.jl/PALEOtutorials.jl/examples/error_examples/run_ex5_flux_noisotope.jl:20</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../solvers/README/">« ODE solvers</a><a class="docs-footer-nextpage" href="../../CPU/README/">CPU (Carbon, Phosphorus, Uranium) model »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.5.0 on <span class="colophon-date" title="Thursday 18 July 2024 14:20">Thursday 18 July 2024</span>. Using Julia version 1.10.4.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+in expression starting at /home/runner/work/PALEOtutorials.jl/PALEOtutorials.jl/examples/error_examples/run_ex5_flux_noisotope.jl:20</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../solvers/README/">« ODE solvers</a><a class="docs-footer-nextpage" href="../../CPU/README/">CPU (Carbon, Phosphorus, Uranium) model »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.8.0 on <span class="colophon-date" title="Thursday 2 January 2025 21:51">Thursday 2 January 2025</span>. Using Julia version 1.10.7.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
