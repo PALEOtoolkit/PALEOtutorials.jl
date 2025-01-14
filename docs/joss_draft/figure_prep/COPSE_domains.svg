@@ -1,0 +1,499 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="254mm"
+   height="190.5mm"
+   overflow="hidden"
+   version="1.1"
+   id="svg25"
+   sodipodi:docname="COPSE_domains_test.svg"
+   inkscape:version="1.4 (1:1.4+202410161351+e7c3feb100)"
+   inkscape:export-filename="COPSE_Domains.png"
+   inkscape:export-xdpi="300"
+   inkscape:export-ydpi="300"
+   viewBox="0 0 254 190.5"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs25" />
+  <sodipodi:namedview
+     id="namedview25"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="0.86816999"
+     inkscape:cx="466.4985"
+     inkscape:cy="360.52847"
+     inkscape:window-width="1685"
+     inkscape:window-height="1057"
+     inkscape:window-x="26"
+     inkscape:window-y="23"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg25"
+     inkscape:document-units="mm" />
+  <rect
+     x="26.758755"
+     y="105.58659"
+     width="82.188637"
+     height="9.3396187"
+     stroke="#00b050"
+     stroke-width="0.830189"
+     stroke-linejoin="round"
+     stroke-miterlimit="10"
+     fill="#d7e4bd"
+     id="rect2" />
+  <text
+     fill="#4f6228"
+     font-family="Calibri, Calibri_MSFontService, sans-serif"
+     font-weight="400"
+     font-size="16px"
+     id="text2"
+     x="28.657776"
+     y="111.65733"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.01885px;font-family:Sans;-inkscape-font-specification:'Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.31132">fluxLandtoSedCrust</text>
+  <rect
+     x="26.758755"
+     y="85.350693"
+     width="82.188637"
+     height="16.811314"
+     stroke="#000000"
+     stroke-width="0.830189"
+     stroke-linejoin="round"
+     stroke-miterlimit="10"
+     fill="none"
+     id="rect3" />
+  <text
+     font-family="Calibri, Calibri_MSFontService, sans-serif"
+     font-weight="400"
+     font-size="16px"
+     id="text3"
+     x="29.639488"
+     y="91.110115"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.01885px;font-family:Sans;-inkscape-font-specification:'Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.31132">land</text>
+  <rect
+     x="113.61752"
+     y="91.577118"
+     width="117.05653"
+     height="28.952816"
+     stroke="#000000"
+     stroke-width="0.830189"
+     stroke-linejoin="round"
+     stroke-miterlimit="10"
+     fill="none"
+     id="rect4" />
+  <text
+     font-family="Calibri, Calibri_MSFontService, sans-serif"
+     font-weight="400"
+     font-size="16px"
+     id="text4"
+     x="118.06942"
+     y="99.204468"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.01885px;font-family:Sans;-inkscape-font-specification:'Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.31132">ocean</text>
+  <rect
+     x="112.68353"
+     y="77.567673"
+     width="44.83017"
+     height="9.0282974"
+     stroke="#00b050"
+     stroke-width="0.830189"
+     stroke-linejoin="round"
+     stroke-miterlimit="10"
+     fill="#d7e4bd"
+     id="rect5" />
+  <text
+     fill="#4f6228"
+     font-family="Calibri, Calibri_MSFontService, sans-serif"
+     font-weight="400"
+     font-size="16px"
+     id="text5"
+     x="117.07327"
+     y="83.949738"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.01885px;font-family:Sans;-inkscape-font-specification:'Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.31132">fluxRtoOcean</text>
+  <rect
+     x="27.070072"
+     y="35.850704"
+     width="203.29234"
+     height="34.867908"
+     stroke="#000000"
+     stroke-width="0.830189"
+     stroke-linejoin="round"
+     stroke-miterlimit="10"
+     fill="none"
+     id="rect6" />
+  <text
+     font-family="Calibri, Calibri_MSFontService, sans-serif"
+     font-weight="400"
+     font-size="16px"
+     id="text6"
+     x="30.266586"
+     y="42.54409"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.01885px;font-family:Sans;-inkscape-font-specification:'Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.31132">atm</text>
+  <rect
+     x="113.92883"
+     y="147.92644"
+     width="116.43391"
+     height="9.0282974"
+     stroke="#00b050"
+     stroke-width="0.830189"
+     stroke-linejoin="round"
+     stroke-miterlimit="10"
+     fill="#d7e4bd"
+     id="rect7" />
+  <text
+     fill="#4f6228"
+     font-family="Calibri, Calibri_MSFontService, sans-serif"
+     font-weight="400"
+     font-size="16px"
+     id="text7"
+     x="117.07327"
+     y="154.30849"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.01885px;font-family:Sans;-inkscape-font-specification:'Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.31132">fluxOceanBurial</text>
+  <rect
+     x="113.61752"
+     y="135.16226"
+     width="117.05653"
+     height="10.584902"
+     stroke="#000000"
+     stroke-width="0.830189"
+     stroke-linejoin="round"
+     stroke-miterlimit="10"
+     fill="none"
+     id="rect8" />
+  <text
+     font-family="Calibri, Calibri_MSFontService, sans-serif"
+     font-weight="400"
+     font-size="16px"
+     id="text8"
+     x="116.3531"
+     y="141.32758"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.01885px;font-family:Sans;-inkscape-font-specification:'Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.31132">oceanfloor</text>
+  <rect
+     x="113.92883"
+     y="123.95469"
+     width="116.43391"
+     height="9.0282974"
+     stroke="#00b050"
+     stroke-width="0.830189"
+     stroke-linejoin="round"
+     stroke-miterlimit="10"
+     fill="#d7e4bd"
+     id="rect9" />
+  <text
+     fill="#4f6228"
+     font-family="Calibri, Calibri_MSFontService, sans-serif"
+     font-weight="400"
+     font-size="16px"
+     id="text9"
+     x="117.96983"
+     y="130.02548"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.01885px;font-family:Sans;-inkscape-font-specification:'Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.31132">fluxOceanfloor</text>
+  <rect
+     x="26.758755"
+     y="74.454468"
+     width="82.188637"
+     height="9.0282974"
+     stroke="#00b050"
+     stroke-width="0.830189"
+     stroke-linejoin="round"
+     stroke-miterlimit="10"
+     fill="#d7e4bd"
+     id="rect10" />
+  <text
+     fill="#4f6228"
+     font-family="Calibri, Calibri_MSFontService, sans-serif"
+     font-weight="400"
+     font-size="16px"
+     id="text10"
+     x="31.497017"
+     y="80.525215"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.01885px;font-family:Sans;-inkscape-font-specification:'Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.31132">fluxAtoLand</text>
+  <path
+     d="m 27.692726,118.9732 79.097624,0.29762 0.5971,41.66186 122.37796,-0.59492 0.5968,19.34297 H 27.991188 Z"
+     stroke="#000000"
+     stroke-width="0.830189"
+     stroke-linejoin="round"
+     stroke-miterlimit="10"
+     fill="none"
+     fill-rule="evenodd"
+     id="path10" />
+  <text
+     font-family="Calibri, Calibri_MSFontService, sans-serif"
+     font-weight="400"
+     font-size="16px"
+     id="text11"
+     x="30.448433"
+     y="125.04432"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.01885px;font-family:Sans;-inkscape-font-specification:'Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.31132">sedcrust</text>
+  <path
+     d="M 24.268199,21.529995 24.865965,72.554169 160.2609,72.852726 V 89.56218 l -48.71825,0.29856 v 32.22567 h 121.64634 l 0.59775,-100.556415 z"
+     stroke="#000000"
+     stroke-width="0.830189"
+     stroke-linejoin="round"
+     stroke-miterlimit="10"
+     stroke-dasharray="2.66667, 2.66667"
+     fill="none"
+     fill-rule="evenodd"
+     id="path11"
+     style="stroke-dasharray:0.83018899,0.83018899;stroke-dashoffset:0" />
+  <text
+     font-family="Calibri, Calibri_MSFontService, sans-serif"
+     font-weight="400"
+     font-size="16px"
+     id="text12"
+     x="29.018814"
+     y="29.468632"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.01885px;font-family:Sans;-inkscape-font-specification:'Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.31132">atmocean</text>
+  <path
+     d="m 171.83393,81.303518 c 0,-3.9547 4.39057,-7.160366 9.8066,-7.160366 5.41604,0 9.80659,3.205666 9.80659,7.160366 0,3.954686 -4.39055,7.160328 -9.80659,7.160328 -5.41603,0 -9.8066,-3.205642 -9.8066,-7.160328 z"
+     stroke="#385d8a"
+     stroke-width="0.830189"
+     stroke-linejoin="round"
+     stroke-miterlimit="10"
+     fill="#c6d9f1"
+     fill-rule="evenodd"
+     id="path12" />
+  <text
+     fill="#0070c0"
+     font-family="Calibri, Calibri_MSFontService, sans-serif"
+     font-weight="400"
+     font-size="24px"
+     id="text13"
+     x="179.33344"
+     y="83.638428"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.01885px;font-family:Sans;-inkscape-font-specification:'Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.31132">A</text>
+  <path
+     d="m 196.42827,81.303518 c 0,-3.9547 4.39055,-7.160366 9.8066,-7.160366 5.41603,0 9.8066,3.205666 9.8066,7.160366 0,3.954686 -4.39057,7.160328 -9.8066,7.160328 -5.41605,0 -9.8066,-3.205642 -9.8066,-7.160328 z"
+     stroke="#385d8a"
+     stroke-width="0.830189"
+     stroke-linejoin="round"
+     stroke-miterlimit="10"
+     fill="#c6d9f1"
+     fill-rule="evenodd"
+     id="path13" />
+  <text
+     fill="#0070c0"
+     font-family="Calibri, Calibri_MSFontService, sans-serif"
+     font-weight="400"
+     font-size="24px"
+     id="text14"
+     x="203.61427"
+     y="83.638428"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.01885px;font-family:Sans;-inkscape-font-specification:'Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.31132">O</text>
+  <path
+     d="m 139.76792,104.96377 c 0,-3.95439 4.39055,-7.160345 9.80659,-7.160345 5.41605,0 9.8066,3.205955 9.8066,7.160345 0,3.95471 -4.39055,7.16038 -9.8066,7.16038 -5.41604,0 -9.80659,-3.20567 -9.80659,-7.16038 z"
+     stroke="#385d8a"
+     stroke-width="0.830189"
+     stroke-linejoin="round"
+     stroke-miterlimit="10"
+     fill="#c6d9f1"
+     fill-rule="evenodd"
+     id="path14" />
+  <text
+     fill="#0070c0"
+     font-family="Calibri, Calibri_MSFontService, sans-serif"
+     font-weight="400"
+     font-size="24px"
+     id="text15"
+     x="147.44423"
+     y="107.29884"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.01885px;font-family:Sans;-inkscape-font-specification:'Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.31132">P</text>
+  <path
+     d="m 162.49431,105.11943 c 0,-3.86847 4.39055,-7.004698 9.80661,-7.004698 5.41605,0 9.8066,3.136228 9.8066,7.004698 0,3.86847 -4.39055,7.00472 -9.8066,7.00472 -5.41606,0 -9.80661,-3.13625 -9.80661,-7.00472 z"
+     stroke="#385d8a"
+     stroke-width="0.830189"
+     stroke-linejoin="round"
+     stroke-miterlimit="10"
+     fill="#c6d9f1"
+     fill-rule="evenodd"
+     id="path15" />
+  <text
+     fill="#0070c0"
+     font-family="Calibri, Calibri_MSFontService, sans-serif"
+     font-weight="400"
+     font-size="24px"
+     id="text16"
+     x="169.67253"
+     y="107.29884"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.01885px;font-family:Sans;-inkscape-font-specification:'Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.31132">N</text>
+  <path
+     d="m 186.466,105.74208 c 0,-3.86847 4.39057,-7.004711 9.80659,-7.004711 5.41605,0 9.8066,3.136241 9.8066,7.004711 0,3.86847 -4.39055,7.00471 -9.8066,7.00471 -5.41602,0 -9.80659,-3.13624 -9.80659,-7.00471 z"
+     stroke="#385d8a"
+     stroke-width="0.830189"
+     stroke-linejoin="round"
+     stroke-miterlimit="10"
+     fill="#c6d9f1"
+     fill-rule="evenodd"
+     id="path16" />
+  <text
+     fill="#0070c0"
+     font-family="Calibri, Calibri_MSFontService, sans-serif"
+     font-weight="400"
+     font-size="24px"
+     id="text17"
+     x="194.26219"
+     y="107.92144"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.01885px;font-family:Sans;-inkscape-font-specification:'Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.31132">S</text>
+  <path
+     d="m 208.25845,105.74208 c 0,-3.86847 4.39055,-7.004711 9.8066,-7.004711 5.41604,0 9.80659,3.136241 9.80659,7.004711 0,3.86847 -4.39055,7.00471 -9.80659,7.00471 -5.41605,0 -9.8066,-3.13624 -9.8066,-7.00471 z"
+     stroke="#385d8a"
+     stroke-width="0.830189"
+     stroke-linejoin="round"
+     stroke-miterlimit="10"
+     fill="#c6d9f1"
+     fill-rule="evenodd"
+     id="path17" />
+  <text
+     fill="#0070c0"
+     font-family="Calibri, Calibri_MSFontService, sans-serif"
+     font-weight="400"
+     font-size="24px"
+     id="text18"
+     x="214.93732"
+     y="107.92144"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.01885px;font-family:Sans;-inkscape-font-specification:'Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.31132">Sr</text>
+  <path
+     d="m 54.154948,170.80809 c 0,-3.86847 6.202442,-7.00471 13.853745,-7.00471 7.651285,0 13.853692,3.13624 13.853692,7.00471 0,3.86846 -6.202407,7.00471 -13.853692,7.00471 -7.651303,0 -13.853745,-3.13625 -13.853745,-7.00471 z"
+     stroke="#385d8a"
+     stroke-width="0.830189"
+     stroke-linejoin="round"
+     stroke-miterlimit="10"
+     fill="#c6d9f1"
+     fill-rule="evenodd"
+     id="path18" />
+  <text
+     fill="#0070c0"
+     font-family="Calibri, Calibri_MSFontService, sans-serif"
+     font-weight="400"
+     font-size="16px"
+     id="text19"
+     x="59.792946"
+     y="172.36508"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.01885px;font-family:Sans;-inkscape-font-specification:'Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.31132">Sr_sed</text>
+  <path
+     d="m 33.919106,138.43074 c 0,-3.86847 4.390556,-7.00472 9.8066,-7.00472 5.416045,0 9.8066,3.13625 9.8066,7.00472 0,3.86847 -4.390555,7.0047 -9.8066,7.0047 -5.416044,0 -9.8066,-3.13623 -9.8066,-7.0047 z"
+     stroke="#385d8a"
+     stroke-width="0.830189"
+     stroke-linejoin="round"
+     stroke-miterlimit="10"
+     fill="#c6d9f1"
+     fill-rule="evenodd"
+     id="path19" />
+  <text
+     fill="#0070c0"
+     font-family="Calibri, Calibri_MSFontService, sans-serif"
+     font-weight="400"
+     font-size="24px"
+     id="text20"
+     x="41.700562"
+     y="140.61038"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.01885px;font-family:Sans;-inkscape-font-specification:'Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.31132">C</text>
+  <path
+     d="m 57.268153,138.74205 c 0,-3.86846 4.390556,-7.00471 9.806586,-7.00471 5.416017,0 9.806543,3.13625 9.806543,7.00471 0,3.86849 -4.390526,7.00473 -9.806543,7.00473 -5.41603,0 -9.806586,-3.13624 -9.806586,-7.00473 z"
+     stroke="#385d8a"
+     stroke-width="0.830189"
+     stroke-linejoin="round"
+     stroke-miterlimit="10"
+     fill="#c6d9f1"
+     fill-rule="evenodd"
+     id="path20" />
+  <text
+     fill="#0070c0"
+     font-family="Calibri, Calibri_MSFontService, sans-serif"
+     font-weight="400"
+     font-size="24px"
+     id="text21"
+     x="64.559273"
+     y="140.92171"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.01885px;font-family:Sans;-inkscape-font-specification:'Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.31132">G</text>
+  <path
+     d="m 33.919106,157.10998 c 0,-3.86846 6.272176,-7.00472 14.009429,-7.00472 7.73725,0 14.009427,3.13626 14.009427,7.00472 0,3.86847 -6.272177,7.00472 -14.009427,7.00472 -7.737253,0 -14.009429,-3.13625 -14.009429,-7.00472 z"
+     stroke="#385d8a"
+     stroke-width="0.830189"
+     stroke-linejoin="round"
+     stroke-miterlimit="10"
+     fill="#c6d9f1"
+     fill-rule="evenodd"
+     id="path21" />
+  <text
+     fill="#0070c0"
+     font-family="Calibri, Calibri_MSFontService, sans-serif"
+     font-weight="400"
+     font-size="24px"
+     id="text22"
+     x="42.097794"
+     y="159.28963"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.01885px;font-family:Sans;-inkscape-font-specification:'Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.31132">PYR</text>
+  <path
+     d="m 67.853033,156.17602 c 0,-3.86848 6.202407,-7.00471 13.853692,-7.00471 7.651278,0 13.853682,3.13623 13.853682,7.00471 0,3.86847 -6.202404,7.00472 -13.853682,7.00472 -7.651285,0 -13.853692,-3.13625 -13.853692,-7.00472 z"
+     stroke="#385d8a"
+     stroke-width="0.830189"
+     stroke-linejoin="round"
+     stroke-miterlimit="10"
+     fill="#c6d9f1"
+     fill-rule="evenodd"
+     id="path22" />
+  <text
+     fill="#0070c0"
+     font-family="Calibri, Calibri_MSFontService, sans-serif"
+     font-weight="400"
+     font-size="24px"
+     id="text23"
+     x="75.470772"
+     y="158.35567"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.01885px;font-family:Sans;-inkscape-font-specification:'Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.31132">GYP</text>
+  <rect
+     x="19.598377"
+     y="3.4734101"
+     width="219.16971"
+     height="184.30182"
+     stroke="#000000"
+     stroke-width="2.66667"
+     stroke-linejoin="round"
+     stroke-miterlimit="10"
+     stroke-dasharray="2.66667, 2.66667"
+     fill="none"
+     id="rect23"
+     style="stroke-width:0.8302625;stroke-dasharray:0.8302625,0.8302625;stroke-dashoffset:0" />
+  <text
+     font-family="Calibri, Calibri_MSFontService, sans-serif"
+     font-weight="400"
+     font-size="16px"
+     id="text24"
+     x="28.124634"
+     y="14.525245"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.01885px;font-family:Sans;-inkscape-font-specification:'Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.31132">global</text>
+  <rect
+     x="85.442673"
+     y="63.713898"
+     width="17.433954"
+     height="69.735817"
+     fill="#ffffff"
+     id="rect24"
+     style="stroke-width:0.31132" />
+  <rect
+     x="89.022873"
+     y="58.888435"
+     width="9.3396187"
+     height="69.735817"
+     stroke="#00b050"
+     stroke-width="0.830189"
+     stroke-linejoin="round"
+     stroke-miterlimit="10"
+     fill="#d7e4bd"
+     id="rect25" />
+  <text
+     fill="#4f6228"
+     font-family="Calibri, Calibri_MSFontService, sans-serif"
+     font-weight="400"
+     font-size="16px"
+     transform="rotate(90)"
+     id="text25"
+     x="61.652946"
+     y="-91.989128"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.01885px;font-family:Sans;-inkscape-font-specification:'Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.31132">fluxSedCrusttoAOcean</text>
+</svg>
